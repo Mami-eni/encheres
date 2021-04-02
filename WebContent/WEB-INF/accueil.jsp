@@ -10,22 +10,22 @@
 
     <nav class="navbar navbar-light bg-light">
         <div class="container-fluid justify-content-between">
-       	  <a  class="btn btn-outline-primary me-2" href= "${pageContext.request.contextPath}/encheres">logo</a>
+       	  <a  class="btn btn-outline-success me-2" href= "${pageContext.request.contextPath}/encheres">logo</a>
        	  
        	  <c:choose>
 	       	  <c:when test="${empty sessionScope.user }">
 	       	  	<div>
-		       	  	<a  class="btn btn-outline-primary me-2" href= "${pageContext.request.contextPath}/encheres">S'inscrire</a>
-		            <a class="btn btn-outline-primary me-2"href= "${pageContext.request.contextPath}/connection">Se connecter</a>
+		       	  	<a  class="btn btn-outline-success me-2" href= "${pageContext.request.contextPath}/encheres">S'inscrire</a>
+		            <a class="btn btn-outline-warning me-2"href= "${pageContext.request.contextPath}/connection">Se connecter</a>
 		       	  </div>
 	       	  </c:when>
 	       	  
 	       	  <c:otherwise>
 	       	  	<div>
-		       	  	<a class="btn btn-outline-primary me-2" href= "${pageContext.request.contextPath}/encheres">Enchères</a>
-		            <a class="btn btn-outline-primary me-2"href= "${pageContext.request.contextPath}/encheres">Vendre un article</a>
-		            <a class="btn btn-outline-primary me-2"href= "${pageContext.request.contextPath}/encheres">Mon profil</a>
-		            <a class="btn btn-outline-primary me-2"href= "${pageContext.request.contextPath}/deconnexion">Déconnexion</a>
+		       	  	<a class="btn btn-outline-success me-2" href= "${pageContext.request.contextPath}/encheres">Enchères</a>
+		            <a class="btn btn-outline-warning me-2"href= "${pageContext.request.contextPath}/NewSaleServlet">Vendre un article</a>
+		            <a class="btn btn-outline-warning me-2"href= "${pageContext.request.contextPath}/encheres">Mon profil</a>
+		            <a class="btn btn-outline-warning me-2"href= "${pageContext.request.contextPath}/deconnexion">Déconnexion</a>
 		       	  </div>
 	       	  
 	       	  </c:otherwise>
@@ -76,23 +76,24 @@
 					 <!--  affichage de ces data si quelqu'un est connecté -->
 					 <c:if test="${!empty sessionScope.user }">
 					 
-					 <fieldset>      
-				         <legend  ><input type="radio" name="filtreRadio" value="achats"> Achats</legend>      
-				        <input type="checkbox" name="filtreCheckboxAchat" value="ouvert" ${disabledAchat}>1<br>      
-				        <input type="checkbox" name="filtreCheckboxAchat" value="participe" ${disabledAchat}>2<br>      
-				        <input type="checkbox" name="filtreCheckboxAchat" value="obtenu" ${disabledAchat}>3<br>      
+					  <input type="radio" name="filtreRadio" value="achats">Achats<br>
+					    <input type="radio" name="filtreRadio" value="ventes">Mes ventes<br>
+					    					 
+					  <fieldset>      
+				        <legend>achats</legend>      
+				        <input type="checkbox" name="flitreCheckboxAchat" value="1" ${disabledAchat}>1<br>      
+				        <input type="checkbox" name="flitreCheckboxAchat" value="2" ${disabledAchat}>2<br>      
+				        <input type="checkbox" name="flitreCheckboxAchat" value="3" ${disabledAchat}>3<br>      
 				        <br> 
-				       </fieldset> 
-				       
+				        </fieldset> 
 				        <fieldset>      
-				        <legend  ><input type="radio" name="filtreRadio" value="ventes"> Mes ventes</legend>      
-				        <input type="checkbox" name="filtreCheckboxVente" value="encours" ${disabledVentes}>1<br>      
-				        <input type="checkbox" name="filtreCheckboxVente" value="attente" ${disabledVentes}>2<br>      
-				        <input type="checkbox" name="filtreCheckboxVente" value="clos" ${disabledVentes}>3<br>      
+				        <legend>ventes</legend>      
+				        <input type="checkbox" name="flitreCheckboxVente" value="1" ${disabledVentes}>1<br>      
+				        <input type="checkbox" name="flitreCheckboxVente" value="2" ${disabledVentes}>2<br>      
+				        <input type="checkbox" name="flitreCheckboxVente" value="3" ${disabledVentes}>3<br>      
 				        <br>       
 				          
-				   	 </fieldset> 
-					  
+				    </fieldset> 
 					 
 					</c:if>
 				</form>
@@ -136,7 +137,7 @@
 					       <c:otherwise>
 					       
 					       	
-					       	 <a  class="card-text" href= "${pageContext.request.contextPath}/encheres?article=${enchere.getArticle().numero}">${enchere.getArticle().nom} ${enchere.getArticle().description}</a>
+					       	 <a  class="card-text" href= "${pageContext.request.contextPath}/DetailVenteServlet?article=${enchere.getArticle().numero}">${enchere.getArticle().nom} ${enchere.getArticle().description}</a>
 				        	 <p class="card-text">${enchere.montant}</p>
 				          	<p class="card-text">${enchere.getArticle().dateFinEncheres}</p>
 				           	<a  class="card-text" href= "${pageContext.request.contextPath}/encheres?vendeur=${enchere.getArticle().getUtilisateur().numero}">${enchere.getArticle().getUtilisateur().pseudo}</a>

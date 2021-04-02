@@ -21,6 +21,7 @@ import fr.eni.ecole.bo.Article;
 import fr.eni.ecole.bo.Enchere;
 import fr.eni.ecole.bo.Retrait;
 import fr.eni.ecole.bo.Utilisateur;
+import fr.eni.ecole.exception.BusinessException;
 
 /**
  * Servlet implementation class DetailVenteServlet
@@ -35,10 +36,12 @@ public class DetailVenteServlet extends HttpServlet {
        
    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		try {
 		request.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		Article art = article.selectById(32);
+		int idArticle = Integer.parseInt(request.getParameter("article"));
+		Article art = article.selectById(idArticle);
 		request.setAttribute("article", art);
 		List<Enchere> listeEncheres = enchere.selectByArticle(art);
 		int montantMax = 0;
@@ -57,13 +60,30 @@ public class DetailVenteServlet extends HttpServlet {
 		String dateFin = art.getDateFinEncheres().format(dtf);
 		request.setAttribute("dateFin", dateFin);
 		request.getRequestDispatcher("/WEB-INF/detailVente.jsp").forward(request, response);
+		}catch(BusinessException e) {
+			request.setAttribute("erreur", e.getErrors());
+			request.getRequestDispatcher("/WEB-INF/detailVente.jsp").forward(request, response);
+		}
 	}
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		BusinessException error = new BusinessException();
 		HttpSession session = request.getSession();
-		Utilisateur util = utilisateur.selectById(2);
-		Article art = article.selectById(Integer.parseInt(request.getParameter("article")));
+		Utilisateur util = new Utilisateur();
+		util = (Utilisateur)session.getAttribute("user");
+		Article art = new Article();
+		try {
+			art = article.selectById(Integer.parseInt(request.getParameter("article")));
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (BusinessException e) {
+			for(String s : e.getErrors()) {
+				error.addError(s);
+			}
+			e.printStackTrace();
+		}
 		Instant now = Instant.now();
 		Timestamp dateEnchere = Timestamp.from(now);
 		int montant = Integer.parseInt(request.getParameter("proposition"));
@@ -72,8 +92,19 @@ public class DetailVenteServlet extends HttpServlet {
 		ench.setMontant(montant);
 		ench.setArticle(art);
 		ench.setUtilisateur(util);
-		enchere.insert(ench);
-		request.getRequestDispatcher("/WEB-INF/detailVente.jsp").forward(request, response);
+		try {
+			enchere.insert(ench);
+		} catch (BusinessException e) {
+			for(String s : e.getErrors()) {
+				error.addError(s);
+			}
+			request.setAttribute("erreur", error);
+			request.setAttribute("article", art);
+			doGet(request, response);
+			e.printStackTrace();
+		}
+		response.sendRedirect("/encheres");
+		
 	}
 
 }

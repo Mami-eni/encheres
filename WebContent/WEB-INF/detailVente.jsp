@@ -24,6 +24,15 @@
       <div class="col-sm-4"></div>
       </div>
       
+      <c:if test="${!empty erreur}">
+      <c:forEach var="error" items="${erreur }">
+      <div class="row">
+      <div class="col-sm-4"></div>
+      <div class="col-sm-8"><p class="erreur">${error}</p></div>
+      </div>
+      </c:forEach>
+      </c:if>
+      
       <div class="row">
        <div class="col-sm-2">
         </div>
