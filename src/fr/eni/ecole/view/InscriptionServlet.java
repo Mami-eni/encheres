@@ -8,10 +8,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import fr.eni.ecole.bll.BllUtilisateur;
 import fr.eni.ecole.bo.Utilisateur;
 import fr.eni.ecole.exception.BusinessException;
+import fr.eni.ecole.exception.Errors;
 
 /**
  * Servlet implementation class InscriptionServlet
@@ -38,29 +40,40 @@ public class InscriptionServlet extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		Utilisateur user = new Utilisateur();
-		user.setPseudo(request.getParameter("pseudo"));
-		user.setNom(request.getParameter("nom"));
+		String pseudo = request.getParameter("pseudo");
+		String mdp = request.getParameter("mdp");
+		String confirmation = request.getParameter("confirmation");
+		if (mdp.equals(confirmation)) {
+			user.setMotDePasse(request.getParameter("mdp"));
+			user.setPseudo(request.getParameter("pseudo"));
+			user.setNom(request.getParameter("nom"));
+			user.setPrenom(request.getParameter("prenom"));
+			user.setTelephone(request.getParameter("telephone"));
+			user.setCodePostal(request.getParameter("codePostal"));
+			user.setEmail(request.getParameter("email"));
+			user.setRue(request.getParameter("rue"));
+			user.setVille(request.getParameter("ville"));
 
-		user.setPrenom(request.getParameter("prenom"));
-		user.setTelephone(request.getParameter("telephone"));
-		user.setCodePostal(request.getParameter("codePostal"));
-		user.setMotDePasse(request.getParameter("mdp"));
-		user.setEmail(request.getParameter("email"));
-		user.setRue(request.getParameter("rue"));
-		user.setVille(request.getParameter("ville"));
-
-//		String confirmation = request.getParameter("confirmation");
-
+			
 		try {
 			BllUtilisateur.getBllUtilisateur().insert(user);
+			HttpSession session = request.getSession();
+			user = BllUtilisateur.getBllUtilisateur().validateConnection(pseudo, mdp);
+			session.setAttribute("user", user);
+			request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
+			
 		} catch (BusinessException e) {
 			e.printStackTrace();
 			request.setAttribute("errors", e.getErrors());
 			request.getRequestDispatcher("/WEB-INF/inscriptionForm.jsp").forward(request, response);
+		}}else {
+			BusinessException be = new BusinessException();
+			be.addError(Errors.CONFIRMATION_CORRESPONDE_PAS);
+			request.setAttribute("errors", be.getErrors());
+			request.getRequestDispatcher("/WEB-INF/modifierProfil.jsp").forward(request, response);
 		}
 		
 //			Transmettre les informations pour la page de welcome
-		request.getRequestDispatcher("/WEB-INF/inscriptionReussi.jsp").forward(request, response);
 
 	}
 
