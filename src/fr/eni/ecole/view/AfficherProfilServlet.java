@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.eni.ecole.bll.BllUtilisateur;
+import fr.eni.ecole.bo.Utilisateur;
+import fr.eni.ecole.exception.BusinessException;
+
 /**
  * Servlet implementation class AfficherProfilServlet
  */
@@ -22,8 +26,16 @@ public class AfficherProfilServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/afficherProfil.jsp");
-		rd.forward(request, response);
+		int idVendeur = Integer.parseInt(request.getParameter("vendeur"));
+		try {
+			Utilisateur vendeur = BllUtilisateur.getBllUtilisateur().selectById(idVendeur);
+			request.setAttribute("vendeur", vendeur);
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/afficherProfil.jsp");
+			rd.forward(request, response);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	/**

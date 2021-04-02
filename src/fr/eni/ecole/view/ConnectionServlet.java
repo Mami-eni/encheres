@@ -84,20 +84,24 @@ public class ConnectionServlet extends HttpServlet {
 		try {
 			// Cherche l'utilisateur
 			Utilisateur user = BllUtilisateur.getBllUtilisateur().validateConnection(login, password);
-				
+
 			if ("on".equals(rememberMe)) {
 				// TODO pense à utiliser UUID pour cacher mdp
 				addCookie(response, "login", login, 24 * 60 * 60);
 				addCookie(response, "password", password, 24 * 60 * 60);
 			}
 			// Retenir l'utilisateur pour toute la session
-			session.setAttribute("user", user);
-
-			request.getRequestDispatcher("/WEB-INF/monProfil.jsp").forward(request, response);
+			if (user != null) {
+				session.setAttribute("user", user);
+				request.getRequestDispatcher("/WEB-INF/monProfil.jsp").forward(request, response);
+			} else {
+				request.getRequestDispatcher("/WEB-INF/connectionUtilisateur.jsp").forward(request, response);
+			}
+			
 		} catch (BusinessException e) {
 			e.printStackTrace();
 			request.setAttribute("errors", e.getErrors());
-			request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/connectionUtilisateur.jsp").forward(request, response);
 		}
 	}
 
