@@ -1,4 +1,4 @@
-package fr.eni.ecole.view;
+﻿package fr.eni.ecole.view;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ public void init() throws ServletException {
 			
 			request.setAttribute("errors", e.getErrors());
 		}
-		// recuperer le user en session
+		// test recuperer le user en session
 		
 		HttpSession session = request.getSession(false);
 		Utilisateur utilisateur = new Utilisateur();
