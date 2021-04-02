@@ -1,0 +1,14 @@
+@charset "UTF-8";
+.title{
+	font-size: 50px;
+}
+.erreur{
+	font-size: 20px;
+	color: red;
+}
+.detailventeform{
+	width: 100%;
+}
+.displayArticle{
+	font-size: 30px;
+}

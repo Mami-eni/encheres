@@ -226,7 +226,7 @@
 			<label for="rue">Rue</label>
 			</div>
 			<div class="col-sm-4">
-			<input class="form-control" type="text" name="rue" id="rue" value="${utilisateur.rue}" required>
+			<input class="form-control" type="text" name="rue" id="rue" value="${user.rue}" required>
 			</div>
 			<div class="col-sm-2">
 			</div>
@@ -238,7 +238,7 @@
 			<label for="cp">Code Postal</label> 
 			</div>
 			<div class="col-sm-4">
-			<input class="form-control" type="text" name="cp" id="cp" value="${utilisateur.codePostal}" required>
+			<input class="form-control" type="text" name="cp" id="cp" value="${user.codePostal}" required>
 			</div>
 			<div class="col-sm-2">
 			</div>
@@ -250,7 +250,7 @@
 			<label for="ville">Ville</label>
 			</div>
 			<div class="col-sm-4">
-			<input class="form-control" type="text" name="ville" id="ville" value="${utilisateur.ville}" required>
+			<input class="form-control" type="text" name="ville" id="ville" value="${user.ville}" required>
 			</div>
 			<div class="col-sm-2">
 			</div>
