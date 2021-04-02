@@ -40,7 +40,7 @@ public class ArticleJDBC implements ArticleDAO {
 		try {
 			art.setNumero(rs.getInt("no_article"));
 			art.setNom(rs.getString("nom_article"));
-			art.setDescription(rs.getString("desciption"));
+			art.setDescription(rs.getString("description"));
 			art.setDateDebutEncheres(rs.getDate("date_debut_encheres").toLocalDate());
 			art.setDateFinEncheres(rs.getDate("date_fin_encheres").toLocalDate());
 			art.setPrixInitial(rs.getInt("prix_initial"));

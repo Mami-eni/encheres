@@ -1,12 +1,15 @@
 package fr.eni.ecole.view;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import fr.eni.ecole.bll.BllUtilisateur;
 import fr.eni.ecole.bo.Utilisateur;
@@ -23,6 +26,7 @@ public class SupprimerUtilisateurServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 	}
 
 	/**
@@ -47,13 +51,15 @@ public class SupprimerUtilisateurServlet extends HttpServlet {
 				}
 			}
 		}
+		HttpSession session = request.getSession();
+		Utilisateur user = (Utilisateur)(session.getAttribute("user"));
 		try {
-			System.out.println(login + password);
-			Utilisateur user = BllUtilisateur.getBllUtilisateur().validateConnection(login, password);
-			System.out.println(user);
+			
 			BllUtilisateur.getBllUtilisateur().delete(user);
+			response.sendRedirect("/encheres");
 		} catch (BusinessException e) {
 			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
 

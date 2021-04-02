@@ -84,7 +84,7 @@
 	<a href="./"><button class="btn btn-primary">Annuler</button></a>
 	<form action="./supprimerUser" method="post">
 		<div class="form-group">
-			<input onclick='javascript:confirm(\"Etes-vous sûr de vouloir clore la demande?\")' 
+			<input onclick="return confirm('Etes-vous sûr de vouloir supprimer votre compte?');" 
 			class="btn btn-primary" type="submit" value="Supprimer mon compte">
 		</div>
 	</form>

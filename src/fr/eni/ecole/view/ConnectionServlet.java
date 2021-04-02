@@ -97,7 +97,7 @@ public class ConnectionServlet extends HttpServlet {
 		} catch (BusinessException e) {
 			e.printStackTrace();
 			request.setAttribute("errors", e.getErrors());
-			request.getRequestDispatcher("/WEB-INF/connectionUtilisateur.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
 		}
 	}
 

@@ -14,17 +14,14 @@
 	<div class="row">
 		<div class="col-sm-4"></div>
 		<div class="col-sm-4">
-			<h1>Connection réussi</h1>
-			<p>${user.pseudo}estconnecté</p>
-			<p>Nom: ${user.nom}</p>
-			<p>Prenom: ${user.prenom}</p>
-			<p>Email: ${user.email}</p>
-			<p>Telephone: ${user.telephone}</p>
-			<p>Rue: ${user.rue}</p>
-			<p>Code postal: ${user.codePostal}</p>
-			<p>Ville: ${user.ville}</p>
-			<a href="./modifierUser">
-				<button class="btn btn-primary btn-lg">Modifier mon compte</button>
+			<p>${vendeur.pseudo}estconnecté</p>
+			<p>Nom: ${vendeur.nom}</p>
+			<p>Prenom: ${vendeur.prenom}</p>
+			<p>Email: ${vendeur.email}</p>
+			<p>Telephone: ${vendeur.telephone}</p>
+			<p>Rue: ${vendeur.rue}</p>
+			<p>Code postal: ${vendeur.codePostal}</p>
+			<p>Ville: ${vendeur.ville}</p>
 			
 		</div>
 

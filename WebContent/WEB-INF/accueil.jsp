@@ -140,7 +140,7 @@
 					       	 <a  class="card-text" href= "${pageContext.request.contextPath}/encheres?article=${enchere.getArticle().numero}">${enchere.getArticle().nom} ${enchere.getArticle().description}</a>
 				        	 <p class="card-text">${enchere.montant}</p>
 				          	<p class="card-text">${enchere.getArticle().dateFinEncheres}</p>
-				           	<a  class="card-text" href= "${pageContext.request.contextPath}/encheres?vendeur=${enchere.getArticle().getUtilisateur().numero}">${enchere.getArticle().getUtilisateur().pseudo}</a>
+				           	<a  class="card-text" href= "${pageContext.request.contextPath}/afficherProfil?vendeur=${enchere.getArticle().getUtilisateur().numero}">${enchere.getArticle().getUtilisateur().pseudo}</a>
 					       
 					       </c:otherwise>
 				       
