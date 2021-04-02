@@ -76,24 +76,23 @@
 					 <!--  affichage de ces data si quelqu'un est connecté -->
 					 <c:if test="${!empty sessionScope.user }">
 					 
-					  <input type="radio" name="filtreRadio" value="achats">Achats<br>
-					    <input type="radio" name="filtreRadio" value="ventes">Mes ventes<br>
-					    					 
-					  <fieldset>      
-				        <legend>achats</legend>      
-				        <input type="checkbox" name="flitreCheckboxAchat" value="1" ${disabledAchat}>1<br>      
-				        <input type="checkbox" name="flitreCheckboxAchat" value="2" ${disabledAchat}>2<br>      
-				        <input type="checkbox" name="flitreCheckboxAchat" value="3" ${disabledAchat}>3<br>      
+					 <fieldset>      
+				         <legend  ><input type="radio" name="filtreRadio" value="achats"> Achats</legend>      
+				        <input type="checkbox" name="filtreCheckboxAchat" value="ouvert" ${disabledAchat}>1<br>      
+				        <input type="checkbox" name="filtreCheckboxAchat" value="participe" ${disabledAchat}>2<br>      
+				        <input type="checkbox" name="filtreCheckboxAchat" value="obtenu" ${disabledAchat}>3<br>      
 				        <br> 
-				        </fieldset> 
+				       </fieldset> 
+				       
 				        <fieldset>      
-				        <legend>ventes</legend>      
-				        <input type="checkbox" name="flitreCheckboxVente" value="1" ${disabledVentes}>1<br>      
-				        <input type="checkbox" name="flitreCheckboxVente" value="2" ${disabledVentes}>2<br>      
-				        <input type="checkbox" name="flitreCheckboxVente" value="3" ${disabledVentes}>3<br>      
+				        <legend  ><input type="radio" name="filtreRadio" value="ventes"> Mes ventes</legend>      
+				        <input type="checkbox" name="filtreCheckboxVente" value="encours" ${disabledVentes}>1<br>      
+				        <input type="checkbox" name="filtreCheckboxVente" value="attente" ${disabledVentes}>2<br>      
+				        <input type="checkbox" name="filtreCheckboxVente" value="clos" ${disabledVentes}>3<br>      
 				        <br>       
 				          
-				    </fieldset> 
+				   	 </fieldset> 
+					  
 					 
 					</c:if>
 				</form>
