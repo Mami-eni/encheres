@@ -44,6 +44,8 @@ public void init() throws ServletException {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		
+		
 		List<Categorie> listeCategorie = new ArrayList<Categorie>();
 		List<Enchere> listeEnchere = new ArrayList<Enchere>();
 
@@ -60,23 +62,22 @@ public void init() throws ServletException {
 			
 			request.setAttribute("errors", e.getErrors());
 		}
-		// test recuperer le user en session
+//		 test recuperer le user en session
+		HttpSession session = request.getSession();
 		
-		HttpSession session = request.getSession(false);
-		Utilisateur utilisateur = new Utilisateur();
+		Utilisateur user = (Utilisateur) session.getAttribute("user");
 		
-//		if(!(session.getAttribute("user")==null))
+//		if(!(user==null))
 //		{
-//			utilisateur= (Utilisateur) session.getAttribute("user");
-//			System.out.println(utilisateur.getNumero());
+//			System.out.println(user.getNumero());
+//			
 //		}
-		
-		
+
 		// test paramètre injecté id article 
 		
 		String id_article = request.getParameter("article");
 		String id_vendeur = request.getParameter("vendeur");
-		System.out.println( "le parametre inject� est: " +id_article + "l'id du vendeur est: "+ id_vendeur);
+		System.out.println( "l'id article est: " + id_article + "l'id du vendeur est: "+ id_vendeur);
 		
 		request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
 		

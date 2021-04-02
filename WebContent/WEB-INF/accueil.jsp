@@ -10,22 +10,22 @@
 
     <nav class="navbar navbar-light bg-light">
         <div class="container-fluid justify-content-between">
-       	  <a  class="btn btn-outline-success me-2" href= "${pageContext.request.contextPath}/encheres">logo</a>
+       	  <a  class="btn btn-outline-primary me-2" href= "${pageContext.request.contextPath}/encheres">logo</a>
        	  
        	  <c:choose>
 	       	  <c:when test="${empty sessionScope.user }">
 	       	  	<div>
-		       	  	<a  class="btn btn-outline-success me-2" href= "${pageContext.request.contextPath}/encheres">S'inscrire</a>
-		            <a class="btn btn-outline-warning me-2"href= "${pageContext.request.contextPath}/connection">Se connecter</a>
+		       	  	<a  class="btn btn-outline-primary me-2" href= "${pageContext.request.contextPath}/encheres">S'inscrire</a>
+		            <a class="btn btn-outline-primary me-2"href= "${pageContext.request.contextPath}/connection">Se connecter</a>
 		       	  </div>
 	       	  </c:when>
 	       	  
 	       	  <c:otherwise>
 	       	  	<div>
-		       	  	<a class="btn btn-outline-success me-2" href= "${pageContext.request.contextPath}/encheres">Enchères</a>
-		            <a class="btn btn-outline-warning me-2"href= "${pageContext.request.contextPath}/encheres">Vendre un article</a>
-		            <a class="btn btn-outline-warning me-2"href= "${pageContext.request.contextPath}/encheres">Mon profil</a>
-		            <a class="btn btn-outline-warning me-2"href= "${pageContext.request.contextPath}/deconnexion">Déconnexion</a>
+		       	  	<a class="btn btn-outline-primary me-2" href= "${pageContext.request.contextPath}/encheres">Enchères</a>
+		            <a class="btn btn-outline-primary me-2"href= "${pageContext.request.contextPath}/encheres">Vendre un article</a>
+		            <a class="btn btn-outline-primary me-2"href= "${pageContext.request.contextPath}/encheres">Mon profil</a>
+		            <a class="btn btn-outline-primary me-2"href= "${pageContext.request.contextPath}/deconnexion">Déconnexion</a>
 		       	  </div>
 	       	  
 	       	  </c:otherwise>
