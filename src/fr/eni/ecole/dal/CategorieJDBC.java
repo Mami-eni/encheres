@@ -32,7 +32,7 @@ public class CategorieJDBC implements CategorieDAO {
 	public Categorie selectByName(String nom) {
 		Categorie cat = new Categorie();
 		try(Connection cx = Connect.getConnection()){
-			PreparedStatement request = cx.prepareStatement("SELECT no_categorie, libelle WHERE libelle = ?");
+			PreparedStatement request = cx.prepareStatement("SELECT no_categorie, libelle FROM categories WHERE libelle = ?");
 			request.setString(1, nom);
 			ResultSet rs = request.executeQuery();
 			cat.setNumero(rs.getInt("no_categorie"));
@@ -46,7 +46,7 @@ public class CategorieJDBC implements CategorieDAO {
 	public Categorie selectById(int id) {
 		Categorie cat = new Categorie();
 		try(Connection cx = Connect.getConnection()){
-			PreparedStatement request = cx.prepareStatement("SELECT no_categorie, libelle WHERE no_categorie = ?");
+			PreparedStatement request = cx.prepareStatement("SELECT no_categorie, libelle FROM categories WHERE no_categorie = ?");
 			request.setInt(1, id);;
 			ResultSet rs = request.executeQuery();
 			rs.next();

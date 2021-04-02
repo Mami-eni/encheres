@@ -3,7 +3,7 @@ package fr.eni.ecole.view;
 import java.io.IOException;
 
 import java.time.LocalDate;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -38,23 +38,35 @@ public class NewSaleServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		HttpSession session = request.getSession();
-		Utilisateur test = util.selectById(1);
-		session.setAttribute("utilisateur", test);
-		List<Categorie> listeCat = cat.selectAll();
+		List<Categorie> listeCat = new ArrayList<Categorie>();
+		try {
+			listeCat = cat.selectAll();
+		} catch (BusinessException e) {
+			request.setAttribute("erreur", e.getErrors());
+			e.printStackTrace();
+		}
 		request.setAttribute("categories", listeCat);
-		request.getRequestDispatcher("/WEB-INF/nouvelleVenteBootstrap.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/nouvelleVente.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		BusinessException error = new BusinessException();
 		request.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
-		Utilisateur util = (Utilisateur) session.getAttribute("utilisateur");
+		Utilisateur util = (Utilisateur) session.getAttribute("user");
 		String nom = request.getParameter("article");
 		String description = request.getParameter("description");
 		String categorie = request.getParameter("selectcat");
-		Categorie cate = cat.selectById(Integer.parseInt(categorie));
+		Categorie cate = new Categorie();
+		try {
+			cate = cat.selectById(Integer.parseInt(categorie));
+		} catch (BusinessException e1) {
+			for(String s: e1.getErrors()) {
+				error.addError(s);
+			}
+			e1.printStackTrace();
+		}
 		String miseAPrix = request.getParameter("map");
 		LocalDate debutEnchere = LocalDate.parse(request.getParameter("debutEnchere"));
 		LocalDate finEnchere = LocalDate.parse(request.getParameter("finEnchere"));
@@ -81,8 +93,18 @@ public class NewSaleServlet extends HttpServlet {
 			ret.setVille(request.getParameter("ville"));
 			retrait.insert(ret);
 		} catch (BusinessException e) {
-			request.setAttribute("erreur", e.getErrors());
-			List<Categorie> listeCat = cat.selectAll();
+			for(String s: e.getErrors()) {
+				error.addError(s);
+			}
+			List<Categorie> listeCat = new ArrayList<Categorie>();
+			try {
+				listeCat = cat.selectAll();
+			} catch (BusinessException e1) {
+				for(String s : e1.getErrors()) {
+					error.addError(s);
+				}
+				e1.printStackTrace();
+			}
 			request.setAttribute("categories", listeCat);
 			request.setAttribute("article", art);
 			request.setAttribute("map", miseAPrix);
@@ -91,13 +113,18 @@ public class NewSaleServlet extends HttpServlet {
 			request.setAttribute("rue", request.getParameter("rue"));
 			request.setAttribute("cp", request.getParameter("cp"));
 			request.setAttribute("ville", request.getParameter("ville"));
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-			article.delete(art);
-			request.getRequestDispatcher("WEB-INF/nouvelleVenteBootstrap.jsp").forward(request, response);
+			try {
+				article.delete(art);
+			} catch (BusinessException e1) {
+				for(String s : e1.getErrors()) {
+					error.addError(s);
+				}
+			}
+			request.setAttribute("erreur", error.getErrors());
+			request.getRequestDispatcher("WEB-INF/nouvelleVente.jsp").forward(request, response);
 		}
 
-		request.getRequestDispatcher("WEB-INF/nouvelleVenteBootstrap.jsp").forward(request, response);
+		response.sendRedirect("/encheres");
 
 	}
 

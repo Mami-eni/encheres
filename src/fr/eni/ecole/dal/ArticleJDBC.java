@@ -40,7 +40,7 @@ public class ArticleJDBC implements ArticleDAO {
 		try {
 			art.setNumero(rs.getInt("no_article"));
 			art.setNom(rs.getString("nom_article"));
-			art.setDescription(rs.getString("desciption"));
+			art.setDescription(rs.getString("description"));
 			art.setDateDebutEncheres(rs.getDate("date_debut_encheres").toLocalDate());
 			art.setDateFinEncheres(rs.getDate("date_fin_encheres").toLocalDate());
 			art.setPrixInitial(rs.getInt("prix_initial"));
@@ -77,13 +77,36 @@ public class ArticleJDBC implements ArticleDAO {
 
 	@Override
 	public void update(Article item) {
-		throw new NotImplementedException();
+		try(Connection cx = Connect.getConnection()){
+			PreparedStatement request = cx.prepareStatement("UPDATE articles SET "
+					+ "nom_article = ?, description = ?, date_debut_encheres = ?, "
+					+ "date_fin_encheres = ?, prix_initial = ?, prix_vente = ?, "
+					+ "no_utilisateur = ?, no_categorie = ? WHERE no_article = ?");
+			request.setString(1, item.getNom());
+			request.setString(2, item.getDescription());
+			request.setDate(3, Date.valueOf(item.getDateDebutEncheres()));
+			request.setDate(4, Date.valueOf(item.getDateFinEncheres()));
+			request.setInt(5, item.getPrixInitial());
+			request.setInt(6, item.getPrixVente());
+			request.setInt(7, item.getUtilisateur().getNumero());
+			request.setInt(8, item.getCategorie().getNumero());
+			request.setInt(9, item.getNumero());
+			request.executeUpdate();
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 	}
 
 	@Override
 	public void delete(Article item) {
-		// TODO Auto-generated method stub
+		try(Connection cx = Connect.getConnection()){
+			PreparedStatement request = cx.prepareStatement("DELETE FROM articles WHERE no_article = ?");
+			request.setInt(1, item.getNumero());
+			request.executeUpdate();
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 	}
 	
