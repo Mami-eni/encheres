@@ -17,7 +17,8 @@ public class Errors {
 	public static final String NOMBRE_TELEPHONE_INVALIDE = "Nombre de téléphone invalide";
 	public static final String PSEUDO_INSUFFISANT = "Pseudo doit contenir au moins 6 caractères";
 	public static final String MOT_DE_PASSE_INVALIDE = "Mot de passe doit contenir entre 8 et 12 caractères (1 chiffre, 1 majuscule, 1 caractère spécial)";
-	
+	public static final String CONFIRMATION_CORRESPONDE_PAS = "Votre mot de passe ne corresponde pas avec la confirmation";
+
 	/**
 	 * Echec lié au changement d'un article ou une enchère
 	 */
