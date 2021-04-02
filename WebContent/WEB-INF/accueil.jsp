@@ -24,7 +24,7 @@
 	       	  	<div>
 		       	  	<a class="btn btn-outline-success me-2" href= "${pageContext.request.contextPath}/encheres">Enchères</a>
 		            <a class="btn btn-outline-warning me-2"href= "${pageContext.request.contextPath}/encheres">Vendre un article</a>
-		            <a class="btn btn-outline-warning me-2"href= "${pageContext.request.contextPath}/encheres">Mon profil</a>
+		            <a class="btn btn-outline-warning me-2"href= "${pageContext.request.contextPath}/monprofil">Mon profil</a>
 		            <a class="btn btn-outline-warning me-2"href= "${pageContext.request.contextPath}/deconnexion">Déconnexion</a>
 		       	  </div>
 	       	  
