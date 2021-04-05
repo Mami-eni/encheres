@@ -62,7 +62,7 @@
 						   	 <option value="toutes">Toutes</option>
 						   	 
 						   	 <c:forEach var="categorie" items="${listeCategorie}">
-							  <option value="${categorie.libelle}">${categorie.libelle}</option>
+							  <option value="${categorie.numero}">${categorie.libelle}</option>
 							  </c:forEach>
 							</select>
 							</div>
@@ -88,9 +88,9 @@
 				        </fieldset> 
 				        <fieldset>      
 				        <legend>ventes</legend>      
-				        <input type="checkbox" name="flitreCheckboxVente" value="1" ${disabledVentes}>1<br>      
-				        <input type="checkbox" name="flitreCheckboxVente" value="2" ${disabledVentes}>2<br>      
-				        <input type="checkbox" name="flitreCheckboxVente" value="3" ${disabledVentes}>3<br>      
+				        <input type="checkbox" name="flitreCheckboxVente" value="encours" ${disabledVentes}>1<br>      
+				        <input type="checkbox" name="flitreCheckboxVente" value="attente" ${disabledVentes}>2<br>      
+				        <input type="checkbox" name="flitreCheckboxVente" value="clos" ${disabledVentes}>3<br>      
 				        <br>       
 				          
 				    </fieldset> 
@@ -104,13 +104,13 @@
           	<div class="row">
           	
           	 <c:choose>
-          	 <c:when test="${listeEnchere.size() == 0}">
+          	 <c:when test="${listeArticles.size() == 0}">
           	 <p> Pas d'enchères en cours</p>
           	 </c:when>
           	 
           	 <c:otherwise>
           	 
-          	 <c:forEach var="enchere" items="${listeEnchere}">
+          	 <c:forEach var="article" items="${listeArticles}">
 			  <div class="col-sm-6">
 			  
 			 
@@ -127,20 +127,20 @@
 				       <c:choose>
 					       <c:when test="${empty sessionScope.user}">
 					       	
-					      	 <p class="card-text">${enchere.getArticle().nom} ${enchere.getArticle().description}</p>
-				        	 <p class="card-text">${enchere.montant}</p>
-				          	<p class="card-text">${enchere.getArticle().dateFinEncheres}</p>
-				           	<p class="card-text">${enchere.getArticle().getUtilisateur().pseudo}</p>
+					      	 <p class="card-text">${article.nom}</p>
+				        	 <p class="card-text">${article.prixInitial}</p>
+				          	<p class="card-text">${article.dateFinEncheres}</p>
+				           	<p class="card-text">${article.getUtilisateur().pseudo}</p>
 					       
 					       </c:when>
 					       
 					       <c:otherwise>
 					       
 					       	
-					       	 <a  class="card-text" href= "${pageContext.request.contextPath}/DetailVenteServlet?article=${enchere.getArticle().numero}">${enchere.getArticle().nom} ${enchere.getArticle().description}</a>
-				        	 <p class="card-text">${enchere.montant}</p>
-				          	<p class="card-text">${enchere.getArticle().dateFinEncheres}</p>
-				           	<a  class="card-text" href= "${pageContext.request.contextPath}/encheres?vendeur=${enchere.getArticle().getUtilisateur().numero}">${enchere.getArticle().getUtilisateur().pseudo}</a>
+					       	 <a  class="card-text" href= "${pageContext.request.contextPath}/DetailVenteServlet?article=${article.numero}">${article.nom} </a>
+				        	 <p class="card-text">${article.prixInitial}</p>
+				          	<p class="card-text">${article.dateFinEncheres}</p>
+				           	<a  class="card-text" href= "${pageContext.request.contextPath}/encheres?vendeur=${article.getUtilisateur().numero}">${article.getUtilisateur().pseudo}</a>
 					       
 					       </c:otherwise>
 				       
