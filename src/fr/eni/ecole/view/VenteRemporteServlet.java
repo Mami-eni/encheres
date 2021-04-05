@@ -1,6 +1,7 @@
 package fr.eni.ecole.view;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -15,6 +16,7 @@ import fr.eni.ecole.bll.BllRetrait;
 import fr.eni.ecole.bo.Article;
 import fr.eni.ecole.bo.Enchere;
 import fr.eni.ecole.bo.Retrait;
+import fr.eni.ecole.exception.BusinessException;
 
 /**
  * Servlet implementation class VenteRemporteServlet
@@ -27,11 +29,29 @@ public class VenteRemporteServlet extends HttpServlet {
     private BllEnchere enchere = BllEnchere.getBllEnchere();   
  
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Article art = article.selectById(32);
+		Article art = new Article();
+		try {
+			art = article.selectById(32);
+		} catch (BusinessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		request.setAttribute("article", art);
-		Retrait ret = retrait.selectByArticle(art);
+		Retrait ret = new Retrait();
+		try {
+			ret = retrait.selectByArticle(art);
+		} catch (BusinessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		request.setAttribute("retrait", ret);
-		List<Enchere> listeEncheres = enchere.selectByArticle(art);
+		List<Enchere> listeEncheres = new ArrayList<Enchere>();
+		try {
+			listeEncheres = enchere.selectByArticle(art);
+		} catch (BusinessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		int montantMax = 0;
 		Enchere ench = new Enchere();
 		for(Enchere e : listeEncheres) {
@@ -46,7 +66,8 @@ public class VenteRemporteServlet extends HttpServlet {
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+//		doGet(request, response);
+		response.sendRedirect("/encheres");
 	}
 
 }

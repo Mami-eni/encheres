@@ -77,6 +77,11 @@ public class ArticleJDBC implements ArticleDAO {
 				art.setEtatVente("fini");
 			}
 			
+			if( rs.getDate("date_debut_encheres").toLocalDate().isAfter(LocalDate.now()))
+			{
+				art.setEtatVente("non_debuté");
+			}
+			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}

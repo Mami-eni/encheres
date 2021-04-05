@@ -133,11 +133,49 @@
 				           	<p class="card-text">${article.getUtilisateur().pseudo}</p>
 					       
 					       </c:when>
-					       
 					       <c:otherwise>
 					       
+							       <c:choose>
+							       
+								       <c:when test="${article.getUtilisateur().numero == user.numero}">
+								       
+								       
+								       	 
+								       		<c:choose>
+								       		<c:when test="${article.etatVente == 'encours'}">
+								       			<a  class="card-text" href= "${pageContext.request.contextPath}/UpdateSaleServlet?article=${article.numero}">${article.nom} ${article.etatVente} </a>
+								       		</c:when>
+								       		
+								      	 	<c:when test="${article.etatVente == 'non_debuté'}">
+								       			<a  class="card-text" href= "${pageContext.request.contextPath}/UpdateSaleServlet?article=${article.numero}">${article.nom} ${article.etatVente} </a>
+								       		</c:when>
+								       		
+								       		<c:when test="${article.etatVente== 'fini'}">
+								       			<a  class="card-text" href= "${pageContext.request.contextPath}/AutreRemporteVenteServlet?article=${article.numero}">${article.nom} ${article.etatVente} </a>
+								       		</c:when>
+								       		</c:choose>  
+								       		
+								       </c:when>
+							       
+							       
+								       <c:otherwise> 
+								       
+								      		<c:choose>
+								       		<c:when test="${article.etatVente== 'encours'}">
+								       			<a  class="card-text" href= "${pageContext.request.contextPath}/DetailVenteServlet?article=${article.numero}">${article.nom} ${article.etatVente} </a>
+								       		</c:when>
+								       		
+								       		<c:when test="${article.etatVente== 'fini'}">
+								       			<a  class="card-text" href= "${pageContext.request.contextPath}/VenteRemporteServlet?article=${article.numero}">${article.nom} ${article.etatVente} </a>
+								       		</c:when>
+								       		</c:choose>
+								       
+							       
+							       </c:otherwise>
+						       
+						       </c:choose>
 					       	
-					       	 <a  class="card-text" href= "${pageContext.request.contextPath}/DetailVenteServlet?article=${article.numero}">${article.nom} </a>
+					       	<!-- <a  class="card-text" href= "${pageContext.request.contextPath}/DetailVenteServlet?article=${article.numero}">${article.nom} ${article.etatVente} </a> --> 
 				        	 <p class="card-text">${article.prixInitial}</p>
 				          	<p class="card-text">${article.dateFinEncheres}</p>
 				           	<a  class="card-text" href= "${pageContext.request.contextPath}/encheres?vendeur=${article.getUtilisateur().numero}">${article.getUtilisateur().pseudo}</a>
