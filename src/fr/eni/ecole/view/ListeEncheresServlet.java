@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import fr.eni.ecole.bll.BllArticle;
 import fr.eni.ecole.bll.BllCategorie;
 import fr.eni.ecole.bll.BllEnchere;
+import fr.eni.ecole.bo.Article;
 import fr.eni.ecole.bo.Categorie;
 import fr.eni.ecole.bo.Enchere;
 import fr.eni.ecole.bo.Utilisateur;
@@ -25,7 +27,8 @@ import fr.eni.ecole.exception.BusinessException;
 public class ListeEncheresServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private BllCategorie managerCategorie;
-	private BllEnchere managerEnchere;
+//	private BllEnchere managerEnchere;
+	private BllArticle managerArticle;
     
    
     
@@ -36,8 +39,8 @@ public void init() throws ServletException {
 	super.init();
 	
 	managerCategorie = BllCategorie.getBllCategorie();
-	managerEnchere = BllEnchere.getBllEnchere();
-	
+//	managerEnchere = BllEnchere.getBllEnchere();
+	managerArticle= BllArticle.getBllArticle();
 }
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -47,7 +50,7 @@ public void init() throws ServletException {
 		
 		
 		List<Categorie> listeCategorie = new ArrayList<Categorie>();
-		List<Enchere> listeEnchere = new ArrayList<Enchere>();
+		List<Article> listeArticles = new ArrayList<Article>();
 
 		try {
 			listeCategorie = managerCategorie.selectAll();
@@ -56,28 +59,18 @@ public void init() throws ServletException {
 			request.setAttribute("errors", e.getErrors());
 		}
 		try {
-			listeEnchere = managerEnchere.selectAll();
-			request.setAttribute("listeEnchere", listeEnchere);
+			listeArticles = managerArticle.selectAll(); 
+			request.setAttribute("listeArticles", listeArticles);
 		} catch (BusinessException e) {
 			
 			request.setAttribute("errors", e.getErrors());
 		}
-//		 test recuperer le user en session
-		HttpSession session = request.getSession();
-		
-		Utilisateur user = (Utilisateur) session.getAttribute("user");
-		
-//		if(!(user==null))
-//		{
-//			System.out.println(user.getNumero());
-//			
-//		}
 
-		// test paramètre injecté id article 
+
 		
 		String id_article = request.getParameter("article");
 		String id_vendeur = request.getParameter("vendeur");
-		System.out.println( "l'id article est: " + id_article + "l'id du vendeur est: "+ id_vendeur);
+		
 		
 		request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
 		
@@ -90,38 +83,38 @@ public void init() throws ServletException {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		List<Enchere> listeEnchere = new ArrayList<Enchere>();
+		
+		HttpSession session = request.getSession(false);
+		Utilisateur user = (Utilisateur) session.getAttribute("user");
+		int userId=0;
+		if(!(user==null))
+		{
+			 userId = user.getNumero();
+		}
+		
+		
+		List<Article> listeArticles = new ArrayList<Article>();
 		String filtreTexte = request.getParameter("search");
 		
+		
 		String filtreCategorie= request.getParameter("categories");
-		System.out.println(" le mot tapé est: " + filtreTexte +
-				"la categorie est: " + filtreCategorie );
-		
-		// test bouton radio et checkbox
-		
-		List<String> checkbox = new ArrayList<String>();
 
-		String radio = request.getParameter("filtreRadio");
-//		if(radio.equalsIgnoreCase("achats"))
-//		{
-//			request.setAttribute("disabledVentes", "disabled");
-//		}
-//		 System.out.println(radio);
-//		 
-//		 if(!(checkbox==null))
-//		 {
-//			 for(String value : checkbox)
-//				{
-//				    System.out.println(value);
-//				}
-//		 }
-//		
+		
+	
+		
+		
+		String [] filtreCheckboxVente = request.getParameterValues("flitreCheckboxVente");
+		String [] filtreCheckboxAchat = request.getParameterValues("flitreCheckboxAchat");
+
+		String filtreRadio = request.getParameter("filtreRadio");
+		
+	
 		
 		/**
-		 * Retour sur la page d'accueil si la parametre de filtre texte est vide ou celui du choix de la categorie a pour valeur toutes
+		 * Retour sur la page d'accueil si aucun filtrage n'est réalisé 
 		 */
 		
-		if(filtreTexte.isEmpty() && filtreCategorie.equalsIgnoreCase("toutes"))
+		if(filtreTexte.isEmpty() && filtreCategorie.equalsIgnoreCase("toutes") && filtreCheckboxVente==null && filtreCheckboxAchat==null)
 		{
 			doGet(request, response);
 		}
@@ -129,8 +122,8 @@ public void init() throws ServletException {
 			
 		{
 			try {
-				listeEnchere= managerEnchere.selectByFiltre(filtreTexte, filtreCategorie);
-				request.setAttribute("listeEnchere", listeEnchere);
+				listeArticles= managerArticle.selectByFiltre(filtreTexte, filtreCategorie, filtreRadio, filtreCheckboxVente, filtreCheckboxAchat, userId);
+				request.setAttribute("listeArticles", listeArticles);
 			} catch (BusinessException e) {
 				
 				e.printStackTrace();
