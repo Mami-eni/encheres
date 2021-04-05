@@ -2,6 +2,7 @@ package fr.eni.ecole.view;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -18,6 +19,7 @@ import fr.eni.ecole.bo.Article;
 import fr.eni.ecole.bo.Enchere;
 import fr.eni.ecole.bo.Retrait;
 import fr.eni.ecole.bo.Utilisateur;
+import fr.eni.ecole.exception.BusinessException;
 
 /**
  * Servlet implementation class AutreRemporteVenteServlet
@@ -32,13 +34,32 @@ public class AutreRemporteVenteServlet extends HttpServlet {
    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		Article art = article.selectById(7);
+		int idArticle = Integer.parseInt(request.getParameter("article"));
+		Article art = new Article();
+		try {
+			art = article.selectById(idArticle);
+		} catch (BusinessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		request.setAttribute("article", art);
 		String dateFin = art.getDateFinEncheres().format(dtf);
 		request.setAttribute("dateFin", dateFin);
-		Retrait ret = retrait.selectByArticle(art);
+		Retrait ret = new Retrait();
+		try {
+			ret = retrait.selectByArticle(art);
+		} catch (BusinessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		request.setAttribute("retrait", ret);
-		List<Enchere> listeEncheres = enchere.selectByArticle(art);
+		List<Enchere> listeEncheres = new ArrayList<Enchere>();
+		try {
+			listeEncheres = enchere.selectByArticle(art);
+		} catch (BusinessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		int montantMax = 0;
 		Enchere ench = new Enchere();
 		for(Enchere e : listeEncheres) {
@@ -48,7 +69,13 @@ public class AutreRemporteVenteServlet extends HttpServlet {
 			}
 		}
 		request.setAttribute("enchere", ench);
-		Utilisateur util = utilisateur.selectById(ench.getUtilisateur().getNumero());
+		Utilisateur util = new Utilisateur();
+		try {
+			util = utilisateur.selectById(ench.getUtilisateur().getNumero());
+		} catch (BusinessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		request.setAttribute("utilisateur", util);
 		request.getRequestDispatcher("/WEB-INF/autreRemporteVente.jsp").forward(request, response);
 	}
