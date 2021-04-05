@@ -75,4 +75,12 @@ public class BllArticle {
 	public List<Article> selectByUser(Utilisateur utilisateur) throws BusinessException{
 		return article.selectByUser(utilisateur);
 	}
+	
+	public List<Article> selectAll() throws BusinessException {
+		return article.selectAll();
+	}
+	
+	public List<Article> selectByFiltre (String filtreTexte, String filtreCategorie, String filtreRadio, String[] filtreCheckboxVente,String[] filtreCheckboxAchat, int userId) throws BusinessException{
+		return article.selectByFiltre(filtreTexte, filtreCategorie, filtreRadio, filtreCheckboxVente, filtreCheckboxAchat, userId);
+	}
 }

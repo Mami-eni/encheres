@@ -14,7 +14,7 @@
 	<div class="row">
 		<div class="col-sm-4"></div>
 		<div class="col-sm-4">
-			<p>${vendeur.pseudo}</p>
+			<h1>${vendeur.pseudo}</h1>
 			<p>Nom: ${vendeur.nom}</p>
 			<p>Prenom: ${vendeur.prenom}</p>
 			<p>Email: ${vendeur.email}</p>
