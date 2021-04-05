@@ -14,8 +14,7 @@
 	<div class="row">
 		<div class="col-sm-4"></div>
 		<div class="col-sm-4">
-			<h1>Connection réussi</h1>
-			<p>${user.pseudo}estconnecté</p>
+			<h1>${user.pseudo}</h1>
 			<p>Nom: ${user.nom}</p>
 			<p>Prenom: ${user.prenom}</p>
 			<p>Email: ${user.email}</p>
@@ -25,6 +24,7 @@
 			<p>Ville: ${user.ville}</p>
 			<a href="./modifierUser">
 				<button class="btn btn-primary btn-lg">Modifier mon compte</button>
+			</a>
 			
 		</div>
 
