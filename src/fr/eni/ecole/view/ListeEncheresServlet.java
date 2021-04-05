@@ -59,28 +59,18 @@ public void init() throws ServletException {
 			request.setAttribute("errors", e.getErrors());
 		}
 		try {
-			listeArticles = managerArticle.selectAll(); // a developper 
+			listeArticles = managerArticle.selectAll(); 
 			request.setAttribute("listeArticles", listeArticles);
 		} catch (BusinessException e) {
 			
 			request.setAttribute("errors", e.getErrors());
 		}
-//		 test recuperer le user en session
-//		HttpSession session = request.getSession();
-//		
-//		Utilisateur user = (Utilisateur) session.getAttribute("user");
-		
-//		if(!(user==null))
-//		{
-//			System.out.println(user.getNumero());
-//			
-//		}
 
-		// test paramètre injecté id article 
+
 		
 		String id_article = request.getParameter("article");
 		String id_vendeur = request.getParameter("vendeur");
-		System.out.println( "l'id article est: " + id_article + "l'id du vendeur est: "+ id_vendeur);
+		
 		
 		request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
 		
@@ -108,10 +98,9 @@ public void init() throws ServletException {
 		
 		
 		String filtreCategorie= request.getParameter("categories");
-//		System.out.println(" le mot tapé est: " + filtreTexte +
-//				"la categorie est: " + filtreCategorie );
+
 		
-		// test bouton radio et checkbox
+	
 		
 		
 		String [] filtreCheckboxVente = request.getParameterValues("flitreCheckboxVente");
@@ -119,33 +108,19 @@ public void init() throws ServletException {
 
 		String filtreRadio = request.getParameter("filtreRadio");
 		
-		
-//		if(radio.equalsIgnoreCase("achats"))
-//		{
-//			request.setAttribute("disabledVentes", "disabled");
-//		}
-//		 System.out.println(radio);
-//		 
-//		 if(!(checkbox==null))
-//		 {
-//			 for(String value : checkbox)
-//				{
-//				    System.out.println(value);
-//				}
-//		 }
-//		
+	
 		
 		/**
-		 * Retour sur la page d'accueil si la parametre de filtre texte est vide ou celui du choix de la categorie a pour valeur toutes
+		 * Retour sur la page d'accueil si aucun filtrage n'est réalisé 
 		 */
 		
-//		if(filtreTexte.isEmpty() && filtreCategorie.equalsIgnoreCase("toutes") && filtreCheckboxVente.length==0 )
-//		{
-//			doGet(request, response);
-//		}
-//		else
-//			
-//		{
+		if(filtreTexte.isEmpty() && filtreCategorie.equalsIgnoreCase("toutes") && filtreCheckboxVente==null && filtreCheckboxAchat==null)
+		{
+			doGet(request, response);
+		}
+		else
+			
+		{
 			try {
 				listeArticles= managerArticle.selectByFiltre(filtreTexte, filtreCategorie, filtreRadio, filtreCheckboxVente, filtreCheckboxAchat, userId);
 				request.setAttribute("listeArticles", listeArticles);
@@ -156,7 +131,7 @@ public void init() throws ServletException {
 			}
 			
 			request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
-//		}
+		}
 		
 		
 		

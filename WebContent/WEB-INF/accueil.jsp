@@ -73,7 +73,7 @@
 					  </div>
 					  
 					 </div>
-					 <!--  affichage de ces data si quelqu'un est connecté -->
+					 <!--  affichage de ces data si un user est connecté -->
 					 <c:if test="${!empty sessionScope.user }">
 					 
 					  <input type="radio" name="filtreRadio" value="achats">Achats<br>
@@ -81,16 +81,16 @@
 					    					 
 					  <fieldset>      
 				        <legend>achats</legend>      
-				        <input type="checkbox" name="flitreCheckboxAchat" value="1" ${disabledAchat}>1<br>      
-				        <input type="checkbox" name="flitreCheckboxAchat" value="2" ${disabledAchat}>2<br>      
-				        <input type="checkbox" name="flitreCheckboxAchat" value="3" ${disabledAchat}>3<br>      
+				        <input type="checkbox" name="flitreCheckboxAchat" value="1" > enchères ouvertes<br>      
+				        <input type="checkbox" name="flitreCheckboxAchat" value="2" > mes enchères <br>      
+				        <input type="checkbox" name="flitreCheckboxAchat" value="3" > mes enchères remportées<br>      
 				        <br> 
 				        </fieldset> 
 				        <fieldset>      
 				        <legend>ventes</legend>      
-				        <input type="checkbox" name="flitreCheckboxVente" value="encours" ${disabledVentes}>1<br>      
-				        <input type="checkbox" name="flitreCheckboxVente" value="attente" ${disabledVentes}>2<br>      
-				        <input type="checkbox" name="flitreCheckboxVente" value="clos" ${disabledVentes}>3<br>      
+				        <input type="checkbox" name="flitreCheckboxVente" value="encours" > mes ventes en cours<br>      
+				        <input type="checkbox" name="flitreCheckboxVente" value="attente" > ventes non débutées<br>      
+				        <input type="checkbox" name="flitreCheckboxVente" value="clos" > ventes terminées<br>      
 				        <br>       
 				          
 				    </fieldset> 
@@ -128,9 +128,9 @@
 					       <c:when test="${empty sessionScope.user}">
 					       	
 					      	 <p class="card-text">${article.nom}</p>
-				        	 <p class="card-text">${article.prixInitial}</p>
-				          	<p class="card-text">${article.dateFinEncheres}</p>
-				           	<p class="card-text">${article.getUtilisateur().pseudo}</p>
+				        	 <p class="card-text"> Prix: ${article.prixInitial}</p>
+				          	<p class="card-text">Fin de l'enchère: ${article.dateFinEncheres}</p>
+				           	<p class="card-text">Vendeur: ${article.getUtilisateur().pseudo}</p>
 					       
 					       </c:when>
 					       <c:otherwise>
@@ -176,9 +176,9 @@
 						       </c:choose>
 					       	
 					       	<!-- <a  class="card-text" href= "${pageContext.request.contextPath}/DetailVenteServlet?article=${article.numero}">${article.nom} ${article.etatVente} </a> --> 
-				        	 <p class="card-text">${article.prixInitial}</p>
-				          	<p class="card-text">${article.dateFinEncheres}</p>
-				           	<a  class="card-text" href= "${pageContext.request.contextPath}/encheres?vendeur=${article.getUtilisateur().numero}">${article.getUtilisateur().pseudo}</a>
+				        	 <p class="card-text">Prix: ${article.prixInitial}</p>
+				          	<p class="card-text">Fin de l'enchère: ${article.dateFinEncheres}</p>
+				           	<a  class="card-text" href= "${pageContext.request.contextPath}/encheres?vendeur=${article.getUtilisateur().numero}">Vendeur:  ${article.getUtilisateur().pseudo}</a>
 					       
 					       </c:otherwise>
 				       

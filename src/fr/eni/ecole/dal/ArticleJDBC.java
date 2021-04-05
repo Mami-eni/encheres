@@ -65,7 +65,7 @@ public class ArticleJDBC implements ArticleDAO {
 			art.setUtilisateur(util.selectById((rs.getInt("no_utilisateur"))));
 			art.setCategorie(cat.selectById(rs.getInt("no_categorie")));
 			
-			// setter l'etat de l'article
+			
 			
 			if(rs.getDate("date_debut_encheres").toLocalDate().isBefore(LocalDate.now()) && rs.getDate("date_fin_encheres").toLocalDate().isAfter(LocalDate.now()))
 			{
@@ -96,13 +96,15 @@ public class ArticleJDBC implements ArticleDAO {
 			PreparedStatement request = cx.prepareStatement(SELECT_ALL_ENCOURS);
 			
 			ResultSet rs = request.executeQuery();
+			
+			
 			while(rs.next())
 			{
 				art = articleBuilder(rs);
 				listeArticles.add(art);
 			}
 			
-			art = articleBuilder(rs);
+
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -177,6 +179,7 @@ public class ArticleJDBC implements ArticleDAO {
                 Article art = articleBuilder(rs);
                 liste.add(art);
             }
+           
         }catch(Exception e) {
             System.out.println(e.getMessage());
         }
@@ -196,33 +199,40 @@ public class ArticleJDBC implements ArticleDAO {
 		
 		
 
-		if(filtreRadio.equalsIgnoreCase("ventes")) 
+		if(("ventes").equalsIgnoreCase(filtreRadio)) 
 		{
 			requeteFinale.append(SELECT_DEBUT_FILTRE);
 //			requeteFinale.append(SELECT_FILTRE_RADIO_VENTE + userId);
 			requeteBuilderVente(requeteFinale, filtreTexte, filtreCategorie, filtreRadio, filtreCheckboxVente,  userId);
 		}
-		else if(filtreRadio.equalsIgnoreCase("achats"))
+		else if(("achats").equalsIgnoreCase(filtreRadio))
 		{
 			requeteBuilderAchat(requeteFinale, filtreTexte, filtreCategorie, filtreRadio, filtreCheckboxAchat);
 		}
 		else
 		{
 			requeteFinale.append(SELECT_ALL_ENCOURS);
+			appendRequetefiltreCategorie(requeteFinale,  filtreCategorie);
+			appendRequeteFiltreTexte( requeteFinale, filtreTexte);
 			
 			// ToDo: case to specify and implement
 		}
-
-		System.out.println(requeteFinale.toString());
+		// affichage requetes 
+//		System.out.println(requeteFinale.toString());
+		
 		try(Connection cx = Connect.getConnection()){
 			PreparedStatement request = cx.prepareStatement(requeteFinale.toString());
 
 			ResultSet rs = request.executeQuery();
-			while(rs.next())
+			if(rs.next())
 			{
-				art = articleBuilder(rs);
-				listeArticle.add(art);
+				while(rs.next())
+				{
+					art = articleBuilder(rs);
+					listeArticle.add(art);
+				}
 			}
+			
 
 
 		}catch(Exception e) {
@@ -260,7 +270,7 @@ public class ArticleJDBC implements ArticleDAO {
 	
 	private void appendRequetefiltreCategorie(StringBuilder requete, String filtreCategorie)
 	{
-		if(!filtreCategorie.equalsIgnoreCase("toutes")) 
+		if(!("toutes").equalsIgnoreCase(filtreCategorie)) 
 		{
 			requete.append(SELECT_FILTRE_CATEGORIE + filtreCategorie );
 		}
@@ -279,7 +289,7 @@ public class ArticleJDBC implements ArticleDAO {
 		requete.append("(");
 		
 		for (int i = 0; i < filtreCheckboxVente.length; i++) {
-			if(filtreCheckboxVente[i].equalsIgnoreCase("encours"))
+			if(("encours").equalsIgnoreCase(filtreCheckboxVente[i]))
 			{
 				if(i==0)
 				{
@@ -294,7 +304,7 @@ public class ArticleJDBC implements ArticleDAO {
 			}
 			
 			
-			if(filtreCheckboxVente[i].equalsIgnoreCase("attente"))
+			if(("attente").equalsIgnoreCase(filtreCheckboxVente[i]))
 			{
 				if(i==0)
 				{
@@ -308,7 +318,7 @@ public class ArticleJDBC implements ArticleDAO {
 				
 			}
 			
-			if(filtreCheckboxVente[i].equalsIgnoreCase("clos"))
+			if(("clos").equalsIgnoreCase(filtreCheckboxVente[i]))
 			{
 				if(i==0)
 				{
