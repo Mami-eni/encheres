@@ -7,36 +7,12 @@
 <%@ include file="template/head.jsp"%>
 
 <body>
+<%@ include file="template/nav.jsp"%>
 
-    <nav class="navbar navbar-light bg-light">
-        <div class="container-fluid justify-content-between">
-       	  <a  class="btn btn-outline-success me-2" href= "${pageContext.request.contextPath}/encheres">logo</a>
-       	  
-       	  <c:choose>
-	       	  <c:when test="${empty sessionScope.user }">
-	       	  	<div>
-		       	  	<a  class="btn btn-outline-success me-2" href= "${pageContext.request.contextPath}/encheres">S'inscrire</a>
-		            <a class="btn btn-outline-warning me-2"href= "${pageContext.request.contextPath}/connection">Se connecter</a>
-		       	  </div>
-	       	  </c:when>
-	       	  
-	       	  <c:otherwise>
-	       	  	<div>
-		       	  	<a class="btn btn-outline-success me-2" href= "${pageContext.request.contextPath}/encheres">Enchères</a>
-		            <a class="btn btn-outline-warning me-2"href= "${pageContext.request.contextPath}/NewSaleServlet">Vendre un article</a>
-		            <a class="btn btn-outline-warning me-2"href= "${pageContext.request.contextPath}/encheres">Mon profil</a>
-		            <a class="btn btn-outline-warning me-2"href= "${pageContext.request.contextPath}/deconnexion">Déconnexion</a>
-		       	  </div>
-	       	  
-	       	  </c:otherwise>
-       	  </c:choose>
        	  
           
           
-          
-        </div>
-       
-      </nav>
+     
 
       <div class = "row">
         <div class = "col-sm-2">
@@ -140,7 +116,7 @@
 					       	 <a  class="card-text" href= "${pageContext.request.contextPath}/DetailVenteServlet?article=${enchere.getArticle().numero}">${enchere.getArticle().nom} ${enchere.getArticle().description}</a>
 				        	 <p class="card-text">${enchere.montant}</p>
 				          	<p class="card-text">${enchere.getArticle().dateFinEncheres}</p>
-				           	<a  class="card-text" href= "${pageContext.request.contextPath}/encheres?vendeur=${enchere.getArticle().getUtilisateur().numero}">${enchere.getArticle().getUtilisateur().pseudo}</a>
+				           	<a  class="card-text" href= "${pageContext.request.contextPath}/afficherProfil?vendeur=${enchere.getArticle().getUtilisateur().numero}">${enchere.getArticle().getUtilisateur().pseudo}</a>
 					       
 					       </c:otherwise>
 				       

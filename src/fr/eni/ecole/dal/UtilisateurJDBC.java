@@ -5,6 +5,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.sun.org.apache.xml.internal.utils.UnImplNode;
@@ -15,6 +17,7 @@ import fr.eni.ecole.bo.Utilisateur;
 public class UtilisateurJDBC implements UtilisateurDAO {
 
 	private final int CREDIT_OFFERT = 100;
+
 	public Utilisateur utilisateurBuilder(ResultSet rs) {
 		Utilisateur util = new Utilisateur();
 		try {
@@ -38,33 +41,48 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 
 	@Override
 	public void insert(Utilisateur item) {
-		try(Connection cx = Connect.getConnection()){
+		try (Connection cx = Connect.getConnection()) {
 			PreparedStatement request = cx.prepareStatement("INSERT INTO utilisateurs (pseudo, nom, prenom, "
 					+ "email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur) "
 					+ "VALUES(?,?,?,?,?,?,?,?,?,?,?)");
 			request.setString(1, item.getPseudo());
 			request.setString(2, item.getNom());
 			request.setString(3, item.getPrenom());
-			
+
 			request.setString(4, item.getEmail());
-			request.setString(5, item.getTelephone()) ;
-			request.setString(6, item.getRue()) ;
-			
+			request.setString(5, item.getTelephone());
+			request.setString(6, item.getRue());
+
 			request.setString(7, item.getCodePostal());
 			request.setString(8, item.getVille());
 			request.setString(9, item.getMotDePasse());
-			
-			request.setInt(10, CREDIT_OFFERT); //crédit offert pour un nouveau utilisateur
+
+			request.setInt(10, CREDIT_OFFERT); // crï¿½dit offert pour un nouveau utilisateur
 			request.setBoolean(11, item.isAdministrateur());
-			
+
 			request.executeUpdate();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			System.out.println(e.getMessage());
-		}	}
+		}
+	}
 
 	@Override
 	public List<Utilisateur> selectAll() {
-		throw new UnsupportedOperationException("Not supported yet.");
+		List<Utilisateur> users = new ArrayList<Utilisateur>();
+		try (Connection cx = Connect.getConnection()) {
+			Statement request = cx.createStatement();
+			ResultSet rs = request.executeQuery("SELECT no_utilisateur, pseudo, nom, "
+					+ "prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur "
+					+ "FROM utilisateurs");
+			Utilisateur currentUser = new Utilisateur();
+			while (rs.next()) {
+				currentUser = utilisateurBuilder(rs);
+				users.add(currentUser);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return users;
 	}
 
 	@Override
@@ -87,49 +105,47 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 	@Override
 	public void update(Utilisateur item) {
 		try (Connection cx = Connect.getConnection()) {
-			PreparedStatement request = cx.prepareStatement("UPDATE utilisateurs SET "
-					+ "pseudo=?, nom=?, "
-					+ "prenom=?, email=?, telephone=?, rue=?,"
-					+ "code_postal=?, ville=?, mot_de_passe=?"
-					+ "WHERE no_utilisateur=?");
-			
+			PreparedStatement request = cx.prepareStatement(
+					"UPDATE utilisateurs SET " + "pseudo=?, nom=?, " + "prenom=?, email=?, telephone=?, rue=?,"
+							+ "code_postal=?, ville=?, mot_de_passe=?" + "WHERE no_utilisateur=?");
+
 			request.setString(1, item.getPseudo());
 			request.setString(2, item.getNom());
 			request.setString(3, item.getPrenom());
-			
+
 			request.setString(4, item.getEmail());
-			request.setString(5, item.getTelephone()) ;
-			request.setString(6, item.getRue()) ;
-			
+			request.setString(5, item.getTelephone());
+			request.setString(6, item.getRue());
+
 			request.setString(7, item.getCodePostal());
 			request.setString(8, item.getVille());
 			request.setString(9, item.getMotDePasse());
-			
+
 			request.setInt(10, item.getNumero());
 
 			request.executeUpdate();
-		}catch(Exception e) {
-				System.out.println(e.getMessage());
-			}
-	}
-
-	/**
-	 * Methode non utilisée.
-	 */
-	@Override
-	public void delete(Utilisateur item) {
-		try (Connection cx = Connect.getConnection()){
-			PreparedStatement request = cx.prepareStatement("DELETE FROM utilisateurs WHERE no_utilisateur=?");
-			request.setInt(1, item.getNumero());
-			request.executeUpdate();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 	}
 
+	/**
+	 * Methode non utilisï¿½e.
+	 */
+	@Override
+	public void delete(Utilisateur item) {
+		try (Connection cx = Connect.getConnection()) {
+			PreparedStatement request = cx.prepareStatement("DELETE FROM utilisateurs WHERE no_utilisateur=?");
+			request.setInt(1, item.getNumero());
+			request.executeUpdate();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
 
 	/**
-	 * Permet de trouver un utilisateur grâce à son pseudo et mot de passe
+	 * Permet de trouver un utilisateur grï¿½ce ï¿½ son pseudo et mot de passe
+	 * 
 	 * @param login
 	 * @param password
 	 * @return
@@ -137,9 +153,9 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 	 */
 	public Utilisateur find(String pseudo, String motDePasse) throws BusinessException {
 		try (Connection cx = Connect.getConnection()) {
-			PreparedStatement pstmt = cx.prepareStatement("SELECT no_utilisateur, pseudo, nom,"  
-										+ "prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur "  
-										+ "FROM utilisateurs WHERE pseudo=? AND mot_de_passe=?");
+			PreparedStatement pstmt = cx.prepareStatement("SELECT no_utilisateur, pseudo, nom,"
+					+ "prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur "
+					+ "FROM utilisateurs WHERE pseudo=? AND mot_de_passe=?");
 			pstmt.setString(1, pseudo);
 			pstmt.setString(2, motDePasse);
 
@@ -149,7 +165,7 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 				Utilisateur u = utilisateurBuilder(rs);
 				return u;
 			} else {
-				// Utilisateur non trouvé
+				// Utilisateur non trouvï¿½
 				BusinessException be = new BusinessException();
 				be.addError("Pseudo ou Mot de passe inconnu");
 				throw be;
