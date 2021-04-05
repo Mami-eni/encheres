@@ -57,16 +57,16 @@
 					    					 
 					  <fieldset>      
 				        <legend>achats</legend>      
-				        <input type="checkbox" name="flitreCheckboxAchat" value="1" ${disabledAchat}>1<br>      
-				        <input type="checkbox" name="flitreCheckboxAchat" value="2" ${disabledAchat}>2<br>      
-				        <input type="checkbox" name="flitreCheckboxAchat" value="3" ${disabledAchat}>3<br>      
+				        <input type="checkbox" name="flitreCheckboxAchat" value="1" ${disabledAchat} >1<br>      
+				        <input type="checkbox" name="flitreCheckboxAchat" value="2" ${disabledAchat} >2<br>      
+				        <input type="checkbox" name="flitreCheckboxAchat" value="3" ${disabledAchat} >3<br>      
 				        <br> 
 				        </fieldset> 
 				        <fieldset>      
 				        <legend>ventes</legend>      
-				        <input type="checkbox" name="flitreCheckboxVente" value="1" ${disabledVentes}>1<br>      
-				        <input type="checkbox" name="flitreCheckboxVente" value="2" ${disabledVentes}>2<br>      
-				        <input type="checkbox" name="flitreCheckboxVente" value="3" ${disabledVentes}>3<br>      
+				        <input type="checkbox" name="flitreCheckboxVente" value="1" ${disabledVentes} >1<br>      
+				        <input type="checkbox" name="flitreCheckboxVente" value="2" ${disabledVentes} >2<br>      
+				        <input type="checkbox" name="flitreCheckboxVente" value="3" ${disabledVentes} >3<br>      
 				        <br>       
 				          
 				    </fieldset> 

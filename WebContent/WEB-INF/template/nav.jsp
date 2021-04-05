@@ -7,7 +7,7 @@
        	  <c:choose>
 	       	  <c:when test="${empty sessionScope.user }">
 	       	  	<div>
-		       	  	<a  class="btn btn-primary me-2" href= "${pageContext.request.contextPath}/encheres">S'inscrire</a>
+		       	  	<a  class="btn btn-primary me-2" href= "${pageContext.request.contextPath}/inscription">S'inscrire</a>
 		            <a class="btn btn-primary me-2"href= "${pageContext.request.contextPath}/connection">Se connecter</a>
 		       	  </div>
 	       	  </c:when>
