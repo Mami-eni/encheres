@@ -121,7 +121,7 @@
 								       	 
 								       		<c:choose>
 								       		<c:when test="${article.etatVente == 'encours'}">
-								       			<a  class="card-text" href= "${pageContext.request.contextPath}/UpdateSaleServlet?article=${article.numero}">${article.nom} ${article.etatVente} </a>
+								       			<a  class="card-text" href= "${pageContext.request.contextPath}/DetailVenteServlet?article=${article.numero}">${article.nom} ${article.etatVente} </a>
 								       		</c:when>
 								       		
 								      	 	<c:when test="${article.etatVente == 'non_debuté'}">

@@ -23,27 +23,32 @@ public class ArticleJDBC implements ArticleDAO {
 											  " date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie " + 
 											  " FROM articles WHERE articles.date_debut_encheres <= now() and articles.date_fin_encheres > now()"; 
 					
-	private final String SELECT_DEBUT_FILTRE = "SELECT no_article, nom_article, description, date_debut_encheres,"
+	private final String SELECT_DEBUT_FILTRE_VENTE = "SELECT no_article, nom_article, description, date_debut_encheres,"
 										+ " date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie "
 										+ " FROM articles WHERE ";
+	
+	private final String SELECT_DEBUT_FILTRE_ACHAT = "SELECT no_article, nom_article, description, date_debut_encheres,"
+													+ " date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie "
+													+ " FROM articles";
+	
 	private final String SELECT_FILTRE_RADIO_VENTE = " articles.no_utilisateur = ";
 	
 	private final String SELECT_FILTRE_CHECKBOX_VENTE_ENCOURS=  " AND articles.date_debut_encheres <= now() AND date_fin_encheres > now() ";
 	private final String SELECT_FILTRE_CHECKBOX_VENTE_ATTENTE= " AND articles.date_debut_encheres > now()";
 	private final String SELECT_FILTRE_CHECKBOX_VENTE_CLOS= " AND articles.date_fin_encheres < now()";
+	
 	private final String SELECT_FILTRE_TEXTE= " AND articles.nom_article LIKE ";
 	private final String SELECT_FILTRE_CATEGORIE= " AND articles.no_categorie = ";
 	
-	private final String SELECT_FILTRE_CHECKBOX_ACHAT_OUVERT = " AND articles.date_debut_encheres <=now() " 
-															   + " AND articles.date_fin_encheres > now() ";
+	private final String SELECT_FILTRE_CHECKBOX_ACHAT_OUVERT = " AND articles.date_debut_encheres <=now() " + " AND articles.date_fin_encheres > now() ";
 	
 	private final String SELECT_FILTRE_CHECKBOX_ACHAT_MES_ENCHERES = " JOIN encheres on articles.no_article = encheres.no_article"
-																	+ " WHERE articles.date_debut_encheres <=now()"
-																	+ " AND encheres.no_utilisateur = ? ";
-	private final String SELECT_FILTRE_CHECKBOX_ACHAT_MES_ENCHERES_REMPORTEES = " JOIN encheres on articles.no_article = encheres.no_article"
-																			+ " WHERE articles.date_fin_encheres <now()"
-																			+ " AND encheres.no_utilisateur = ? "
-																			+ " AND encheres.montant= ? ";
+																	+ " WHERE articles.date_debut_encheres <=now()";
+																	
+	private final String SELECT_FILTRE_CHECKBOX_ACHAT_MES_ENCHERES_CLOSES = " JOIN encheres on articles.no_article = encheres.no_article"
+																			+ " WHERE articles.date_fin_encheres <now()";
+																			
+																			
 	;
 	public void insert(Article a){
 		try(Connection cx = Connect.getConnection()){
@@ -212,13 +217,13 @@ public class ArticleJDBC implements ArticleDAO {
 
 		if(("ventes").equalsIgnoreCase(filtreRadio)) 
 		{
-			requeteFinale.append(SELECT_DEBUT_FILTRE);
+			requeteFinale.append(SELECT_DEBUT_FILTRE_VENTE);
 
 			requeteBuilderVente(requeteFinale, filtreTexte, filtreCategorie, filtreRadio, filtreCheckboxVente,  userId);
 		}
 		else if(("achats").equalsIgnoreCase(filtreRadio))
 		{
-			requeteBuilderAchat(requeteFinale, filtreTexte, filtreCategorie, filtreRadio, filtreCheckboxAchat);
+			requeteBuilderAchat(requeteFinale, filtreTexte, filtreCategorie, filtreRadio, filtreCheckboxAchat, userId);
 		}
 		else
 		{
@@ -265,10 +270,10 @@ public class ArticleJDBC implements ArticleDAO {
 		appendRequeteFiltreTexte(requete, filtreTexte);
 	}
 	
-	private void requeteBuilderAchat(StringBuilder requete, String filtreTexte, String filtreCategorie, String filtreRadio, String[] filtreCheckboxAchat) {
+	private void requeteBuilderAchat(StringBuilder requete, String filtreTexte, String filtreCategorie, String filtreRadio, String[] filtreCheckboxAchat, int userId) {
 		
 		
-//		appendRequeteFiltreCheckboxAchat(requete, filtreCheckboxAchat);
+		appendRequeteFiltreCheckboxAchat(requete, filtreCheckboxAchat, userId);
 		appendRequetefiltreCategorie(requete, filtreCategorie);
 		appendRequeteFiltreTexte(requete, filtreTexte);
 
@@ -356,11 +361,11 @@ public class ArticleJDBC implements ArticleDAO {
 			{
 				if(i==0)
 				{
-					requete.append( SELECT_DEBUT_FILTRE + " WHERE articles.no_utilisateur <>  ? " + SELECT_FILTRE_CHECKBOX_ACHAT_OUVERT);
+					requete.append( SELECT_DEBUT_FILTRE_ACHAT + " WHERE articles.no_utilisateur <> "+ userId + SELECT_FILTRE_CHECKBOX_ACHAT_OUVERT);
 				}
 				else
 				{
-					requete.append(" OR " + SELECT_DEBUT_FILTRE + " WHERE articles.no_utilisateur <>  ? " + SELECT_FILTRE_CHECKBOX_ACHAT_OUVERT);
+					requete.append(" OR " + SELECT_DEBUT_FILTRE_ACHAT + " WHERE articles.no_utilisateur <> "+ userId + SELECT_FILTRE_CHECKBOX_ACHAT_OUVERT);
 					
 				}
 				
@@ -371,11 +376,11 @@ public class ArticleJDBC implements ArticleDAO {
 			{
 				if(i==0)
 				{
-					requete.append( SELECT_DEBUT_FILTRE  + SELECT_FILTRE_CHECKBOX_ACHAT_MES_ENCHERES + " AND encheres.no_utilisateur = ? ");
+					requete.append( SELECT_DEBUT_FILTRE_ACHAT  + SELECT_FILTRE_CHECKBOX_ACHAT_MES_ENCHERES + " AND encheres.no_utilisateur = " + userId);
 				}
 				else
 				{
-					requete.append(" OR " + SELECT_DEBUT_FILTRE  + SELECT_FILTRE_CHECKBOX_ACHAT_MES_ENCHERES + " AND encheres.no_utilisateur = ? ");
+					requete.append(" OR " + SELECT_DEBUT_FILTRE_ACHAT  + SELECT_FILTRE_CHECKBOX_ACHAT_MES_ENCHERES + " AND encheres.no_utilisateur = " + userId);
 					
 				}
 				
@@ -385,11 +390,11 @@ public class ArticleJDBC implements ArticleDAO {
 			{
 				if(i==0)
 				{
-					requete.append(SELECT_FILTRE_RADIO_VENTE + userId + SELECT_FILTRE_CHECKBOX_VENTE_CLOS);
+					requete.append(SELECT_DEBUT_FILTRE_ACHAT +  SELECT_FILTRE_CHECKBOX_ACHAT_MES_ENCHERES_CLOSES + " AND encheres.no_utilisateur = " + userId );
 				}
 				else
 				{
-					requete.append(" OR " + SELECT_FILTRE_RADIO_VENTE + userId +SELECT_FILTRE_CHECKBOX_VENTE_CLOS);
+					requete.append(" OR " + SELECT_DEBUT_FILTRE_ACHAT + SELECT_FILTRE_CHECKBOX_ACHAT_MES_ENCHERES_CLOSES  + " AND encheres.no_utilisateur = " + userId);
 					
 				}
 				
@@ -397,6 +402,37 @@ public class ArticleJDBC implements ArticleDAO {
 		}
 		
 		requete.append(")");
+	}
+	
+	
+	@Override
+	public List<Article> selectAchatClos(int userId) {
+		List<Article> listeArticles = new ArrayList<Article>();
+		Article art = new Article();
+		try(Connection cx = Connect.getConnection()){
+			PreparedStatement request = cx.prepareStatement(" select * from articles "+
+					" join encheres on articles.no_article = encheres.no_article "+
+					" where articles.no_utilisateur <>  ? and articles.date_debut_encheres <now() "+
+					" and encheres.no_utilisateur = ? " );
+			  request.setInt(1, userId );
+			  request.setInt(2, userId);
+			ResultSet rs = request.executeQuery();
+			
+			
+			while(rs.next())
+			{
+				art = articleBuilder(rs);
+				listeArticles.add(art);
+			}
+			
+
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return listeArticles;
+		
+		
 	}
 	
 }

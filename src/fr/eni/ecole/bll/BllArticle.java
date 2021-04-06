@@ -1,9 +1,11 @@
 package fr.eni.ecole.bll;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.ecole.bo.Article;
+import fr.eni.ecole.bo.Enchere;
 import fr.eni.ecole.bo.Utilisateur;
 import fr.eni.ecole.dal.ArticleDAO;
 import fr.eni.ecole.dal.DAOFactory;
@@ -82,6 +84,82 @@ public class BllArticle {
 	}
 	
 	public List<Article> selectByFiltre (String filtreTexte, String filtreCategorie, String filtreRadio, String[] filtreCheckboxVente,String[] filtreCheckboxAchat, int userId) throws BusinessException{
-		return article.selectByFiltre(filtreTexte, filtreCategorie, filtreRadio, filtreCheckboxVente, filtreCheckboxAchat, userId);
+		
+		List<Article>listeArticles = new ArrayList<Article>();
+		boolean selectVenteClose= false;
+		// si clique sur bouton 
+		
+		if(!(null==filtreCheckboxAchat))
+		{
+			for (String choixFiltreAchat : filtreCheckboxAchat)
+			{
+				if("enchereObtenues".equalsIgnoreCase(choixFiltreAchat))
+				{
+					selectVenteClose= true;
+					
+				}
+			}
+		}
+		
+			
+			if(selectVenteClose)
+			{
+				listeArticles = selectAchatRemporte(userId);
+				
+			}
+			
+			else
+			{
+				listeArticles = article.selectByFiltre(filtreTexte, filtreCategorie, filtreRadio, filtreCheckboxVente, filtreCheckboxAchat, userId);
+			}
+		
+		
+		
+		return listeArticles;
+	}
+	
+	
+	public List<Article> selectAchatRemporte(int userId) throws BusinessException
+	{
+		
+	// appeler selectbyfiltre
+		
+		List<Article> listeArticles = DAOFactory.getArticleDAO().selectAchatClos(userId);
+		List<Article> listeArticlesRemporte= new ArrayList<Article>();
+		
+		for (Article article : listeArticles)
+		{
+
+			List<Enchere> listeEncheres = DAOFactory.getEnchereDAO().selectByArticle(article);
+			int montantMax = 0;
+			Enchere ench = new Enchere();
+			if(!listeEncheres.isEmpty())
+			{
+				for(Enchere e : listeEncheres) 
+				{
+					if(e.getMontant() > montantMax)
+					{
+						montantMax = e.getMontant();
+						ench = e;
+					}
+
+				}
+
+			}
+				
+			// est ce que l'enchère est gagnée si oui ajout de cet article aux articles remportés
+			
+			if(ench.getUtilisateur().getNumero()==userId)
+			{
+				System.out.println("vous avez gagné");
+				listeArticlesRemporte.add(article);
+				
+
+			}
+		
+				
+		}
+		return listeArticlesRemporte;
+		
 	}
 }
