@@ -58,9 +58,9 @@
 					  <fieldset>      
 				        <legend>achats</legend>      
 
-				        <input type="checkbox" name="flitreCheckboxAchat" value="1" > enchères ouvertes<br>      
-				        <input type="checkbox" name="flitreCheckboxAchat" value="2" > mes enchères <br>      
-				        <input type="checkbox" name="flitreCheckboxAchat" value="3" > mes enchères remportées<br>      
+				        <input type="checkbox" name="flitreCheckboxAchat" value="ouvertes" > enchères ouvertes<br>      
+				        <input type="checkbox" name="flitreCheckboxAchat" value="mesEncheres" > mes enchères <br>      
+				        <input type="checkbox" name="flitreCheckboxAchat" value="enchereObtenues" > mes enchères remportées<br>      
 				        <br> 
 				        </fieldset> 
 				        <fieldset>      
@@ -105,8 +105,8 @@
 				       <c:choose>
 					       <c:when test="${empty sessionScope.user}">
 					       	
-					      	 <p class="card-text">${article.nom}</p>
-				        	 <p class="card-text"> Prix: ${article.prixInitial}</p>
+					      	<p class="card-text">${article.nom}</p>
+				        	<p class="card-text"> Prix: ${meilleureEnchere.get(article.getNumero())}</p>
 				          	<p class="card-text">Fin de l'enchère: ${article.dateFinEncheres}</p>
 				           	<p class="card-text">Vendeur: ${article.getUtilisateur().pseudo}</p>
 					       
@@ -149,15 +149,15 @@
 								       		</c:choose>
 								       
 							       
-							       </c:otherwise>
+							      	 </c:otherwise>
 						       
-						       </c:choose>
+						     	 </c:choose>
 					       	
 
-					       	<!-- <a  class="card-text" href= "${pageContext.request.contextPath}/DetailVenteServlet?article=${article.numero}">${article.nom} ${article.etatVente} </a> --> 
-				        	 <p class="card-text">Prix: ${article.prixInitial}</p>
-				          	<p class="card-text">Fin de l'enchère: ${article.dateFinEncheres}</p>
-				           	<a  class="card-text" href= "${pageContext.request.contextPath}/afficherProfil?vendeur=${article.getUtilisateur().numero}">Vendeur:  ${article.getUtilisateur().pseudo}</a>
+					       	 
+				        	 <p class="card-text">Prix: ${meilleureEnchere.get(article.getNumero())}</p>
+				          	 <p class="card-text">Fin de l'enchère: ${article.dateFinEncheres}</p>
+				             <a class="card-text" href= "${pageContext.request.contextPath}/afficherProfil?vendeur=${article.getUtilisateur().numero}">Vendeur:  ${article.getUtilisateur().pseudo}</a>
 					       
 					       </c:otherwise>
 				       

@@ -2,7 +2,9 @@
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,28 +29,28 @@ import fr.eni.ecole.exception.BusinessException;
 public class ListeEncheresServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private BllCategorie managerCategorie;
-//	private BllEnchere managerEnchere;
+	private BllEnchere managerEnchere;
 	private BllArticle managerArticle;
-    
-   
-    
-    
-@Override
-public void init() throws ServletException {
-	
-	super.init();
-	
-	managerCategorie = BllCategorie.getBllCategorie();
-//	managerEnchere = BllEnchere.getBllEnchere();
-	managerArticle= BllArticle.getBllArticle();
-}
+
+
+
+
+	@Override
+	public void init() throws ServletException {
+
+		super.init();
+
+		managerCategorie = BllCategorie.getBllCategorie();
+		managerEnchere = BllEnchere.getBllEnchere();
+		managerArticle= BllArticle.getBllArticle();
+	}
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
-		
+
+
+		Map<Integer, Integer> meilleuresEncheresArticles = new HashMap<Integer, Integer>();
 		List<Categorie> listeCategorie = new ArrayList<Categorie>();
 		List<Article> listeArticles = new ArrayList<Article>();
 
@@ -60,22 +62,52 @@ public void init() throws ServletException {
 		}
 		try {
 			listeArticles = managerArticle.selectAll(); 
+
+			for (Article article : listeArticles)
+			{
+
+				List<Enchere> listeEncheres = managerEnchere.selectByArticle(article);
+				int montantMax = 0;
+				Enchere ench = new Enchere();
+				if(!listeEncheres.isEmpty())
+				{
+					for(Enchere e : listeEncheres) 
+					{
+						if(e.getMontant() > montantMax)
+						{
+							montantMax = e.getMontant();
+							ench = e;
+						}
+
+					}
+
+
+
+				}
+
+				meilleuresEncheresArticles.put(article.getNumero(), ench.getMontant());
+
+			}
+
+
+
+			request.setAttribute("meilleureEnchere", meilleuresEncheresArticles);
 			request.setAttribute("listeArticles", listeArticles);
 		} catch (BusinessException e) {
-			
+
 			request.setAttribute("errors", e.getErrors());
 		}
 
 
-		
+
 		String id_article = request.getParameter("article");
 		String id_vendeur = request.getParameter("vendeur");
-		
-		
+
+
 		request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
-		
-	
-		
+
+
+
 	}
 
 	/**
@@ -83,58 +115,90 @@ public void init() throws ServletException {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		
+
+		Map<Integer, Integer> meilleuresEncheresArticles = new HashMap<Integer, Integer>();
 		HttpSession session = request.getSession(false);
 		Utilisateur user = (Utilisateur) session.getAttribute("user");
 		int userId=0;
 		if(!(user==null))
 		{
-			 userId = user.getNumero();
+			userId = user.getNumero();
 		}
-		
-		
+
+
 		List<Article> listeArticles = new ArrayList<Article>();
 		String filtreTexte = request.getParameter("search");
-		
-		
+
+
 		String filtreCategorie= request.getParameter("categories");
 
-		
-	
-		
-		
+
+
+
+
 		String [] filtreCheckboxVente = request.getParameterValues("flitreCheckboxVente");
 		String [] filtreCheckboxAchat = request.getParameterValues("flitreCheckboxAchat");
 
 		String filtreRadio = request.getParameter("filtreRadio");
-		
-	
-		
+
+
+
 		/**
 		 * Retour sur la page d'accueil si aucun filtrage n'est réalisé 
 		 */
-		
+
 		if(filtreTexte.isEmpty() && filtreCategorie.equalsIgnoreCase("toutes") && filtreCheckboxVente==null && filtreCheckboxAchat==null)
 		{
 			doGet(request, response);
 		}
 		else
-			
+
 		{
 			try {
 				listeArticles= managerArticle.selectByFiltre(filtreTexte, filtreCategorie, filtreRadio, filtreCheckboxVente, filtreCheckboxAchat, userId);
+
+
+				for (Article article : listeArticles)
+				{
+
+					List<Enchere> listeEncheres = managerEnchere.selectByArticle(article);
+					int montantMax = 0;
+					Enchere ench = new Enchere();
+					if(!listeEncheres.isEmpty())
+					{
+						for(Enchere e : listeEncheres) 
+						{
+							if(e.getMontant() > montantMax)
+							{
+								montantMax = e.getMontant();
+								ench = e;
+							}
+
+						}
+
+
+
+					}
+
+					meilleuresEncheresArticles.put(article.getNumero(), ench.getMontant());
+
+				}
+
+				request.setAttribute("meilleureEnchere", meilleuresEncheresArticles);
 				request.setAttribute("listeArticles", listeArticles);
+
+
 			} catch (BusinessException e) {
-				
+
 				e.printStackTrace();
 				request.setAttribute("errors", e.getErrors());
 			}
-			
+
 			request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
 		}
-		
-		
-		
+
+
+
 	}
 
 }
