@@ -27,7 +27,7 @@ public class ArticleJDBC implements ArticleDAO {
 										+ " date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie "
 										+ " FROM articles WHERE ";
 	
-	private final String SELECT_DEBUT_FILTRE_ACHAT = "SELECT articles.no_article, articles.nom_article, articles.description, articles.date_debut_encheres,"
+	private final String SELECT_DEBUT_FILTRE_ACHAT = "SELECT DISTINCT articles.no_article, articles.nom_article, articles.description, articles.date_debut_encheres,"
 													+ " articles.date_fin_encheres, articles.prix_initial, articles.prix_vente, articles.no_utilisateur, articles.no_categorie "
 													+ " FROM articles";
 	
@@ -43,13 +43,12 @@ public class ArticleJDBC implements ArticleDAO {
 	private final String SELECT_FILTRE_CHECKBOX_ACHAT_OUVERT = " AND articles.date_debut_encheres <=now() " + " AND articles.date_fin_encheres > now() ";
 	
 	private final String SELECT_FILTRE_CHECKBOX_ACHAT_MES_ENCHERES = " JOIN encheres on articles.no_article = encheres.no_article"
-																	+ " WHERE  ( articles.date_debut_encheres <=now()";
+																	+ " WHERE ( articles.date_debut_encheres <=now()";
 																	
 	private final String SELECT_FILTRE_CHECKBOX_ACHAT_MES_ENCHERES_CLOSES = " JOIN encheres on articles.no_article = encheres.no_article"
 																			+ " WHERE ( articles.date_fin_encheres <now()";
-																			
-																			
-	;
+	
+															
 	public void insert(Article a){
 		try(Connection cx = Connect.getConnection()){
 			PreparedStatement request = cx.prepareStatement("INSERT INTO articles (nom_article, description, date_debut_encheres, "
@@ -213,7 +212,13 @@ public class ArticleJDBC implements ArticleDAO {
 
 		StringBuilder requeteFinale = new StringBuilder();
 		
-		
+		final String  SELECT_FILTRE_CHECKBOX_ACHAT_CUMUL = " join encheres ON articles.no_article = encheres.no_article " 
+														  + " WHERE ( articles.no_utilisateur <> " + userId
+														  +	" AND articles.date_debut_encheres <= now() "
+														  + " AND articles.date_fin_encheres > now() "
+														  + " OR articles.no_utilisateur <> " + userId
+														  + " AND articles.date_debut_encheres <=now() AND articles.date_fin_encheres < now() "
+														  + " AND encheres.no_utilisateur = " + userId;
 
 		if(("ventes").equalsIgnoreCase(filtreRadio)) 
 		{
@@ -224,7 +229,7 @@ public class ArticleJDBC implements ArticleDAO {
 		else if(("achats").equalsIgnoreCase(filtreRadio))
 		{
 			requeteFinale.append(SELECT_DEBUT_FILTRE_ACHAT);
-			requeteBuilderAchat(requeteFinale, filtreTexte, filtreCategorie, filtreRadio, filtreCheckboxAchat, userId);
+			requeteBuilderAchat(requeteFinale, filtreTexte, filtreCategorie, filtreRadio, filtreCheckboxAchat, userId, SELECT_FILTRE_CHECKBOX_ACHAT_CUMUL);
 		}
 		else
 		{
@@ -271,10 +276,10 @@ public class ArticleJDBC implements ArticleDAO {
 		appendRequeteFiltreTexte(requete, filtreTexte);
 	}
 	
-	private void requeteBuilderAchat(StringBuilder requete, String filtreTexte, String filtreCategorie, String filtreRadio, String[] filtreCheckboxAchat, int userId) {
+	private void requeteBuilderAchat(StringBuilder requete, String filtreTexte, String filtreCategorie, String filtreRadio, String[] filtreCheckboxAchat, int userId, String SELECT_FILTRE_CHECKBOX_ACHAT_CUMUL) {
 		
 		
-		appendRequeteFiltreCheckboxAchat(requete, filtreCheckboxAchat, userId);
+		appendRequeteFiltreCheckboxAchat(requete, filtreCheckboxAchat, userId, SELECT_FILTRE_CHECKBOX_ACHAT_CUMUL);
 		appendRequetefiltreCategorie(requete, filtreCategorie);
 		appendRequeteFiltreTexte(requete, filtreTexte);
 
@@ -353,54 +358,56 @@ public class ArticleJDBC implements ArticleDAO {
 	
 	
 	
-	private void appendRequeteFiltreCheckboxAchat(StringBuilder requete,  String[] filtreCheckboxAchat, int userId)
+	private void appendRequeteFiltreCheckboxAchat(StringBuilder requete,  String[] filtreCheckboxAchat, int userId,String SELECT_FILTRE_CHECKBOX_ACHAT_CUMUL)
 	{
 //		requete.append(" ( ");
 		
-		for (int i = 0; i < filtreCheckboxAchat.length; i++) {
-			if(("ouvertes").equalsIgnoreCase(filtreCheckboxAchat[i]))
+		if(1==filtreCheckboxAchat.length)
+		{
+			switch (filtreCheckboxAchat[0]) {
+			case "ouvertes":
+				requete.append( " WHERE ( articles.no_utilisateur <> " + userId + SELECT_FILTRE_CHECKBOX_ACHAT_OUVERT);
+				break;
+			case "mesEncheres":
+				requete.append( SELECT_FILTRE_CHECKBOX_ACHAT_MES_ENCHERES + " AND encheres.no_utilisateur = " + userId);
+				break;
+				
+			case "enchereObtenues":
+				requete.append(SELECT_FILTRE_CHECKBOX_ACHAT_MES_ENCHERES_CLOSES + " AND encheres.no_utilisateur = " + userId );
+				break;
+			default:
+				break;
+			}
+		}
+			
+			else if(2==filtreCheckboxAchat.length)
 			{
-				if(i==0)
+				if("ouvertes".equalsIgnoreCase(filtreCheckboxAchat[0]) && "mesEncheres".equalsIgnoreCase(filtreCheckboxAchat[1]))
 				{
-					requete.append( " WHERE ( articles.no_utilisateur <> " + userId + SELECT_FILTRE_CHECKBOX_ACHAT_OUVERT);
-				}
-				else
-				{
-					requete.append(" OR " + SELECT_DEBUT_FILTRE_ACHAT + " WHERE  ( articles.no_utilisateur <> " + userId + SELECT_FILTRE_CHECKBOX_ACHAT_OUVERT);
-					
+					requete.append(SELECT_FILTRE_CHECKBOX_ACHAT_CUMUL);
 				}
 				
-			}
-			
-			
-			if(("mesEncheres").equalsIgnoreCase(filtreCheckboxAchat[i]))
-			{
-				if(i==0)
+				else if("ouvertes".equalsIgnoreCase(filtreCheckboxAchat[0]) && "enchereObtenues".equalsIgnoreCase(filtreCheckboxAchat[1]))
+					
+				{
+					requete.append(SELECT_FILTRE_CHECKBOX_ACHAT_CUMUL);			
+				}
+				
+				else if("mesEncheres".equalsIgnoreCase(filtreCheckboxAchat[0]) && "enchereObtenues".equalsIgnoreCase(filtreCheckboxAchat[1]))
 				{
 					requete.append( SELECT_FILTRE_CHECKBOX_ACHAT_MES_ENCHERES + " AND encheres.no_utilisateur = " + userId);
 				}
-				else
-				{
-					requete.append(" OR " + SELECT_DEBUT_FILTRE_ACHAT  + SELECT_FILTRE_CHECKBOX_ACHAT_MES_ENCHERES + " AND encheres.no_utilisateur = " + userId);
-					
-				}
 				
+				
+			}
+		
+			else if(3==filtreCheckboxAchat.length)
+			{
+				requete.append( SELECT_FILTRE_CHECKBOX_ACHAT_CUMUL );			
+
 			}
 			
-			if(("enchereObtenues").equalsIgnoreCase(filtreCheckboxAchat[i]))
-			{
-				if(i==0)
-				{
-					requete.append(SELECT_FILTRE_CHECKBOX_ACHAT_MES_ENCHERES_CLOSES + " AND encheres.no_utilisateur = " + userId );
-				}
-				else
-				{
-					requete.append(" OR " + SELECT_DEBUT_FILTRE_ACHAT + SELECT_FILTRE_CHECKBOX_ACHAT_MES_ENCHERES_CLOSES  + " AND encheres.no_utilisateur = " + userId);
-					
-				}
-				
-			}
-		}
+		
 		
 		requete.append(" ) ");
 	}
