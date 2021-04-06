@@ -134,9 +134,6 @@ public class ListeEncheresServlet extends HttpServlet {
 		String filtreCategorie= request.getParameter("categories");
 
 
-
-
-
 		String [] filtreCheckboxVente = request.getParameterValues("flitreCheckboxVente");
 		String [] filtreCheckboxAchat = request.getParameterValues("flitreCheckboxAchat");
 

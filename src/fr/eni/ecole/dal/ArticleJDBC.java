@@ -27,8 +27,8 @@ public class ArticleJDBC implements ArticleDAO {
 										+ " date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie "
 										+ " FROM articles WHERE ";
 	
-	private final String SELECT_DEBUT_FILTRE_ACHAT = "SELECT no_article, nom_article, description, date_debut_encheres,"
-													+ " date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie "
+	private final String SELECT_DEBUT_FILTRE_ACHAT = "SELECT articles.no_article, articles.nom_article, articles.description, articles.date_debut_encheres,"
+													+ " articles.date_fin_encheres, articles.prix_initial, articles.prix_vente, articles.no_utilisateur, articles.no_categorie "
 													+ " FROM articles";
 	
 	private final String SELECT_FILTRE_RADIO_VENTE = " articles.no_utilisateur = ";
@@ -43,10 +43,10 @@ public class ArticleJDBC implements ArticleDAO {
 	private final String SELECT_FILTRE_CHECKBOX_ACHAT_OUVERT = " AND articles.date_debut_encheres <=now() " + " AND articles.date_fin_encheres > now() ";
 	
 	private final String SELECT_FILTRE_CHECKBOX_ACHAT_MES_ENCHERES = " JOIN encheres on articles.no_article = encheres.no_article"
-																	+ " WHERE articles.date_debut_encheres <=now()";
+																	+ " WHERE  ( articles.date_debut_encheres <=now()";
 																	
 	private final String SELECT_FILTRE_CHECKBOX_ACHAT_MES_ENCHERES_CLOSES = " JOIN encheres on articles.no_article = encheres.no_article"
-																			+ " WHERE articles.date_fin_encheres <now()";
+																			+ " WHERE ( articles.date_fin_encheres <now()";
 																			
 																			
 	;
@@ -223,6 +223,7 @@ public class ArticleJDBC implements ArticleDAO {
 		}
 		else if(("achats").equalsIgnoreCase(filtreRadio))
 		{
+			requeteFinale.append(SELECT_DEBUT_FILTRE_ACHAT);
 			requeteBuilderAchat(requeteFinale, filtreTexte, filtreCategorie, filtreRadio, filtreCheckboxAchat, userId);
 		}
 		else
@@ -340,7 +341,7 @@ public class ArticleJDBC implements ArticleDAO {
 				}
 				else
 				{
-					requete.append(" OR " + SELECT_FILTRE_RADIO_VENTE + userId +SELECT_FILTRE_CHECKBOX_VENTE_CLOS);
+					requete.append(" OR " + SELECT_FILTRE_RADIO_VENTE + userId + SELECT_FILTRE_CHECKBOX_VENTE_CLOS);
 					
 				}
 				
@@ -354,18 +355,18 @@ public class ArticleJDBC implements ArticleDAO {
 	
 	private void appendRequeteFiltreCheckboxAchat(StringBuilder requete,  String[] filtreCheckboxAchat, int userId)
 	{
-		requete.append("(");
+//		requete.append(" ( ");
 		
 		for (int i = 0; i < filtreCheckboxAchat.length; i++) {
 			if(("ouvertes").equalsIgnoreCase(filtreCheckboxAchat[i]))
 			{
 				if(i==0)
 				{
-					requete.append( SELECT_DEBUT_FILTRE_ACHAT + " WHERE articles.no_utilisateur <> "+ userId + SELECT_FILTRE_CHECKBOX_ACHAT_OUVERT);
+					requete.append( " WHERE ( articles.no_utilisateur <> " + userId + SELECT_FILTRE_CHECKBOX_ACHAT_OUVERT);
 				}
 				else
 				{
-					requete.append(" OR " + SELECT_DEBUT_FILTRE_ACHAT + " WHERE articles.no_utilisateur <> "+ userId + SELECT_FILTRE_CHECKBOX_ACHAT_OUVERT);
+					requete.append(" OR " + SELECT_DEBUT_FILTRE_ACHAT + " WHERE  ( articles.no_utilisateur <> " + userId + SELECT_FILTRE_CHECKBOX_ACHAT_OUVERT);
 					
 				}
 				
@@ -376,7 +377,7 @@ public class ArticleJDBC implements ArticleDAO {
 			{
 				if(i==0)
 				{
-					requete.append( SELECT_DEBUT_FILTRE_ACHAT  + SELECT_FILTRE_CHECKBOX_ACHAT_MES_ENCHERES + " AND encheres.no_utilisateur = " + userId);
+					requete.append( SELECT_FILTRE_CHECKBOX_ACHAT_MES_ENCHERES + " AND encheres.no_utilisateur = " + userId);
 				}
 				else
 				{
@@ -390,7 +391,7 @@ public class ArticleJDBC implements ArticleDAO {
 			{
 				if(i==0)
 				{
-					requete.append(SELECT_DEBUT_FILTRE_ACHAT +  SELECT_FILTRE_CHECKBOX_ACHAT_MES_ENCHERES_CLOSES + " AND encheres.no_utilisateur = " + userId );
+					requete.append(SELECT_FILTRE_CHECKBOX_ACHAT_MES_ENCHERES_CLOSES + " AND encheres.no_utilisateur = " + userId );
 				}
 				else
 				{
@@ -401,7 +402,7 @@ public class ArticleJDBC implements ArticleDAO {
 			}
 		}
 		
-		requete.append(")");
+		requete.append(" ) ");
 	}
 	
 	

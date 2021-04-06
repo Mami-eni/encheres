@@ -104,8 +104,7 @@ public class BllArticle {
 			
 			if(selectVenteClose)
 			{
-				listeArticles = selectAchatRemporte(userId);
-				
+				listeArticles = selectAchatRemporte(filtreTexte, filtreCategorie, filtreRadio, filtreCheckboxVente, filtreCheckboxAchat, userId);
 			}
 			
 			else
@@ -119,12 +118,13 @@ public class BllArticle {
 	}
 	
 	
-	public List<Article> selectAchatRemporte(int userId) throws BusinessException
+	public List<Article> selectAchatRemporte(String filtreTexte, String filtreCategorie, String filtreRadio, String[] filtreCheckboxVente,String[] filtreCheckboxAchat, int userId) throws BusinessException
 	{
 		
 	// appeler selectbyfiltre
 		
-		List<Article> listeArticles = DAOFactory.getArticleDAO().selectAchatClos(userId);
+//		List<Article> listeArticles = DAOFactory.getArticleDAO().selectAchatClos(userId);
+		List<Article> listeArticles = article.selectByFiltre(filtreTexte, filtreCategorie, filtreRadio, filtreCheckboxVente, filtreCheckboxAchat, userId);
 		List<Article> listeArticlesRemporte= new ArrayList<Article>();
 		
 		for (Article article : listeArticles)
@@ -151,7 +151,7 @@ public class BllArticle {
 			
 			if(ench.getUtilisateur().getNumero()==userId)
 			{
-				System.out.println("vous avez gagné");
+				
 				listeArticlesRemporte.add(article);
 				
 
