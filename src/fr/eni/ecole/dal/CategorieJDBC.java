@@ -15,7 +15,7 @@ public class CategorieJDBC implements CategorieDAO {
 	public List<Categorie> selectAll(){
 		List<Categorie> liste = new ArrayList<Categorie>();
 		try(Connection cx = Connect.getConnection()){
-			PreparedStatement request = cx.prepareStatement("SELECT no_categorie, libelle from categories");
+			PreparedStatement request = cx.prepareStatement("SELECT no_categorie, libelle FROM categories");
 			ResultSet rs = request.executeQuery();
 			while(rs.next()) {
 			Categorie c = new Categorie();

@@ -9,6 +9,7 @@ import fr.eni.ecole.dal.ArticleDAO;
 import fr.eni.ecole.dal.DAOFactory;
 import fr.eni.ecole.exception.BusinessException;
 import fr.eni.ecole.exception.Errors;
+import fr.eni.ecole.util.Constants;
 
 public class BllArticle {
 	
@@ -45,11 +46,11 @@ public class BllArticle {
 			throwError = true;
 			error.addError(Errors.REGLE_DATE);
 		}
-		else if(!a.getDateDebutEncheres().toString().matches("^(202[1-9])-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$")) {
+		else if(!a.getDateDebutEncheres().toString().matches(Constants.REGEX_DATE)) {
 			throwError = true;
 			error.addError(Errors.REGLE_DATE_MAX);
 		}
-		else if(!a.getDateFinEncheres().toString().matches("^(202[1-9])-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$")) {
+		else if(!a.getDateFinEncheres().toString().matches(Constants.REGEX_DATE)) {
 			throwError = true;
 			error.addError(Errors.REGLE_DATE_MAX);
 		}

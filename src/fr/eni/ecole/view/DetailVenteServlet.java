@@ -36,11 +36,19 @@ public class DetailVenteServlet extends HttpServlet {
        
    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
 		request.setCharacterEncoding("UTF-8");
-		HttpSession session = request.getSession();
+		BusinessException error = new BusinessException();
+		if(request.getAttribute("erreur") != null) {
+			error = (BusinessException)request.getAttribute("erreur");
+		}
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		int idArticle = Integer.parseInt(request.getParameter("article"));
+		int idArticle = 0;
+		if(request.getAttribute("article") == null) {
+		idArticle = Integer.parseInt(request.getParameter("article"));
+		}else {
+		idArticle = (int)request.getAttribute("article");	
+		}
+		try {
 		Article art = article.selectById(idArticle);
 		request.setAttribute("article", art);
 		List<Enchere> listeEncheres = enchere.selectByArticle(art);
@@ -59,15 +67,21 @@ public class DetailVenteServlet extends HttpServlet {
 		request.setAttribute("retrait", ret);
 		String dateFin = art.getDateFinEncheres().format(dtf);
 		request.setAttribute("dateFin", dateFin);
+		int enchereMin = 1;
+		request.setAttribute("enchMin", enchereMin);
 		request.getRequestDispatcher("/WEB-INF/detailVente.jsp").forward(request, response);
 		}catch(BusinessException e) {
-			request.setAttribute("erreur", e.getErrors());
+			for(String s : e.getErrors()) {
+				error.addError(s);
+			}
+			request.setAttribute("erreur", error.getErrors());
 			request.getRequestDispatcher("/WEB-INF/detailVente.jsp").forward(request, response);
 		}
 	}
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		BusinessException error = new BusinessException();
 		HttpSession session = request.getSession();
 		Utilisateur util = new Utilisateur();
@@ -76,7 +90,6 @@ public class DetailVenteServlet extends HttpServlet {
 		try {
 			art = article.selectById(Integer.parseInt(request.getParameter("article")));
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (BusinessException e) {
 			for(String s : e.getErrors()) {
@@ -99,7 +112,7 @@ public class DetailVenteServlet extends HttpServlet {
 				error.addError(s);
 			}
 			request.setAttribute("erreur", error);
-			request.setAttribute("article", art);
+			request.setAttribute("article", art.getNumero());
 			doGet(request, response);
 			e.printStackTrace();
 		}
