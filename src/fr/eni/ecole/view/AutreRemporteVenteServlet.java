@@ -33,13 +33,17 @@ public class AutreRemporteVenteServlet extends HttpServlet {
     private BllUtilisateur utilisateur = BllUtilisateur.getBllUtilisateur();
    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		BusinessException error = new BusinessException();
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		int idArticle = Integer.parseInt(request.getParameter("article"));
 		Article art = new Article();
 		try {
 			art = article.selectById(idArticle);
 		} catch (BusinessException e1) {
-			// TODO Auto-generated catch block
+			for(String s : e1.getErrors()) {
+				error.addError(s);
+			}
 			e1.printStackTrace();
 		}
 		request.setAttribute("article", art);
@@ -49,7 +53,9 @@ public class AutreRemporteVenteServlet extends HttpServlet {
 		try {
 			ret = retrait.selectByArticle(art);
 		} catch (BusinessException e1) {
-			// TODO Auto-generated catch block
+			for(String s : e1.getErrors()) {
+				error.addError(s);
+			}
 			e1.printStackTrace();
 		}
 		request.setAttribute("retrait", ret);
@@ -57,7 +63,9 @@ public class AutreRemporteVenteServlet extends HttpServlet {
 		try {
 			listeEncheres = enchere.selectByArticle(art);
 		} catch (BusinessException e1) {
-			// TODO Auto-generated catch block
+			for(String s : e1.getErrors()) {
+				error.addError(s);
+			}
 			e1.printStackTrace();
 		}
 		int montantMax = 0;
@@ -73,16 +81,19 @@ public class AutreRemporteVenteServlet extends HttpServlet {
 		try {
 			util = utilisateur.selectById(ench.getUtilisateur().getNumero());
 		} catch (BusinessException e1) {
-			// TODO Auto-generated catch block
+			for(String s : e1.getErrors()) {
+				error.addError(s);
+			}
 			e1.printStackTrace();
 		}
+		request.setAttribute("erreur", error.getErrors());
 		request.setAttribute("utilisateur", util);
 		request.getRequestDispatcher("/WEB-INF/autreRemporteVente.jsp").forward(request, response);
 	}
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		response.sendRedirect("/encheres");
 	}
 
 }

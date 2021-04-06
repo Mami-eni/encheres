@@ -126,10 +126,10 @@
         <input type="hidden" value="${article.numero }" name="article">
         <c:choose>
         <c:when test="${empty enchere.date }">
-        <input type="number" name="proposition" id="proposition" min="${article.prixInitial }" step="1" style="width: 80px" required>
+        <input type="number" name="proposition" id="proposition" min="${article.prixInitial + enchMin }" step="1" style="width: 80px" required>
         </c:when>
         <c:otherwise>
-        <input type="number" name="proposition" id="proposition" min="${enchere.montant }" step="1" style="width: 80px" required>
+        <input type="number" name="proposition" id="proposition" min="${enchere.montant + enchMin }" step="1" style="width: 80px" required>
         </c:otherwise>
         </c:choose>
         <input type="submit" value="encherir">
