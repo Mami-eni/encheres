@@ -24,7 +24,7 @@
 				<form action="./connection" method="post">
 					<div class="form-group">
 						<label for="login">Login : </label> <input class="form-control"
-							id="login" required name="login">
+							id="login" required name="login" value="${login}">
 					</div>
 					<div class="form-group">
 						<label for="password">Password : </label> <input
@@ -36,11 +36,10 @@
 							class="btn btn-lg btn-primary">
 					</div>
 
-					<!-- 	TODO Implémenter Remember me 		-->
-					<!-- 			<div class="form-group"> -->
-					<!-- 				<input type="checkbox" name="remember-me"><label -->
-					<!-- 					for="remember-me">Se souvient de moi </label> -->
-					<!-- 			</div> -->
+								<div class="form-group">
+									<input type="checkbox" name="remember-me"><label
+										for="remember-me">Se souvient de moi </label>
+								</div>
 				</form>
 
 				<a href="./inscription">

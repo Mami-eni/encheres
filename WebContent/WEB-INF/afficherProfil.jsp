@@ -22,8 +22,13 @@
 			<p>Rue: ${vendeur.rue}</p>
 			<p>Code postal: ${vendeur.codePostal}</p>
 			<p>Ville: ${vendeur.ville}</p>
+			<c:if test="${sessionScope.user.numero == vendeur.numero}">
+			<a href="./modifierUser">
+				<button class="btn btn-primary btn-lg">Modifier mon compte</button>
+			</a>
+		</c:if>
 		</div>
-
+		
 		<div class="col-sm-4"></div>
 	</div>
 

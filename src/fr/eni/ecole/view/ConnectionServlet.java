@@ -42,12 +42,7 @@ public class ConnectionServlet extends HttpServlet {
 				Cookie c = cookies[i];
 				if ("login".equals(c.getName())) {
 					login = c.getValue();
-					System.out.println();
 					request.setAttribute("login", login);
-				}
-				if ("password".equals(c.getName())) {
-					password = c.getValue();
-					request.setAttribute("password", password);
 				}
 			}
 		}
@@ -84,9 +79,7 @@ public class ConnectionServlet extends HttpServlet {
 			Utilisateur user = BllUtilisateur.getBllUtilisateur().validateConnection(login, password);
 
 			if ("on".equals(rememberMe)) {
-				// TODO pense � utiliser UUID pour cacher mdp
 				addCookie(response, "login", login, 24 * 60 * 60);
-				addCookie(response, "password", password, 24 * 60 * 60);
 			}
 			// Retenir l'utilisateur pour toute la session
 			if (user != null) {
