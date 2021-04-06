@@ -30,9 +30,10 @@ public class RetraitJDBC implements RetraitDAO {
 	public Retrait selectByArticle(Article a) {
 		Retrait ret = new Retrait();
 		try(Connection cx = Connect.getConnection()){
-			PreparedStatement request = cx.prepareStatement("SELECT rue, code_postal, ville WHERE no_article = ?");
+			PreparedStatement request = cx.prepareStatement("SELECT rue, code_postal, ville FROM retraits WHERE no_article = ?");
 			request.setInt(1, a.getNumero());
 			ResultSet rs = request.executeQuery();
+			rs.next();
 			ret.setArticle(a);
 			ret.setRue(rs.getString("rue"));
 			ret.setCodePostal(rs.getString("code_postal"));

@@ -29,11 +29,16 @@ public class VenteRemporteServlet extends HttpServlet {
     private BllEnchere enchere = BllEnchere.getBllEnchere();   
  
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		BusinessException error = new BusinessException();
+		int idArticle = Integer.parseInt(request.getParameter("article"));
 		Article art = new Article();
 		try {
-			art = article.selectById(32);
+			art = article.selectById(idArticle);
 		} catch (BusinessException e1) {
-			// TODO Auto-generated catch block
+			for(String s : e1.getErrors()) {
+				error.addError(s);
+			}
 			e1.printStackTrace();
 		}
 		request.setAttribute("article", art);
@@ -41,7 +46,9 @@ public class VenteRemporteServlet extends HttpServlet {
 		try {
 			ret = retrait.selectByArticle(art);
 		} catch (BusinessException e1) {
-			// TODO Auto-generated catch block
+			for(String s : e1.getErrors()) {
+				error.addError(s);
+			}
 			e1.printStackTrace();
 		}
 		request.setAttribute("retrait", ret);
@@ -49,7 +56,9 @@ public class VenteRemporteServlet extends HttpServlet {
 		try {
 			listeEncheres = enchere.selectByArticle(art);
 		} catch (BusinessException e1) {
-			// TODO Auto-generated catch block
+			for(String s : e1.getErrors()) {
+				error.addError(s);
+			}
 			e1.printStackTrace();
 		}
 		int montantMax = 0;
@@ -60,13 +69,13 @@ public class VenteRemporteServlet extends HttpServlet {
 				ench = e;
 			}
 		}
+		request.setAttribute("erreur", error.getErrors());
 		request.setAttribute("enchere", ench);
 		request.getRequestDispatcher("/WEB-INF/venteRemporte.jsp").forward(request, response);
 	}
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		doGet(request, response);
 		response.sendRedirect("/encheres");
 	}
 
