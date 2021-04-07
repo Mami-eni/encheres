@@ -93,6 +93,8 @@ public class ConnectionServlet extends HttpServlet {
 			e.printStackTrace();
 			request.setAttribute("errors", e.getErrors());
 			request.getRequestDispatcher("/WEB-INF/connectionUtilisateur.jsp").forward(request, response);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 

@@ -47,7 +47,7 @@ public class CategorieJDBC implements CategorieDAO {
 		Categorie cat = new Categorie();
 		try(Connection cx = Connect.getConnection()){
 			PreparedStatement request = cx.prepareStatement("SELECT no_categorie, libelle FROM categories WHERE no_categorie = ?");
-			request.setInt(1, id);;
+			request.setInt(1, id);
 			ResultSet rs = request.executeQuery();
 			rs.next();
 			cat.setNumero(rs.getInt("no_categorie"));

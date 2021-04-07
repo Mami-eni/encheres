@@ -66,7 +66,11 @@ public class InscriptionServlet extends HttpServlet {
 			e.printStackTrace();
 			request.setAttribute("errors", e.getErrors());
 			request.getRequestDispatcher("/WEB-INF/inscriptionForm.jsp").forward(request, response);
-		}}else {
+		}catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		}else {
 			BusinessException be = new BusinessException();
 			be.addError(Errors.CONFIRMATION_CORRESPONDE_PAS);
 			request.setAttribute("errors", be.getErrors());

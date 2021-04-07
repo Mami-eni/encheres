@@ -105,6 +105,7 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 	@Override
 	public void update(Utilisateur item) {
 		try (Connection cx = Connect.getConnection()) {
+
 			PreparedStatement request = cx.prepareStatement(
 					"UPDATE utilisateurs SET " + "pseudo=?, nom=?, " + "prenom=?, email=?, telephone=?, rue=?,"
 							+ "code_postal=?, ville=?, mot_de_passe=?" + "WHERE no_utilisateur=?");
@@ -124,6 +125,7 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 			request.setInt(10, item.getNumero());
 
 			request.executeUpdate();
+
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -135,9 +137,11 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 	@Override
 	public void delete(Utilisateur item) {
 		try (Connection cx = Connect.getConnection()) {
-			PreparedStatement request = cx.prepareStatement("DELETE FROM utilisateurs WHERE no_utilisateur=?");
-			request.setInt(1, item.getNumero());
-			request.executeUpdate();
+			//delete l'utilisateur
+			PreparedStatement requestUtilisateur = cx.prepareStatement("DELETE FROM utilisateurs WHERE no_utilisateur=?");
+			requestUtilisateur.setInt(1, item.getNumero());
+			requestUtilisateur.executeUpdate();
+
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -150,8 +154,9 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 	 * @param password
 	 * @return
 	 * @throws BusinessException
+	 * @throws ClassNotFoundException 
 	 */
-	public Utilisateur find(String pseudo, String motDePasse) throws BusinessException {
+	public Utilisateur find(String pseudo, String motDePasse) throws BusinessException, ClassNotFoundException {
 		try (Connection cx = Connect.getConnection()) {
 			PreparedStatement pstmt = cx.prepareStatement("SELECT no_utilisateur, pseudo, nom,"
 					+ "prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur "

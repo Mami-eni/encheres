@@ -77,8 +77,9 @@ public class BllUtilisateur {
 	 * @param password
 	 * @return
 	 * @throws BusinessException
+	 * @throws ClassNotFoundException 
 	 */
-	public Utilisateur validateConnection(String login, String password) throws BusinessException {
+	public Utilisateur validateConnection(String login, String password) throws BusinessException, ClassNotFoundException {
 		// Appelle de la couche DAL
 		return utilisateur.find(login, password);
 	}
