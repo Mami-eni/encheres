@@ -108,6 +108,8 @@ public class ArticleJDBC implements ArticleDAO {
 			else if( rs.getDate("date_fin_encheres").toLocalDate().isBefore(LocalDate.now()) || rs.getDate("date_fin_encheres").toLocalDate().isEqual(LocalDate.now()))
 			{
 				art.setEtatVente("fini");
+
+				
 				// setter le prix de vente
 				// update base de donnée
 			}
