@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 import fr.eni.ecole.bll.BllArticle;
 import fr.eni.ecole.bll.BllEnchere;
 import fr.eni.ecole.bll.BllRetrait;
-import fr.eni.ecole.bll.BllUtilisateur;
+
 import fr.eni.ecole.bo.Article;
 import fr.eni.ecole.bo.Enchere;
 import fr.eni.ecole.bo.Retrait;
@@ -24,7 +24,7 @@ import fr.eni.ecole.bo.Utilisateur;
 import fr.eni.ecole.exception.BusinessException;
 
 /**
- * Servlet implementation class DetailVenteServlet
+ * Cette classe gère l'envoi de données d'affichage et l'insertion d'enchères dans la base de donnée
  */
 @WebServlet("/DetailVenteServlet")
 public class DetailVenteServlet extends HttpServlet {
@@ -32,9 +32,9 @@ public class DetailVenteServlet extends HttpServlet {
 	private BllArticle article = BllArticle.getBllArticle();
 	private BllEnchere enchere = BllEnchere.getBllEnchere();
 	private BllRetrait retrait = BllRetrait.getBllRetrait();
-	private BllUtilisateur utilisateur = BllUtilisateur.getBllUtilisateur();
+
        
-   
+    /* passage en attributs de requête des éléments nécessaires à l'affichage des données de la page */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		BusinessException error = new BusinessException();
@@ -84,6 +84,7 @@ public class DetailVenteServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		BusinessException error = new BusinessException();
 		HttpSession session = request.getSession();
+		/* récupération des attributs de classe de l'enchère */
 		Utilisateur util = new Utilisateur();
 		util = (Utilisateur)session.getAttribute("user");
 		Article art = new Article();
@@ -100,6 +101,7 @@ public class DetailVenteServlet extends HttpServlet {
 		Instant now = Instant.now();
 		Timestamp dateEnchere = Timestamp.from(now);
 		int montant = Integer.parseInt(request.getParameter("proposition"));
+		/* construction de l'enchère à insérer dans la bdd */
 		Enchere ench = new Enchere();
 		ench.setDate(dateEnchere);
 		ench.setMontant(montant);

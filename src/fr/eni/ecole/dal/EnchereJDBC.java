@@ -1,7 +1,7 @@
 package fr.eni.ecole.dal;
 
 import java.sql.Connection;
-import java.sql.Date;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -12,12 +12,14 @@ import fr.eni.ecole.bo.Enchere;
 import fr.eni.ecole.bo.Utilisateur;
 import fr.eni.ecole.exception.BusinessException;
 import fr.eni.ecole.exception.Errors;
-
+/**
+ * cette classe implémente toutes les méthodes d'accès à la table encheres de la base de données
+ */
 public class EnchereJDBC implements EnchereDAO {
 	
 
-	private ArticleDAO art = DAOFactory.getArticleDAO();
-	private UtilisateurDAO util = DAOFactory.getUtilisateurDAO();
+	
+	
 	
 	public void insert(Enchere ench) throws BusinessException {
 		try(Connection cx = Connect.getConnection()){
@@ -31,7 +33,7 @@ public class EnchereJDBC implements EnchereDAO {
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 			BusinessException be = new BusinessException();
-			be.addError("Insertion dans la base de données impossible");
+			be.addError(Errors.ERREUR_INSERT);
 			throw be;
 		}
 	}
@@ -51,7 +53,7 @@ public class EnchereJDBC implements EnchereDAO {
         }catch(Exception e) {
             System.out.println(e.getMessage());
             BusinessException be = new BusinessException();
-			be.addError("Sélection impossible");
+			be.addError(Errors.ERREUR_SELECT);
 			throw be;
         }
         return liste;
@@ -71,13 +73,15 @@ public class EnchereJDBC implements EnchereDAO {
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 			BusinessException be = new BusinessException();
-			be.addError("Sélection impossible");
+			be.addError(Errors.ERREUR_SELECT);
 			throw be;
 		}
 		return liste;
 	}
 	
 	public Enchere enchereBuilder(ResultSet rs) {
+		ArticleDAO art = DAOFactory.getArticleDAO();
+		UtilisateurDAO util = DAOFactory.getUtilisateurDAO();
 		Enchere ench = new Enchere();
 		try {
 			ench.setNumero(rs.getInt("no_enchere"));
@@ -132,7 +136,7 @@ public class EnchereJDBC implements EnchereDAO {
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 			BusinessException be = new BusinessException();
-			be.addError("Sélection impossible");
+			be.addError(Errors.ERREUR_SELECT);
 			throw be;
 		}
 		return enchere;

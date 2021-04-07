@@ -1,7 +1,7 @@
 package fr.eni.ecole.bo;
 /**
  * 
- * Classe représente les catégories
+ * Classe reprï¿½sente les retraits
  *
  */
 public class Retrait {
