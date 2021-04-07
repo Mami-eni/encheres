@@ -61,21 +61,21 @@
 								<legend>achats</legend>
 
 								<input type="checkbox" name="flitreCheckboxAchat"
-									value="ouvertes" > enchères ouvertes<br> <input
+									value="ouvertes"> enchères ouvertes<br> <input
 									type="checkbox" name="flitreCheckboxAchat" value="mesEncheres">
 								mes enchères <br> <input type="checkbox"
-									name="flitreCheckboxAchat" value="enchereObtenues">
-								mes enchères remportées<br> <br>
+									name="flitreCheckboxAchat" value="enchereObtenues"> mes
+								enchères remportées<br> <br>
 							</fieldset>
 							<fieldset>
 								<legend>ventes</legend>
 
 								<input type="checkbox" name="flitreCheckboxVente"
-									value="encours" disabled=true> mes ventes en cours<br> <input
-									type="checkbox" name="flitreCheckboxVente" value="attente" disabled=true>
-								ventes non débutées<br> <input type="checkbox"
-									name="flitreCheckboxVente" value="clos" disabled=true> ventes
-								terminées<br> <br>
+									value="encours" disabled=true> mes ventes en cours<br>
+								<input type="checkbox" name="flitreCheckboxVente"
+									value="attente" disabled=true> ventes non débutées<br>
+								<input type="checkbox" name="flitreCheckboxVente" value="clos"
+									disabled=true> ventes terminées<br> <br>
 
 							</fieldset>
 
@@ -111,8 +111,8 @@
 															<c:when test="${empty sessionScope.user}">
 
 																<p class="card-text">${article.nom}</p>
-																<p class="card-text">Prix:
-																	${meilleureEnchere.get(article.getNumero())}</p>
+																<p class="card-text">Prix: ${meilleureEnchere.get(article.getNumero())}</p>
+																
 																<p class="card-text">Fin de l'enchère:
 																	${article.dateFinEncheres}</p>
 																<p class="card-text">Vendeur:
@@ -174,8 +174,7 @@
 
 
 
-																<p class="card-text">Prix:
-																	${meilleureEnchere.get(article.getNumero())}</p>
+																<p class="card-text">Prix: ${meilleureEnchere.get(article.getNumero())}</p>
 																<p class="card-text">Fin de l'enchère:
 																	${article.dateFinEncheres}</p>
 																<a class="card-text"
@@ -193,7 +192,6 @@
 											</div>
 										</div>
 									</div>
-
 					</div>
 
 					</c:forEach>

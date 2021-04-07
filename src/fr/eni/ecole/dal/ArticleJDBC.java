@@ -85,20 +85,22 @@ public class ArticleJDBC implements ArticleDAO {
 			
 			
 			
-			if(rs.getDate("date_debut_encheres").toLocalDate().isBefore(LocalDate.now()) && rs.getDate("date_fin_encheres").toLocalDate().isAfter(LocalDate.now()))
-			{
-				art.setEtatVente("encours");
-			}
-			
-			if( rs.getDate("date_fin_encheres").toLocalDate().isBefore(LocalDate.now()))
-			{
-				art.setEtatVente("fini");
-			}
-			
-			if( rs.getDate("date_debut_encheres").toLocalDate().isAfter(LocalDate.now()))
-			{
-				art.setEtatVente("non_debuté");
-			}
+			if((rs.getDate("date_debut_encheres").toLocalDate().isBefore(LocalDate.now()) || rs.getDate("date_debut_encheres").toLocalDate().isEqual(LocalDate.now()) )  && rs.getDate("date_fin_encheres").toLocalDate().isAfter(LocalDate.now()))
+            {
+                art.setEtatVente("encours");
+            }
+           
+           
+           
+            if( rs.getDate("date_fin_encheres").toLocalDate().isBefore(LocalDate.now()) || rs.getDate("date_fin_encheres").toLocalDate().isEqual(LocalDate.now()))
+            {
+                art.setEtatVente("fini");
+            }
+           
+            if( rs.getDate("date_debut_encheres").toLocalDate().isAfter(LocalDate.now()))
+            {
+                art.setEtatVente("non_debuté");
+            }
 			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());

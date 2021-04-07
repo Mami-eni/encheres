@@ -1,5 +1,7 @@
 package fr.eni.ecole.bll;
-
+/**
+ * La Class représente Utilisateur pour la couche business
+ */
 import fr.eni.ecole.bo.Utilisateur;
 import fr.eni.ecole.exception.*;
 import fr.eni.ecole.util.Constants;

@@ -23,12 +23,18 @@
 			<p>Code postal: ${vendeur.codePostal}</p>
 			<p>Ville: ${vendeur.ville}</p>
 			<c:if test="${sessionScope.user.numero == vendeur.numero}">
-			<a href="./modifierUser">
-				<button class="btn btn-primary btn-lg">Modifier mon compte</button>
+				<a href="./modifierUser">
+					<button class="btn btn-primary btn-lg">Modifier mon compte</button>
+				</a>
+			</c:if>
+			<c:if test="${sessionScope.user.administrateur}">
+				<a href="./adSupprime?vendeur=${vendeur.numero}">
+				<button class="btn btn-primary btn-lg">Supprimer ce compte</button>
 			</a>
-		</c:if>
+			</c:if>
+
 		</div>
-		
+
 		<div class="col-sm-4"></div>
 	</div>
 

@@ -38,7 +38,7 @@ public class ModifierUtilisateurServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// Récupération de l'utilisateur de la session
+		// Rï¿½cupï¿½ration de l'utilisateur de la session
 		HttpSession session = request.getSession();
 		Utilisateur user = (Utilisateur) (session.getAttribute("user"));
 		// Faire les modifications
@@ -70,9 +70,6 @@ public class ModifierUtilisateurServlet extends HttpServlet {
 			request.setAttribute("errors", be.getErrors());
 			request.getRequestDispatcher("/WEB-INF/modifierProfil.jsp").forward(request, response);
 		}
-
-		// Effectuer le update de BDD
-
 	}
 
 }
