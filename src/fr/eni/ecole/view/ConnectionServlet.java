@@ -14,8 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.sun.xml.internal.bind.v2.TODO;
-
 import fr.eni.ecole.bo.Utilisateur;
 import fr.eni.ecole.dal.Connect;
 import fr.eni.ecole.exception.BusinessException;
@@ -34,7 +32,7 @@ public class ConnectionServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// Vérifier s'il y a un id et mdp dans les cookies
+		// Vï¿½rifier s'il y a un id et mdp dans les cookies
 		Cookie[] cookies = request.getCookies();
 		String login;
 		String password;
@@ -44,12 +42,7 @@ public class ConnectionServlet extends HttpServlet {
 				Cookie c = cookies[i];
 				if ("login".equals(c.getName())) {
 					login = c.getValue();
-					System.out.println();
 					request.setAttribute("login", login);
-				}
-				if ("password".equals(c.getName())) {
-					password = c.getValue();
-					request.setAttribute("password", password);
 				}
 			}
 		}
@@ -61,7 +54,7 @@ public class ConnectionServlet extends HttpServlet {
 //				e.printStackTrace();
 //			}
 //		}
-		// s'il y a user + password je crée un utilisateur
+		// s'il y a user + password je crï¿½e un utilisateur
 
 		//
 
@@ -78,7 +71,7 @@ public class ConnectionServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		String login = request.getParameter("login");
 		String password = request.getParameter("password");
-		// création de session pour l'utilisateur actuel
+		// crï¿½ation de session pour l'utilisateur actuel
 		HttpSession session = request.getSession();
 		String rememberMe = request.getParameter("remember-me");
 		try {
@@ -86,9 +79,7 @@ public class ConnectionServlet extends HttpServlet {
 			Utilisateur user = BllUtilisateur.getBllUtilisateur().validateConnection(login, password);
 
 			if ("on".equals(rememberMe)) {
-				// TODO pense à utiliser UUID pour cacher mdp
 				addCookie(response, "login", login, 24 * 60 * 60);
-				addCookie(response, "password", password, 24 * 60 * 60);
 			}
 			// Retenir l'utilisateur pour toute la session
 			if (user != null) {
@@ -102,6 +93,8 @@ public class ConnectionServlet extends HttpServlet {
 			e.printStackTrace();
 			request.setAttribute("errors", e.getErrors());
 			request.getRequestDispatcher("/WEB-INF/connectionUtilisateur.jsp").forward(request, response);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 

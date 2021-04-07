@@ -8,6 +8,8 @@
 
 <!-- Bootstrap core CSS -->
 <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="font.css" rel="stylesheet">
+<link href= "font.css" rel="stylesheet">
+
+
 
 </head>

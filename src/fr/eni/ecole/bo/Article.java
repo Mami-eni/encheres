@@ -109,6 +109,76 @@ public class Article {
 				+ ", prixVente=" + prixVente + ", utilisateur=" + utilisateur + ", categorie=" + categorie
 				+ ", etatVente=" + etatVente + "]";
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((categorie == null) ? 0 : categorie.hashCode());
+		result = prime * result + ((dateDebutEncheres == null) ? 0 : dateDebutEncheres.hashCode());
+		result = prime * result + ((dateFinEncheres == null) ? 0 : dateFinEncheres.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((etatVente == null) ? 0 : etatVente.hashCode());
+		result = prime * result + ((nom == null) ? 0 : nom.hashCode());
+		result = prime * result + numero;
+		result = prime * result + prixInitial;
+		result = prime * result + prixVente;
+		result = prime * result + ((utilisateur == null) ? 0 : utilisateur.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Article other = (Article) obj;
+		if (categorie == null) {
+			if (other.categorie != null)
+				return false;
+		} else if (!categorie.equals(other.categorie))
+			return false;
+		if (dateDebutEncheres == null) {
+			if (other.dateDebutEncheres != null)
+				return false;
+		} else if (!dateDebutEncheres.equals(other.dateDebutEncheres))
+			return false;
+		if (dateFinEncheres == null) {
+			if (other.dateFinEncheres != null)
+				return false;
+		} else if (!dateFinEncheres.equals(other.dateFinEncheres))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (etatVente == null) {
+			if (other.etatVente != null)
+				return false;
+		} else if (!etatVente.equals(other.etatVente))
+			return false;
+		if (nom == null) {
+			if (other.nom != null)
+				return false;
+		} else if (!nom.equals(other.nom))
+			return false;
+		if (numero != other.numero)
+			return false;
+		if (prixInitial != other.prixInitial)
+			return false;
+		if (prixVente != other.prixVente)
+			return false;
+		if (utilisateur == null) {
+			if (other.utilisateur != null)
+				return false;
+		} else if (!utilisateur.equals(other.utilisateur))
+			return false;
+		return true;
+	}
 	
 	
 	
