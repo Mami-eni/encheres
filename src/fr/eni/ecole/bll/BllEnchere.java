@@ -41,10 +41,6 @@ public class BllEnchere {
         return enchere.selectAll();
     }
    
-    public List<Enchere> selectByFiltre(String filtreTexte, String filtreCategorie) throws BusinessException
-    {
-        return enchere.selectByFiltre(filtreTexte, filtreCategorie);
-       
-    }
+    
 	
 }

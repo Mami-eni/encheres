@@ -45,7 +45,7 @@ public class ArticleJDBC implements ArticleDAO {
 																			+ " AND encheres.no_utilisateur = ? "
 																			+ " AND encheres.montant= ? ";
 	;
-	public void insert(Article a){
+	public void insert(Article a) throws BusinessException{
 		try(Connection cx = Connect.getConnection()){
 			PreparedStatement request = cx.prepareStatement("INSERT INTO articles (nom_article, description, date_debut_encheres, "
 					+ "date_fin_encheres, prix_initial, no_utilisateur, no_categorie) "
@@ -60,6 +60,9 @@ public class ArticleJDBC implements ArticleDAO {
 			request.executeUpdate();
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError("Ajout dans la base de données impossible");
+			throw be;
 		}
 	}
 	
@@ -100,7 +103,7 @@ public class ArticleJDBC implements ArticleDAO {
 	}
 
 	@Override
-	public List<Article> selectAll() {
+	public List<Article> selectAll() throws BusinessException {
 		List<Article> listeArticles = new ArrayList<Article>();
 		Article art = new Article();
 		try(Connection cx = Connect.getConnection()){
@@ -118,6 +121,9 @@ public class ArticleJDBC implements ArticleDAO {
 
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError("Sélection impossible");
+			throw be;
 		}
 		
 		return listeArticles;
@@ -126,7 +132,7 @@ public class ArticleJDBC implements ArticleDAO {
 	}
 
 	@Override
-	public Article selectById(int id) {
+	public Article selectById(int id) throws BusinessException {
 		Article art = new Article();
 		try(Connection cx = Connect.getConnection()){
 			PreparedStatement request = cx.prepareStatement("SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie "
@@ -137,12 +143,15 @@ public class ArticleJDBC implements ArticleDAO {
 			art = articleBuilder(rs);
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError("Selection impossible");
+			throw be;
 		}
 		return art;
 	}
 
 	@Override
-	public void update(Article item) {
+	public void update(Article item) throws BusinessException {
 		try(Connection cx = Connect.getConnection()){
 			PreparedStatement request = cx.prepareStatement("UPDATE articles SET "
 					+ "nom_article = ?, description = ?, date_debut_encheres = ?, "
@@ -160,24 +169,30 @@ public class ArticleJDBC implements ArticleDAO {
 			request.executeUpdate();
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError("Mise à jour impossible");
+			throw be;
 		}
 		
 	}
 
 	@Override
-	public void delete(Article item) {
+	public void delete(Article item) throws BusinessException {
 		try(Connection cx = Connect.getConnection()){
 			PreparedStatement request = cx.prepareStatement("DELETE FROM articles WHERE no_article = ?");
 			request.setInt(1, item.getNumero());
 			request.executeUpdate();
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError("Suppression impossible");
+			throw be;
 		}
 		
 	}
 	
 	@Override
-	public List<Article> selectByUser(Utilisateur utilisateur){
+	public List<Article> selectByUser(Utilisateur utilisateur) throws BusinessException{
         List<Article> liste = new ArrayList<Article>();
         try(Connection cx = Connect.getConnection()){
             PreparedStatement request = cx.prepareStatement("SELECT no_article, "
@@ -193,6 +208,9 @@ public class ArticleJDBC implements ArticleDAO {
            
         }catch(Exception e) {
             System.out.println(e.getMessage());
+            BusinessException be = new BusinessException();
+			be.addError("Sélection impossible");
+			throw be;
         }
         return liste;
     }

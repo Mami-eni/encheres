@@ -37,19 +37,15 @@ public class UpdateSaleServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
-		Utilisateur test = new Utilisateur();
-		try {
-			test = util.selectById(1);
-		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		session.setAttribute("utilisateur", test);
+		BusinessException error = new BusinessException();
 		Article art = new Article();
+		int articleId = Integer.parseInt(request.getParameter("article"));
 		try {
-			art = article.selectById(7);
+			art = article.selectById(articleId);
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
+			for(String s : e.getErrors()) {
+				error.addError(s);
+			}
 			e.printStackTrace();
 		}
 		session.setAttribute("articleId", art.getNumero());
@@ -62,7 +58,9 @@ public class UpdateSaleServlet extends HttpServlet {
 		try {
 			ret = retrait.selectByArticle(art);
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
+			for(String s : e.getErrors()) {
+				error.addError(s);
+			}
 			e.printStackTrace();
 		}
 		request.setAttribute("retrait", ret);
@@ -70,9 +68,12 @@ public class UpdateSaleServlet extends HttpServlet {
 		try {
 			listeCat = cat.selectAll();
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
+			for(String s : e.getErrors()) {
+				error.addError(s);
+			}
 			e.printStackTrace();
 		}
+		request.setAttribute("errors", error.getErrors());
 		request.setAttribute("categories", listeCat);
 		request.getRequestDispatcher("/WEB-INF/updateVente.jsp").forward(request, response);
 		
@@ -81,21 +82,25 @@ public class UpdateSaleServlet extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		BusinessException error = new BusinessException();
 		HttpSession session = request.getSession();
-		Utilisateur util = (Utilisateur)session.getAttribute("utilisateur");
+		Utilisateur util = (Utilisateur)session.getAttribute("user");
 		int id = (int)session.getAttribute("articleId");
 		String nom = request.getParameter("article");
 		String description = request.getParameter("description");
 		String categorie = request.getParameter("selectcat");
 		Categorie cate = new Categorie();
-		
-		try {
-			cate = cat.selectById(Integer.parseInt(categorie));
-		} catch (NumberFormatException | BusinessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+				try {
+					cate = cat.selectById(Integer.parseInt(categorie));
+				} catch (NumberFormatException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (BusinessException e1) {
+					for(String s : e1.getErrors()) {
+						error.addError(s);
+					}
+					e1.printStackTrace();
+				}
 		String miseAPrix = request.getParameter("map");
 		LocalDate debutEnchere = LocalDate.parse(request.getParameter("debutEnchere"));
 		LocalDate finEnchere = LocalDate.parse(request.getParameter("finEnchere"));
@@ -113,7 +118,9 @@ public class UpdateSaleServlet extends HttpServlet {
 		try {
 			article.update(art);
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
+			for(String s : e.getErrors()) {
+				error.addError(s);
+			}
 			e.printStackTrace();
 		}
 		
@@ -126,13 +133,31 @@ public class UpdateSaleServlet extends HttpServlet {
 		try {
 			retrait.update(ret);
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
+			for(String s : e.getErrors()) {
+				error.addError(s);
+			}
 			e.printStackTrace();
 		}
-		
-//		request.getRequestDispatcher("WEB-INF/nouvelleVenteBootstrap.jsp").forward(request, response);
-		
+		if(error.getErrors() != null) {
+			List<Categorie> listeCat = new ArrayList<Categorie>();
+			try {
+				listeCat = cat.selectAll();
+			} catch (BusinessException e) {
+				for(String s : e.getErrors()) {
+					error.addError(s);
+				}
+				e.printStackTrace();
+			}
+			request.setAttribute("categories", listeCat);
+			request.setAttribute("article", art);
+			request.setAttribute("retrait", ret);
+			request.setAttribute("dateDebut", debutEnchere.toString());
+			request.setAttribute("dateFin", finEnchere.toString());
+			request.setAttribute("errors", error.getErrors());
+			request.getRequestDispatcher("WEB-INF/updateVente.jsp").forward(request, response);
+		}else {
 		response.sendRedirect("/encheres");
+		}
 	}
 
 }
