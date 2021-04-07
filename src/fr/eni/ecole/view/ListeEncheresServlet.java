@@ -98,7 +98,7 @@ public class ListeEncheresServlet extends HttpServlet {
 			request.setAttribute("errors", e.getErrors());
 		}
 
-		
+
 
 		String id_article = request.getParameter("article");
 		String id_vendeur = request.getParameter("vendeur");
@@ -127,7 +127,7 @@ public class ListeEncheresServlet extends HttpServlet {
 
 
 		List<Article> listeArticles = new ArrayList<Article>();
-		List<Article> listeArticlesRemporte = new ArrayList<Article>();
+
 		String filtreTexte = request.getParameter("search");
 
 
@@ -142,10 +142,10 @@ public class ListeEncheresServlet extends HttpServlet {
 
 
 		/**
-		 * Retour sur la page d'accueil si aucun filtrage n'est réalisé 
+		 * Retour sur la page d'accueil si aucune recherche n'est effectuée
 		 */
 
-		if(filtreTexte.isEmpty() && filtreCategorie.equalsIgnoreCase("toutes") && filtreCheckboxVente==null && filtreCheckboxAchat==null)
+		if(filtreTexte.isEmpty() && "toutes".equalsIgnoreCase(filtreCategorie) && null==filtreCheckboxVente && null==filtreCheckboxAchat)
 		{
 			doGet(request, response);
 		}
@@ -154,7 +154,7 @@ public class ListeEncheresServlet extends HttpServlet {
 		{
 			try {
 				listeArticles= managerArticle.selectByFiltre(filtreTexte, filtreCategorie, filtreRadio, filtreCheckboxVente, filtreCheckboxAchat, userId);
-//				listeArticlesRemporte = managerArticle.selectAchatRemporte();
+
 
 				for (Article article : listeArticles)
 				{
@@ -179,25 +179,19 @@ public class ListeEncheresServlet extends HttpServlet {
 					meilleuresEncheresArticles.put(article.getNumero(), ench.getMontant());
 
 				}
-				
-				// test achats remportés
-				
 
-//				for (Article article : listeArticlesRemporte) {
-//					System.out.println("il a remporté: + "  + article.getNom());
-//				}
-//				
-				
-				} catch (BusinessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
 
-				request.setAttribute("meilleureEnchere", meilleuresEncheresArticles);
-				request.setAttribute("listeArticles", listeArticles);
-				
-			
+
+			} catch (BusinessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
+			request.setAttribute("meilleureEnchere", meilleuresEncheresArticles);
+			request.setAttribute("listeArticles", listeArticles);
+
+
 
 			request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
 		}

@@ -121,9 +121,7 @@ public class BllArticle {
 	public List<Article> selectAchatRemporte(String filtreTexte, String filtreCategorie, String filtreRadio, String[] filtreCheckboxVente,String[] filtreCheckboxAchat, int userId) throws BusinessException
 	{
 		
-	// appeler selectbyfiltre
-		
-//		List<Article> listeArticles = DAOFactory.getArticleDAO().selectAchatClos(userId);
+
 		List<Article> listeArticles = article.selectByFiltre(filtreTexte, filtreCategorie, filtreRadio, filtreCheckboxVente, filtreCheckboxAchat, userId);
 		List<Article> listeArticlesRemporte= new ArrayList<Article>();
 		

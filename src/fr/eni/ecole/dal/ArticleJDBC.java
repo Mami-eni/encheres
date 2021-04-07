@@ -252,13 +252,11 @@ public class ArticleJDBC implements ArticleDAO {
 					listeArticle.add(art);
 				}
 			
-			
-
 
 		}catch(Exception e) {
 			e.printStackTrace();
 			BusinessException be = new BusinessException();
-			be.addError(Errors.SELECT_ENCHERE_NULL);
+			be.addError(Errors.SELECT_FILTRE_NULL);
 			throw be;
 
 		}
@@ -360,7 +358,7 @@ public class ArticleJDBC implements ArticleDAO {
 	
 	private void appendRequeteFiltreCheckboxAchat(StringBuilder requete,  String[] filtreCheckboxAchat, int userId,String SELECT_FILTRE_CHECKBOX_ACHAT_CUMUL)
 	{
-//		requete.append(" ( ");
+
 		
 		if(1==filtreCheckboxAchat.length)
 		{
@@ -413,34 +411,5 @@ public class ArticleJDBC implements ArticleDAO {
 	}
 	
 	
-	@Override
-	public List<Article> selectAchatClos(int userId) {
-		List<Article> listeArticles = new ArrayList<Article>();
-		Article art = new Article();
-		try(Connection cx = Connect.getConnection()){
-			PreparedStatement request = cx.prepareStatement(" select * from articles "+
-					" join encheres on articles.no_article = encheres.no_article "+
-					" where articles.no_utilisateur <>  ? and articles.date_debut_encheres <now() "+
-					" and encheres.no_utilisateur = ? " );
-			  request.setInt(1, userId );
-			  request.setInt(2, userId);
-			ResultSet rs = request.executeQuery();
-			
-			
-			while(rs.next())
-			{
-				art = articleBuilder(rs);
-				listeArticles.add(art);
-			}
-			
-
-		}catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
-		
-		return listeArticles;
-		
-		
-	}
 	
 }
