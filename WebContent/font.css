@@ -1,4 +1,25 @@
 @charset "UTF-8";
+html
+{
+	font-size:20px;
+}
+
+.conteneur-image, .conteneur-bouton
+{
+	align-self:center;
+	text-align:end;
+}
+
+
+.conteneur-image img{
+	width:50px;
+}
+
+.card
+{
+	font-size:0.8em;
+	padding-top: 2px;
+}
 .title{
 	font-size: 50px;
 }
@@ -12,3 +33,4 @@
 .displayArticle{
 	font-size: 30px;
 }
+
