@@ -38,8 +38,8 @@ public class DetailVenteServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		BusinessException error = new BusinessException();
-		if(request.getAttribute("erreur") != null) {
-			error = (BusinessException)request.getAttribute("erreur");
+		if(request.getAttribute("errors") != null) {
+			error = (BusinessException)request.getAttribute("errors");
 		}
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		int idArticle = 0;
@@ -74,7 +74,7 @@ public class DetailVenteServlet extends HttpServlet {
 			for(String s : e.getErrors()) {
 				error.addError(s);
 			}
-			request.setAttribute("erreur", error.getErrors());
+			request.setAttribute("errors", error.getErrors());
 			request.getRequestDispatcher("/WEB-INF/detailVente.jsp").forward(request, response);
 		}
 	}
@@ -111,7 +111,7 @@ public class DetailVenteServlet extends HttpServlet {
 			for(String s : e.getErrors()) {
 				error.addError(s);
 			}
-			request.setAttribute("erreur", error);
+			request.setAttribute("errors", error);
 			request.setAttribute("article", art.getNumero());
 			doGet(request, response);
 			e.printStackTrace();

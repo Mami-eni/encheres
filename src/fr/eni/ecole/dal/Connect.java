@@ -1,6 +1,7 @@
 package fr.eni.ecole.dal;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import javax.naming.Context;
@@ -10,7 +11,8 @@ import javax.sql.DataSource;
 
 public class Connect {
 
-	private static DataSource dataSource;
+	public static boolean DEV_MODE = true;
+	 private static DataSource dataSource;
 	
 	/**
 	 * Au chargement de la classe, la DataSource est recherch�e dans le 
@@ -30,8 +32,16 @@ public class Connect {
 	
 	/**
 	 * Getter pour acc�der � la connexion
+	 * @throws ClassNotFoundException 
 	 */
-	public static Connection getConnection() throws SQLException{
+	public static Connection getConnection() throws SQLException, ClassNotFoundException{ if (DEV_MODE) {
 		return Connect.dataSource.getConnection();
+	}else {
+		String url = "localhost/troc?serverTimezone=UTC";
+		String user = "root";
+		String password = "";
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		return DriverManager.getConnection("jdbc:mysql://"+url, user, password);
 	}
+}
 }

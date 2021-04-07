@@ -9,11 +9,12 @@ import java.util.List;
 
 import fr.eni.ecole.bo.Article;
 import fr.eni.ecole.bo.Retrait;
+import fr.eni.ecole.exception.BusinessException;
 
 
 public class RetraitJDBC implements RetraitDAO {
 
-	public void insert(Retrait r) {
+	public void insert(Retrait r) throws BusinessException {
 		try(Connection cx = Connect.getConnection()){
 			PreparedStatement request = cx.prepareStatement("INSERT INTO retraits (no_article, rue, code_postal, ville)"
 					+ " VALUES(?,?,?,?)");
@@ -24,10 +25,13 @@ public class RetraitJDBC implements RetraitDAO {
 			request.executeUpdate();
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError("Insertion dans la base de données impossible");
+			throw be;
 		}
 	}
 	
-	public Retrait selectByArticle(Article a) {
+	public Retrait selectByArticle(Article a) throws BusinessException {
 		Retrait ret = new Retrait();
 		try(Connection cx = Connect.getConnection()){
 			PreparedStatement request = cx.prepareStatement("SELECT rue, code_postal, ville FROM retraits WHERE no_article = ?");
@@ -40,6 +44,9 @@ public class RetraitJDBC implements RetraitDAO {
 			ret.setVille(rs.getString("ville"));
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError("Sélection impossible");
+			throw be;
 		}
 		return ret;
 	}
@@ -55,7 +62,7 @@ public class RetraitJDBC implements RetraitDAO {
 	}
 
 	@Override
-    public void update(Retrait item) {
+    public void update(Retrait item) throws BusinessException {
         try(Connection cx = Connect.getConnection()){
             PreparedStatement request = cx.prepareStatement("UPDATE retraits SET rue = ?, code_postal = ?, ville = ? WHERE no_article = ?");
             request.setString(1, item.getRue());
@@ -65,12 +72,24 @@ public class RetraitJDBC implements RetraitDAO {
             request.executeUpdate();
         }catch(Exception e) {
             System.out.println(e.getMessage());
+            BusinessException be = new BusinessException();
+			be.addError("Mise à jour impossible");
+			throw be;
         }
     }
 
 	@Override
-	public void delete(Retrait item) {
-		throw new UnsupportedOperationException("Not supported yet.");
+	public void delete(Retrait item) throws BusinessException {
+		try(Connection cx = Connect.getConnection()){
+			PreparedStatement request = cx.prepareStatement("DELETE FROM retraits WHERE no_article = ?");
+			request.setInt(1, item.getArticle().getNumero());
+			request.executeUpdate();
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError("Suppression impossible");
+			throw be;
+		}
 	}
 	
 }

@@ -64,7 +64,37 @@ public class BllArticle {
 	}
 	
 	public void update(Article a) throws BusinessException {
+		boolean throwError = false;
+		BusinessException error = new BusinessException();
+		if(a.getNom().length() > 30) {
+			throwError = true;
+			error.addError(Errors.REGLE_ARTICLE);	
+		}
+		else if(a.getDescription().length() > 300) {
+			throwError = true;
+			error.addError(Errors.REGLE_DESCRIPTION);
+		}
+		else if(!a.getDateDebutEncheres().isAfter(LocalDate.now().minusDays(1))) {
+			throwError = true;
+			error.addError(Errors.REGLE_DATE);
+		}
+		else if(!a.getDateFinEncheres().isAfter(LocalDate.now().minusDays(1))) {
+			throwError = true;
+			error.addError(Errors.REGLE_DATE);
+		}
+		else if(!a.getDateDebutEncheres().toString().matches(Constants.REGEX_DATE)) {
+			throwError = true;
+			error.addError(Errors.REGLE_DATE_MAX);
+		}
+		else if(!a.getDateFinEncheres().toString().matches(Constants.REGEX_DATE)) {
+			throwError = true;
+			error.addError(Errors.REGLE_DATE_MAX);
+		}
+		if(!throwError) {	
 		article.update(a);
+		}else {
+			throw error;
+		}
 	}
 	
 	public void delete(Article a) throws BusinessException {

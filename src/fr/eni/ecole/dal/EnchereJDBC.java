@@ -15,12 +15,11 @@ import fr.eni.ecole.exception.Errors;
 
 public class EnchereJDBC implements EnchereDAO {
 	
-	
-	
+
 	private ArticleDAO art = DAOFactory.getArticleDAO();
 	private UtilisateurDAO util = DAOFactory.getUtilisateurDAO();
 	
-	public void insert(Enchere ench) {
+	public void insert(Enchere ench) throws BusinessException {
 		try(Connection cx = Connect.getConnection()){
 			PreparedStatement request = cx.prepareStatement("INSERT INTO encheres "
 					+ "(date_enchere, montant_enchere, no_article, no_utilisateur) VALUES(?,?,?,?)");
@@ -31,10 +30,13 @@ public class EnchereJDBC implements EnchereDAO {
 			request.executeUpdate();
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError("Insertion dans la base de données impossible");
+			throw be;
 		}
 	}
 	
-	public List<Enchere> selectByArticle(Article a) {
+	public List<Enchere> selectByArticle(Article a) throws BusinessException {
         List<Enchere> liste = new ArrayList<Enchere>();
        
         try(Connection cx = Connect.getConnection()){
@@ -48,11 +50,14 @@ public class EnchereJDBC implements EnchereDAO {
             }
         }catch(Exception e) {
             System.out.println(e.getMessage());
+            BusinessException be = new BusinessException();
+			be.addError("Sélection impossible");
+			throw be;
         }
         return liste;
     }
 	
-	public List<Enchere> selectByUser(Utilisateur util){
+	public List<Enchere> selectByUser(Utilisateur util) throws BusinessException{
 		List<Enchere> liste = new ArrayList<Enchere>();
 		try(Connection cx = Connect.getConnection()){
 			PreparedStatement request = cx.prepareStatement("SELECT no_enchere, date_enchere, montant_enchere, no_article, no_utilisateur "
@@ -65,6 +70,9 @@ public class EnchereJDBC implements EnchereDAO {
 			}
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError("Sélection impossible");
+			throw be;
 		}
 		return liste;
 	}
@@ -110,12 +118,24 @@ public class EnchereJDBC implements EnchereDAO {
 		return listeEnchere;
 	}
 	
-	
-	
+
 
 	@Override
-	public Enchere selectById(int id) {
-		throw new UnsupportedOperationException("Not supported yet.");
+	public Enchere selectById(int id) throws BusinessException {
+		Enchere enchere = new Enchere();
+		try(Connection cx = Connect.getConnection()){
+			PreparedStatement request = cx.prepareStatement("SELECT no_enchere, date_enchere, montant_enchere, no_article, no_utilisateur FROM encheres WHERE no_enchere = ?");
+			request.setInt(1, id);
+			ResultSet rs = request.executeQuery();
+			rs.next();
+			enchere = enchereBuilder(rs);
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError("Sélection impossible");
+			throw be;
+		}
+		return enchere;
 	}
 
 	@Override

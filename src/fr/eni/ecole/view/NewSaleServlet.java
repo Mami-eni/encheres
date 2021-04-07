@@ -42,7 +42,7 @@ public class NewSaleServlet extends HttpServlet {
 		try {
 			listeCat = cat.selectAll();
 		} catch (BusinessException e) {
-			request.setAttribute("erreur", e.getErrors());
+			request.setAttribute("errors", e.getErrors());
 			e.printStackTrace();
 		}
 		request.setAttribute("categories", listeCat);
@@ -51,8 +51,8 @@ public class NewSaleServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		BusinessException error = new BusinessException();
 		request.setCharacterEncoding("UTF-8");
+		BusinessException error = new BusinessException();
 		HttpSession session = request.getSession();
 		Utilisateur util = (Utilisateur) session.getAttribute("user");
 		String nom = request.getParameter("article");
@@ -120,7 +120,7 @@ public class NewSaleServlet extends HttpServlet {
 					error.addError(s);
 				}
 			}
-			request.setAttribute("erreur", error.getErrors());
+			request.setAttribute("errors", error.getErrors());
 			request.getRequestDispatcher("WEB-INF/nouvelleVente.jsp").forward(request, response);
 		}
 

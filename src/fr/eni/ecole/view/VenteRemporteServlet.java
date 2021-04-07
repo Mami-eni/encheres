@@ -69,7 +69,7 @@ public class VenteRemporteServlet extends HttpServlet {
 				ench = e;
 			}
 		}
-		request.setAttribute("erreur", error.getErrors());
+		request.setAttribute("errors", error.getErrors());
 		request.setAttribute("enchere", ench);
 		request.getRequestDispatcher("/WEB-INF/venteRemporte.jsp").forward(request, response);
 	}
