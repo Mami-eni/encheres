@@ -1,7 +1,7 @@
 package fr.eni.ecole.exception;
 
 /**
- * Les codes disponibles sont entre 20000 et 29999
+ * Cette classe contient des constantes qui sont des messages d'erreur
  */
 public class Errors {
 	
@@ -36,5 +36,12 @@ public class Errors {
     public static final String REGLE_DATE = "la date ne peut �tre ant�rieure � la date du jour";
     public static final String REGLE_DATE_MAX = "la date doit �tre comprise entre 2021 et 2029";
     public static final String MONTANT_ENTIER = "Le montant doit �tre un entier";
+    
+    /** Echec d'accès à la base de données */
+    
+    public static final String ERREUR_INSERT = "Ajout dans la base de données impossible";
+    public static final String ERREUR_SELECT = "Sélection impossible";
+    public static final String ERREUR_DELETE = "Suppression impossible";
+    public static final String ERREUR_UPDATE = "Mise à jour impossible";
 	
 }

@@ -19,7 +19,7 @@ import fr.eni.ecole.bo.Retrait;
 import fr.eni.ecole.exception.BusinessException;
 
 /**
- * Servlet implementation class VenteRemporteServlet
+ * Cette classe gère l'envoi de données d'affichage
  */
 @WebServlet("/VenteRemporteServlet")
 public class VenteRemporteServlet extends HttpServlet {
@@ -27,7 +27,8 @@ public class VenteRemporteServlet extends HttpServlet {
 	private BllArticle article = BllArticle.getBllArticle();
 	private BllRetrait retrait = BllRetrait.getBllRetrait();
     private BllEnchere enchere = BllEnchere.getBllEnchere();   
- 
+    
+    /* passage en attributs de requête des éléments nécessaires à l'affichage des données de la page */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		BusinessException error = new BusinessException();

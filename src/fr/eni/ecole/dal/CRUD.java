@@ -4,6 +4,9 @@ import java.util.List;
 
 import fr.eni.ecole.exception.BusinessException;
 
+/**
+ * Interface générique - définit les méthodes communes à toutes les interfaces de la couche DAL
+ */
 public interface CRUD<T> 
 {
 	void insert(T item) throws BusinessException ;

@@ -6,7 +6,9 @@ import fr.eni.ecole.util.Constants;
 import fr.eni.ecole.bo.Utilisateur;
 import fr.eni.ecole.dal.DAOFactory;
 import fr.eni.ecole.dal.UtilisateurDAO;
-
+/**
+ * Cette classe contient la logique métier avant l'appel aux méthodes de la couche DAL qui accèdent à la table utilisateurs de la base de données
+ */
 public class BllUtilisateur {
 
 	private static BllUtilisateur instance;

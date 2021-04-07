@@ -45,7 +45,7 @@
         <p>Meilleure Offre</p>
         </div>
         <div class="col-sm-6">
-        <p>${enchere.montant } pts par ${utilisateur.pseudo }</p>
+        <p>${enchere.montant } pts par <a href="afficherProfil?vendeur=${utilisateur.numero}">${utilisateur.pseudo }</a></p>
         </div>
         </div>
         

@@ -12,7 +12,9 @@ import fr.eni.ecole.dal.DAOFactory;
 import fr.eni.ecole.exception.BusinessException;
 import fr.eni.ecole.exception.Errors;
 import fr.eni.ecole.util.Constants;
-
+/**
+ * Cette classe contient la logique métier avant l'appel aux méthodes de la couche DAL qui accèdent à la table articles de la base de données
+ */
 public class BllArticle {
 	
 	private static BllArticle instance;
@@ -30,28 +32,35 @@ public class BllArticle {
 	}
 	
 	public void insert(Article a) throws BusinessException {
+		/* Mise en place des condition d'insertion dans la bdd */ 
 		boolean throwError = false;
 		BusinessException error = new BusinessException();
+		/* nom de 30 caractères maximum */
 		if(a.getNom().length() > 30) {
 			throwError = true;
 			error.addError(Errors.REGLE_ARTICLE);	
 		}
+		/* description de 300 caractères maximum */
 		else if(a.getDescription().length() > 300) {
 			throwError = true;
 			error.addError(Errors.REGLE_DESCRIPTION);
 		}
+		/* date de début d'enchère possible à partir de la date du jour */
 		else if(!a.getDateDebutEncheres().isAfter(LocalDate.now().minusDays(1))) {
 			throwError = true;
 			error.addError(Errors.REGLE_DATE);
 		}
+		/* date de fin d'enchère doit être postérieure à la date du jour */
 		else if(!a.getDateFinEncheres().isAfter(LocalDate.now().minusDays(1))) {
 			throwError = true;
 			error.addError(Errors.REGLE_DATE);
 		}
+		/* vérification du format de date - maximum année 2029 */
 		else if(!a.getDateDebutEncheres().toString().matches(Constants.REGEX_DATE)) {
 			throwError = true;
 			error.addError(Errors.REGLE_DATE_MAX);
 		}
+		/* vérification du format de date - maximum année 2029 */
 		else if(!a.getDateFinEncheres().toString().matches(Constants.REGEX_DATE)) {
 			throwError = true;
 			error.addError(Errors.REGLE_DATE_MAX);
@@ -64,28 +73,35 @@ public class BllArticle {
 	}
 	
 	public void update(Article a) throws BusinessException {
+		/* Mise en place des condition d'update dans la bdd */ 
 		boolean throwError = false;
 		BusinessException error = new BusinessException();
+		/* nom de 30 caractères maximum */
 		if(a.getNom().length() > 30) {
 			throwError = true;
 			error.addError(Errors.REGLE_ARTICLE);	
 		}
+		/* description de 300 caractères maximum */
 		else if(a.getDescription().length() > 300) {
 			throwError = true;
 			error.addError(Errors.REGLE_DESCRIPTION);
 		}
+		/* date de début d'enchère possible à partir de la date du jour */
 		else if(!a.getDateDebutEncheres().isAfter(LocalDate.now().minusDays(1))) {
 			throwError = true;
 			error.addError(Errors.REGLE_DATE);
 		}
+		/* date de fin d'enchère doit être postérieure à la date du jour */
 		else if(!a.getDateFinEncheres().isAfter(LocalDate.now().minusDays(1))) {
 			throwError = true;
 			error.addError(Errors.REGLE_DATE);
 		}
+		/* vérification du format de date - maximum année 2029 */
 		else if(!a.getDateDebutEncheres().toString().matches(Constants.REGEX_DATE)) {
 			throwError = true;
 			error.addError(Errors.REGLE_DATE_MAX);
 		}
+		/* vérification du format de date - maximum année 2029 */
 		else if(!a.getDateFinEncheres().toString().matches(Constants.REGEX_DATE)) {
 			throwError = true;
 			error.addError(Errors.REGLE_DATE_MAX);
@@ -119,7 +135,7 @@ public class BllArticle {
 		boolean selectVenteClose= false;
 		// si clique sur bouton 
 		
-		if(1==filtreCheckboxAchat.length)
+		 if(!(null==filtreCheckboxAchat) && 1==filtreCheckboxAchat.length)
 		{
 			for (String choixFiltreAchat : filtreCheckboxAchat)
 			{
