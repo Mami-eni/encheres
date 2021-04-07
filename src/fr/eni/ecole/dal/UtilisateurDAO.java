@@ -1,5 +1,7 @@
 package fr.eni.ecole.dal;
-
+/**
+ * Interface DAO pour la class utilisateur
+ */
 import fr.eni.ecole.bo.Utilisateur;
 import fr.eni.ecole.exception.BusinessException;
 /**

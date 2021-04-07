@@ -1,14 +1,11 @@
 package fr.eni.ecole.dal;
 
 import java.sql.Connection;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
 
 
 import fr.eni.ecole.exception.BusinessException;
@@ -21,6 +18,13 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 
 	private final int CREDIT_OFFERT = 100;
 
+	/**
+	 * Permet de créer un utilisateur à partir d'une requête SQL
+	 * 
+	 * @param id
+	 * @return Utilisateur
+	 * @throws BusinessException
+	 */
 	public Utilisateur utilisateurBuilder(ResultSet rs) {
 		Utilisateur util = new Utilisateur();
 		try {
@@ -41,7 +45,12 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 		}
 		return util;
 	}
-
+	/**
+	 * Permet de trouver un utilisateur grâce à son id de BDD
+	 * 
+	 * @param item
+	 * @throws BusinessException
+	 */
 	@Override
 	public void insert(Utilisateur item) throws BusinessException {
 		try (Connection cx = Connect.getConnection()) {
@@ -72,6 +81,12 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 		}
 	}
 
+	/**
+	 * Permet de trouver tous les utilisateurs dans la BDD
+	 * 
+	 * @return List<Utilisateur>
+	 * @throws BusinessException
+	 */
 	@Override
 	public List<Utilisateur> selectAll() throws BusinessException {
 		List<Utilisateur> users = new ArrayList<Utilisateur>();
@@ -94,6 +109,13 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 		return users;
 	}
 
+	/**
+	 * Permet de trouver un utilisateur grâce à son id de BDD
+	 * 
+	 * @param id
+	 * @return Utilisateur
+	 * @throws BusinessException
+	 */
 	@Override
 	public Utilisateur selectById(int id) throws BusinessException {
 		Utilisateur util = new Utilisateur();
@@ -113,7 +135,13 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 		}
 		return util;
 	}
-
+	
+	/**
+	 * Mise à jour des données d'un utilisateur
+	 * 
+	 * @param item
+	 * @throws BusinessException
+	 */
 	@Override
 	public void update(Utilisateur item) throws BusinessException {
 		try (Connection cx = Connect.getConnection()) {
@@ -147,8 +175,10 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 	}
 
 	/**
-	 * Methode non utilis�e.
-	 * @throws BusinessException 
+	 * Supprimer un utilisateur
+	 * 
+	 * @param item
+	 * @throws BusinessException
 	 */
 	@Override
 	public void delete(Utilisateur item) throws BusinessException {
@@ -171,10 +201,11 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 	 * 
 	 * @param login
 	 * @param password
-	 * @return
+	 * @return Utilisateur
 	 * @throws BusinessException
 	 * @throws ClassNotFoundException 
 	 */
+	@Override
 	public Utilisateur find(String pseudo, String motDePasse) throws BusinessException, ClassNotFoundException {
 		try (Connection cx = Connect.getConnection()) {
 			PreparedStatement pstmt = cx.prepareStatement("SELECT no_utilisateur, pseudo, nom,"
@@ -198,7 +229,7 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 			e.printStackTrace();
 			e.getMessage();
 			BusinessException be = new BusinessException();
-			be.addError("ERROR DB - " + e.getMessage());
+			be.addError("Pseudo ou Mot de passe inconnu");
 			throw be;
 
 		}

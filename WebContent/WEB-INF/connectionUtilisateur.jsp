@@ -18,8 +18,8 @@
 
 
 
-				<%@include file="template/messageErreur.jsp"%>
-			
+			<%@include file="template/messageErreur.jsp"%>
+
 			<c:if test="${empty sessionScope.user}">
 				<form action="./connection" method="post">
 					<div class="form-group">
@@ -36,10 +36,10 @@
 							class="btn btn-lg btn-primary">
 					</div>
 
-								<div class="form-group">
-									<input type="checkbox" name="remember-me"><label
-										for="remember-me">Se souvient de moi </label>
-								</div>
+					<div class="form-group">
+						<input type="checkbox" name="remember-me"><label
+							for="remember-me">Se souvient de moi </label>
+					</div>
 				</form>
 
 				<a href="./inscription">
@@ -47,17 +47,7 @@
 						un compte</button>
 				</a>
 			</c:if>
-			<c:if test="${!empty sessionScope.user}">
-				<span>
-					<h1>Bienvenu ${user.pseudo}!</h1> 
-					<a href="./reussi">
-						<button class="btn btn-primary" value="">Mon profil</button>
-					</a>
-				<form action="./deconnexion" method="post">
-					<input type="submit" value="Déconnexion" class="btn btn-primary">
-				</form>
-				</span>
-			</c:if>
+
 		</div>
 		<div class="col-sm-4"></div>
 	</div>

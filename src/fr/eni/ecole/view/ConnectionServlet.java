@@ -46,17 +46,6 @@ public class ConnectionServlet extends HttpServlet {
 				}
 			}
 		}
-//		if (!"".equals(login) || !"".equals(password)) {
-//			try {
-//				Utilisateur user = BllUtilisateur.getBllUtilisateur().validateConnection(login, password);
-//			} catch (BusinessException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-		// s'il y a user + password je cr�e un utilisateur
-
-		//
 
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/connectionUtilisateur.jsp");
 		rd.forward(request, response);
@@ -75,20 +64,19 @@ public class ConnectionServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		String rememberMe = request.getParameter("remember-me");
 		try {
-			// Cherche l'utilisateur
+			// Chercher l'utilisateur
 			Utilisateur user = BllUtilisateur.getBllUtilisateur().validateConnection(login, password);
-
-			if ("on".equals(rememberMe)) {
-				addCookie(response, "login", login, 24 * 60 * 60);
-			}
-			// Retenir l'utilisateur pour toute la session
+			// Si connection réussi, retenir l'utilisateur pour la session
 			if (user != null) {
 				session.setAttribute("user", user);
 				request.getRequestDispatcher("/WEB-INF/monProfil.jsp").forward(request, response);
 			} else {
 				request.getRequestDispatcher("/WEB-INF/connectionUtilisateur.jsp").forward(request, response);
 			}
-			
+			// Si l'utilisateur veut garder son login, créer un cookie
+			if ("on".equals(rememberMe)) {
+				addCookie(response, "login", login, 24 * 60 * 60);
+			}
 		} catch (BusinessException e) {
 			e.printStackTrace();
 			request.setAttribute("errors", e.getErrors());
@@ -97,16 +85,18 @@ public class ConnectionServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+ 	* Ajouter un Cookie
+ 	* @param response
+ 	* @param name
+ 	* @param value
+ 	* @param maxAge
+ 	*/
 	public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
 		Cookie cookie = new Cookie(name, value);
 		cookie.setPath("/");
 		cookie.setMaxAge(maxAge);
 		response.addCookie(cookie);
-	}
-
-	public static void removeCookie(HttpServletResponse response, String name) {
-		addCookie(response, name, null, 0);
 	}
 
 }

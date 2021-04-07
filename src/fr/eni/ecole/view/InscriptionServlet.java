@@ -77,8 +77,6 @@ public class InscriptionServlet extends HttpServlet {
 			request.getRequestDispatcher("/WEB-INF/modifierProfil.jsp").forward(request, response);
 		}
 		
-//			Transmettre les informations pour la page de welcome
-
 	}
 
 }
