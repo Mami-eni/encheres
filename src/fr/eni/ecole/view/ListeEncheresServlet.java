@@ -80,11 +80,11 @@ public class ListeEncheresServlet extends HttpServlet {
 						}
 
 					}
-						
-					
 
 				}
-				else {
+				
+				else
+				{
 					montantMax = article.getPrixInitial();
 				}
 
@@ -178,8 +178,14 @@ public class ListeEncheresServlet extends HttpServlet {
 						}
 
 					}
+					
+					else
+					{
+						montantMax = article.getPrixInitial();
+					}
 
-					meilleuresEncheresArticles.put(article.getNumero(), ench.getMontant());
+					meilleuresEncheresArticles.put(article.getNumero(), montantMax);
+
 
 				}
 

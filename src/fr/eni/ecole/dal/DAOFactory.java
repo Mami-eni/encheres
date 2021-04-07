@@ -1,12 +1,8 @@
 package fr.eni.ecole.dal;
-
+/**
+ * cette classe génère des instances des interfaces de la couche DAL - permet d'accéder à toutes les méthodes de la couche DAL à l'exception des builders.
+ */
 public class DAOFactory {
-	
-	private static ArticleDAO article;
-	private static CategorieDAO categorie;
-	private static EnchereDAO enchere;
-	private static RetraitDAO retrait;
-	private static UtilisateurDAO utilisateur;
 	
 	public static ArticleDAO getArticleDAO() {
 		return new ArticleJDBC();

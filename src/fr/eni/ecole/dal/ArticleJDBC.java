@@ -5,19 +5,24 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.ecole.bo.Article;
+import fr.eni.ecole.bo.Enchere;
 import fr.eni.ecole.bo.Utilisateur;
 import fr.eni.ecole.exception.BusinessException;
 import fr.eni.ecole.exception.Errors;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+/**
+ * cette classe implémente toutes les méthodes d'accès à la table articles de la base de données
+ */
 
 public class ArticleJDBC implements ArticleDAO {
 	
 	private CategorieDAO cat = DAOFactory.getCategorieDAO();
 	private UtilisateurDAO util = DAOFactory.getUtilisateurDAO();
+	
 	
 	private final String SELECT_ALL_ENCOURS = " SELECT no_article, nom_article, description, date_debut_encheres," + 
 											  " date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie " + 
@@ -65,12 +70,13 @@ public class ArticleJDBC implements ArticleDAO {
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 			BusinessException be = new BusinessException();
-			be.addError("Ajout dans la base de données impossible");
+			be.addError(Errors.ERREUR_INSERT);
 			throw be;
 		}
 	}
 	
 	public Article articleBuilder(ResultSet rs) {
+		EnchereDAO enchere = DAOFactory.getEnchereDAO();
 		Article art = new Article();
 		try {
 			art.setNumero(rs.getInt("no_article"));
@@ -83,24 +89,55 @@ public class ArticleJDBC implements ArticleDAO {
 			art.setUtilisateur(util.selectById((rs.getInt("no_utilisateur"))));
 			art.setCategorie(cat.selectById(rs.getInt("no_categorie")));
 			
+//            List<Enchere> ListeEncheres= new ArrayList<Enchere>();
+//          
+//            ListeEncheres = enchere.selectByArticle(art);
 			
+        
 			
 			if((rs.getDate("date_debut_encheres").toLocalDate().isBefore(LocalDate.now()) || rs.getDate("date_debut_encheres").toLocalDate().isEqual(LocalDate.now()) )  && rs.getDate("date_fin_encheres").toLocalDate().isAfter(LocalDate.now()))
+<<<<<<< HEAD
+			{
+				art.setEtatVente("encours");
+			}
+			
+//			else if((rs.getDate("date_debut_encheres").toLocalDate().isBefore(LocalDate.now()) || rs.getDate("date_debut_encheres").toLocalDate().isEqual(LocalDate.now()) )  
+//					&& rs.getDate("date_fin_encheres").toLocalDate().isAfter(LocalDate.now()) && ListeEncheres.isEmpty() )
+//			{
+//				art.setEtatVente("encoursSansEnchere");
+//			}
+			
+						
+			else if( rs.getDate("date_fin_encheres").toLocalDate().isBefore(LocalDate.now()) || rs.getDate("date_fin_encheres").toLocalDate().isEqual(LocalDate.now()))
+			{
+				art.setEtatVente("fini");
+
+				
+				// setter le prix de vente
+				// update base de donnée
+			}
+			
+			else if( rs.getDate("date_debut_encheres").toLocalDate().isAfter(LocalDate.now()))
+			{
+				art.setEtatVente("non_debuté");
+			}
+=======
             {
                 art.setEtatVente("encours");
             }
            
            
            
-            if( rs.getDate("date_fin_encheres").toLocalDate().isBefore(LocalDate.now()) || rs.getDate("date_fin_encheres").toLocalDate().isEqual(LocalDate.now()))
+			else if( rs.getDate("date_fin_encheres").toLocalDate().isBefore(LocalDate.now()) || rs.getDate("date_fin_encheres").toLocalDate().isEqual(LocalDate.now()))
             {
                 art.setEtatVente("fini");
             }
            
-            if( rs.getDate("date_debut_encheres").toLocalDate().isAfter(LocalDate.now()))
+			else if( rs.getDate("date_debut_encheres").toLocalDate().isAfter(LocalDate.now()))
             {
                 art.setEtatVente("non_debuté");
             }
+>>>>>>> 41a0c3cee6f8f71a606cb4253da42cb1b2118aa8
 			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
@@ -128,7 +165,7 @@ public class ArticleJDBC implements ArticleDAO {
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 			BusinessException be = new BusinessException();
-			be.addError("Sélection impossible");
+			be.addError(Errors.ERREUR_SELECT);
 			throw be;
 		}
 		
@@ -150,7 +187,7 @@ public class ArticleJDBC implements ArticleDAO {
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 			BusinessException be = new BusinessException();
-			be.addError("Selection impossible");
+			be.addError(Errors.ERREUR_SELECT);
 			throw be;
 		}
 		return art;
@@ -176,7 +213,7 @@ public class ArticleJDBC implements ArticleDAO {
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 			BusinessException be = new BusinessException();
-			be.addError("Mise à jour impossible");
+			be.addError(Errors.ERREUR_UPDATE);
 			throw be;
 		}
 		
@@ -191,7 +228,7 @@ public class ArticleJDBC implements ArticleDAO {
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 			BusinessException be = new BusinessException();
-			be.addError("Suppression impossible");
+			be.addError(Errors.ERREUR_DELETE);
 			throw be;
 		}
 		
@@ -215,7 +252,7 @@ public class ArticleJDBC implements ArticleDAO {
         }catch(Exception e) {
             System.out.println(e.getMessage());
             BusinessException be = new BusinessException();
-			be.addError("Sélection impossible");
+			be.addError(Errors.ERREUR_SELECT);
 			throw be;
         }
         return liste;

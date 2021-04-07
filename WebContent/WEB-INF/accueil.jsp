@@ -9,9 +9,36 @@
 <body>
 	<%@ include file="template/nav.jsp"%>
 
+	
+	  <div class="row">
+	      <div class="col-sm-2"></div>
+	      <div class="col-sm-8"><p class="title">Liste des enchères</p></div>
+	      <div class="col-sm-2"></div>
+      </div>
+      
+      
+	  <div class="row">
+	      <div class="col-sm-2"></div>
+	      
+	      <div class="col-sm-4">
+	      	<p class="title">Filtres:</p>
+	      	
+	      	
+	      </div>
+	      
+	      
+	      
+	      
+	      
+	      
+	      <div class="col-sm-4">
+	      <p class="title">Liste des enchères</p>
+	      </div>
+	      
+	      <div class="col-sm-2"></div>
+      </div>
 
-
-
+	
 
 
 	<div class="row">
@@ -23,6 +50,8 @@
 				<div class="card-body">
 					<h5 class="card-title">Liste des enchères</h5>
 					<p class="card-text">
+
+						<%@ include file="template/messageErreur.jsp"%>
 					<form method="post"
 						action="${pageContext.request.contextPath}/encheres">
 						<div class="container-fluid justify-content-between">
@@ -111,14 +140,16 @@
 															<c:when test="${empty sessionScope.user}">
 
 																<p class="card-text">${article.nom}</p>
-																<p class="card-text">Prix: ${meilleureEnchere.get(article.getNumero())}</p>
-																
-																<p class="card-text">Fin de l'enchère:
-																	${article.dateFinEncheres}</p>
-																<p class="card-text">Vendeur:
-																	${article.getUtilisateur().pseudo}</p>
+
+																<p class="card-text">Prix:
+																	${meilleureEnchere.get(article.getNumero())}</p>
+
+																<p class="card-text">Fin de
+																	l'enchère:${article.dateFinEncheres}</p>
+																<p class="card-text">Vendeur:${article.getUtilisateur().pseudo}</p>
 
 															</c:when>
+
 															<c:otherwise>
 
 																<c:choose>
@@ -131,21 +162,37 @@
 																		<c:choose>
 																			<c:when test="${article.etatVente == 'encours'}">
 																				<a class="card-text"
-																					href="${pageContext.request.contextPath}/UpdateSaleServlet?article=${article.numero}">${article.nom}
+																					href="${pageContext.request.contextPath}/DetailVenteServlet?article=${article.numero}">${article.nom}
+<<<<<<< HEAD
 																					${article.etatVente} </a>
+
 																			</c:when>
+
+																			<c:when test=" ${article.etatVente == 'encours'} ">
+																				<a class="card-text"
+																					href="${pageContext.request.contextPath}/DetailVenteServlet?article=${article.numero}">${article.nom}
+=======
+>>>>>>> 41a0c3cee6f8f71a606cb4253da42cb1b2118aa8
+																					${article.etatVente} </a>
+
+																			</c:when>
+
+
 
 																			<c:when test="${article.etatVente == 'non_debuté'}">
 																				<a class="card-text"
 																					href="${pageContext.request.contextPath}/UpdateSaleServlet?article=${article.numero}">${article.nom}
 																					${article.etatVente} </a>
+
 																			</c:when>
 
 																			<c:when test="${article.etatVente== 'fini'}">
 																				<a class="card-text"
 																					href="${pageContext.request.contextPath}/AutreRemporteVenteServlet?article=${article.numero}">${article.nom}
 																					${article.etatVente} </a>
+
 																			</c:when>
+
 																		</c:choose>
 
 																	</c:when>
@@ -158,12 +205,14 @@
 																				<a class="card-text"
 																					href="${pageContext.request.contextPath}/DetailVenteServlet?article=${article.numero}">${article.nom}
 																					${article.etatVente} </a>
+
 																			</c:when>
 
 																			<c:when test="${article.etatVente== 'fini'}">
 																				<a class="card-text"
 																					href="${pageContext.request.contextPath}/VenteRemporteServlet?article=${article.numero}">${article.nom}
 																					${article.etatVente} </a>
+
 																			</c:when>
 																		</c:choose>
 
@@ -172,9 +221,8 @@
 
 																</c:choose>
 
-
-
-																<p class="card-text">Prix: ${meilleureEnchere.get(article.getNumero())}</p>
+																<p class="card-text">Prix:
+																	${meilleureEnchere.get(article.getNumero())}</p>
 																<p class="card-text">Fin de l'enchère:
 																	${article.dateFinEncheres}</p>
 																<a class="card-text"
@@ -192,7 +240,7 @@
 											</div>
 										</div>
 									</div>
-					</div>
+						</div>
 
 					</c:forEach>
 

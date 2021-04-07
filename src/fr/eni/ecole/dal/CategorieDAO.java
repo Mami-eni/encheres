@@ -1,15 +1,15 @@
 package fr.eni.ecole.dal;
 
-import java.util.List;
+
 
 import fr.eni.ecole.bo.Categorie;
-import fr.eni.ecole.bo.Enchere;
-import fr.eni.ecole.exception.BusinessException;
 
+import fr.eni.ecole.exception.BusinessException;
+/**
+ * interface des composants d'accès aux données de la table categories - définit les méthodes implémentées en plus de celles de l'interface générique
+ */
 public interface CategorieDAO extends CRUD<Categorie> {
 	
-	List<Categorie> selectAll() throws BusinessException;
 	Categorie selectByName(String nom) throws BusinessException;
-	Categorie selectById(int id) throws BusinessException;
 	
 }
