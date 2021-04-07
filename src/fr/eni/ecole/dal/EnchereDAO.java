@@ -16,6 +16,6 @@ public interface EnchereDAO extends CRUD<Enchere> {
 	Enchere selectById(int id) throws BusinessException;
 	void update(Enchere item) throws BusinessException;
 	void delete(Enchere item) throws BusinessException;
-	public List<Enchere> selectByFiltre(String filtreTexte, String filtreCategorie) throws BusinessException;
+	
 
 }
