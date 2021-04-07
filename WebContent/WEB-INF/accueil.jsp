@@ -23,6 +23,9 @@
 				<div class="card-body">
 					<h5 class="card-title">Liste des enchères</h5>
 					<p class="card-text">
+					
+					<%@ include file="template/messageErreur.jsp"%>
+					
 					<form method="post"
 						action="${pageContext.request.contextPath}/encheres">
 						<div class="container-fluid justify-content-between">
@@ -131,7 +134,7 @@
 																		<c:choose>
 																			<c:when test="${article.etatVente == 'encours'}">
 																				<a class="card-text"
-																					href="${pageContext.request.contextPath}/UpdateSaleServlet?article=${article.numero}">${article.nom}
+																					href="${pageContext.request.contextPath}/DetailVenteServlet?article=${article.numero}">${article.nom}
 																					${article.etatVente} </a>
 																			</c:when>
 

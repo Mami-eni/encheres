@@ -19,16 +19,16 @@ public class Connect {
 	 * Au chargement de la classe, la DataSource est recherch�e dans le 
 	 * JNDI de Tomcat (context.xml)
 	 */
-//	static {
-//		Context context;
-//		try {
-//			context = new InitialContext();
-//			Connect.dataSource = (DataSource) context.lookup("java:comp/env/jdbc/pool_cnx");
-//		} catch (NamingException e) {
-//			e.printStackTrace();
-//			throw new RuntimeException("Cannot Access The Database");
-//		}
-//	}
+	static {
+		Context context;
+		try {
+			context = new InitialContext();
+			Connect.dataSource = (DataSource) context.lookup("java:comp/env/jdbc/pool_cnx");
+		} catch (NamingException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Cannot Access The Database");
+		}
+	}
 
 	
 	/**

@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,17 +86,18 @@ public class ArticleJDBC implements ArticleDAO {
 			
 			
 			
-			if(rs.getDate("date_debut_encheres").toLocalDate().isBefore(LocalDate.now()) && rs.getDate("date_fin_encheres").toLocalDate().isAfter(LocalDate.now()))
+			if((rs.getDate("date_debut_encheres").toLocalDate().isBefore(LocalDate.now()) || rs.getDate("date_debut_encheres").toLocalDate().isEqual(LocalDate.now()) )  && rs.getDate("date_fin_encheres").toLocalDate().isAfter(LocalDate.now()))
 			{
 				art.setEtatVente("encours");
 			}
 			
-			if( rs.getDate("date_fin_encheres").toLocalDate().isBefore(LocalDate.now()))
+						
+			else if( rs.getDate("date_fin_encheres").toLocalDate().isBefore(LocalDate.now()) || rs.getDate("date_fin_encheres").toLocalDate().isEqual(LocalDate.now()))
 			{
 				art.setEtatVente("fini");
 			}
 			
-			if( rs.getDate("date_debut_encheres").toLocalDate().isAfter(LocalDate.now()))
+			else if( rs.getDate("date_debut_encheres").toLocalDate().isAfter(LocalDate.now()))
 			{
 				art.setEtatVente("non_debuté");
 			}
