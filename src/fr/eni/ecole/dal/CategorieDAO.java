@@ -11,7 +11,5 @@ public interface CategorieDAO extends CRUD<Categorie> {
 	List<Categorie> selectAll() throws BusinessException;
 	Categorie selectByName(String nom) throws BusinessException;
 	Categorie selectById(int id) throws BusinessException;
-	void insert(Categorie item) throws BusinessException;
-	void update(Categorie item) throws BusinessException;
-	void delete(Categorie item) throws BusinessException;
+	
 }

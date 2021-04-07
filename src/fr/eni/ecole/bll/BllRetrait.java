@@ -41,6 +41,10 @@ public class BllRetrait {
 		retrait.update(item);
 	}
 	
+	public void delete(Retrait item) throws BusinessException {
+		retrait.delete(item);
+	}
+	
 	public Retrait selectByArticle(Article a) throws BusinessException{
 		return retrait.selectByArticle(a);
 	}

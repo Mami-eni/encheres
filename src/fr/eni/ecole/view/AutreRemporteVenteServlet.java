@@ -86,7 +86,7 @@ public class AutreRemporteVenteServlet extends HttpServlet {
 			}
 			e1.printStackTrace();
 		}
-		request.setAttribute("erreur", error.getErrors());
+		request.setAttribute("errors", error.getErrors());
 		request.setAttribute("utilisateur", util);
 		request.getRequestDispatcher("/WEB-INF/autreRemporteVente.jsp").forward(request, response);
 	}

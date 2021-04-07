@@ -10,18 +10,15 @@
 </head>
 <body>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<nav class="navbar navbar-light bg-light">
-        <form class="container-fluid justify-content-start">
-          <button class="btn btn-outline-success me-2" type="button">Main button</button>
-          <button class="btn btn-sm btn-outline-secondary" type="button">Smaller button</button>
-        </form>
-      </nav>
+<%@include file="template/navLogo.jsp"%>
       
       <div class="row">
       <div class="col-sm-4"></div>
       <div class="col-sm-4"><p class="title">Modifier Vente</p></div>
       <div class="col-sm-4"></div>
       </div>
+      
+      <%@include file="template/messageErreur.jsp"%>
 
       <div class = "row">
         <div class = "col-sm-2">
@@ -131,16 +128,22 @@
 			</fieldset>
 			<div class="form-group row">
 			<div class="col-sm-4">
-			<input class="submit" type="submit" value="Enregistrer">
-			</div>
-			<div class="col-sm-4">
-			<button class="annuler">Annuler</button>
-			</div>
-			<div class="col-sm-4">
-			<input class="submit" type="submit" value="Annuler la vente">
-			</div>
+			<input class="btn btn-primary me-2" class="submit" type="submit" value="Enregistrer">
 			</div>
 			</form>
+			<div class="col-sm-4">
+			<form action="/encheres">
+			<button class="btn btn-primary me-2" class="annuler">Annuler</button>
+			</form>
+			</div>
+			<div class="col-sm-4">
+			<form action="DeleteSaleServlet" method="get">
+			<input type="hidden" name="article" value="${article.numero }">
+			<input class="btn btn-primary me-2" class="submit" type="submit" value="Annuler la vente">
+			</form>
+			</div>
+			</div>
+			
           
           </div>
           
@@ -154,8 +157,7 @@
 
 
 
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <%@ include file="template/script.jsp" %>
 
 
 </body>

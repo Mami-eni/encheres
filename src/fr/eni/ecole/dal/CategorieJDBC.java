@@ -12,7 +12,7 @@ import fr.eni.ecole.exception.BusinessException;
 
 public class CategorieJDBC implements CategorieDAO {
 	
-	public List<Categorie> selectAll(){
+	public List<Categorie> selectAll() throws BusinessException{
 		List<Categorie> liste = new ArrayList<Categorie>();
 		try(Connection cx = Connect.getConnection()){
 			PreparedStatement request = cx.prepareStatement("SELECT no_categorie, libelle FROM categories");
@@ -25,25 +25,32 @@ public class CategorieJDBC implements CategorieDAO {
 			}
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError("Sélection impossible");
+			throw be;
 		}
 		return liste;
 	}
 	
-	public Categorie selectByName(String nom) {
+	public Categorie selectByName(String nom) throws BusinessException {
 		Categorie cat = new Categorie();
 		try(Connection cx = Connect.getConnection()){
 			PreparedStatement request = cx.prepareStatement("SELECT no_categorie, libelle FROM categories WHERE libelle = ?");
 			request.setString(1, nom);
 			ResultSet rs = request.executeQuery();
+			rs.next();
 			cat.setNumero(rs.getInt("no_categorie"));
 			cat.setLibelle(rs.getString("libelle"));
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError("Sélection impossible");
+			throw be;
 		}
 		return cat;
 	}
 	
-	public Categorie selectById(int id) {
+	public Categorie selectById(int id) throws BusinessException {
 		Categorie cat = new Categorie();
 		try(Connection cx = Connect.getConnection()){
 			PreparedStatement request = cx.prepareStatement("SELECT no_categorie, libelle FROM categories WHERE no_categorie = ?");
@@ -54,6 +61,9 @@ public class CategorieJDBC implements CategorieDAO {
 			cat.setLibelle(rs.getString("libelle"));
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError("Sélection impossible");
+			throw be;
 		}
 		return cat;
 	}

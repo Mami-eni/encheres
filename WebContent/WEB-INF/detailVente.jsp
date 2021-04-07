@@ -2,16 +2,11 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Détail Vente</title>
-<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="font.css" rel="stylesheet">
-</head>
+<%@ include file="template/head.jsp" %>
 <body>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-	<%@include file="template/nav.jsp"%>
+	<%@include file="template/navLogo.jsp"%>
 
       
       <div class="row">
@@ -20,14 +15,7 @@
       <div class="col-sm-4"></div>
       </div>
       
-      <c:if test="${!empty erreur}">
-      <c:forEach var="error" items="${erreur }">
-      <div class="row">
-      <div class="col-sm-4"></div>
-      <div class="col-sm-8"><p class="erreur">${error}</p></div>
-      </div>
-      </c:forEach>
-      </c:if>
+      <%@include file="template/messageErreur.jsp"%>
       
       <div class="row">
        <div class="col-sm-2">
@@ -132,7 +120,7 @@
         <input type="number" name="proposition" id="proposition" min="${enchere.montant + enchMin }" step="1" style="width: 80px" required>
         </c:otherwise>
         </c:choose>
-        <input type="submit" value="encherir">
+        <input class="btn btn-primary me-2" type="submit" value="encherir">
         </form>
         </div>
         </div>
@@ -141,6 +129,6 @@
     <div class = "col-sm-2">
     </div>
     </div>
-
+<%@ include file="template/script.jsp" %>
 </body>
 </html>

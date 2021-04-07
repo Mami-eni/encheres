@@ -40,7 +40,7 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 	}
 
 	@Override
-	public void insert(Utilisateur item) {
+	public void insert(Utilisateur item) throws BusinessException {
 		try (Connection cx = Connect.getConnection()) {
 			PreparedStatement request = cx.prepareStatement("INSERT INTO utilisateurs (pseudo, nom, prenom, "
 					+ "email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur) "
@@ -63,11 +63,14 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 			request.executeUpdate();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError("Insertion dans la base de données impossible");
+			throw be;
 		}
 	}
 
 	@Override
-	public List<Utilisateur> selectAll() {
+	public List<Utilisateur> selectAll() throws BusinessException {
 		List<Utilisateur> users = new ArrayList<Utilisateur>();
 		try (Connection cx = Connect.getConnection()) {
 			Statement request = cx.createStatement();
@@ -81,12 +84,15 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError("Sélection impossible");
+			throw be;
 		}
 		return users;
 	}
 
 	@Override
-	public Utilisateur selectById(int id) {
+	public Utilisateur selectById(int id) throws BusinessException {
 		Utilisateur util = new Utilisateur();
 		try (Connection cx = Connect.getConnection()) {
 			PreparedStatement request = cx.prepareStatement("SELECT no_utilisateur, pseudo, nom, "
@@ -98,12 +104,15 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 			util = utilisateurBuilder(rs);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError("Sélection impossible");
+			throw be;
 		}
 		return util;
 	}
 
 	@Override
-	public void update(Utilisateur item) {
+	public void update(Utilisateur item) throws BusinessException {
 		try (Connection cx = Connect.getConnection()) {
 
 			PreparedStatement request = cx.prepareStatement(
@@ -128,14 +137,18 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError("Mise à jour impossible");
+			throw be;
 		}
 	}
 
 	/**
 	 * Methode non utilis�e.
+	 * @throws BusinessException 
 	 */
 	@Override
-	public void delete(Utilisateur item) {
+	public void delete(Utilisateur item) throws BusinessException {
 		try (Connection cx = Connect.getConnection()) {
 			//delete l'utilisateur
 			PreparedStatement requestUtilisateur = cx.prepareStatement("DELETE FROM utilisateurs WHERE no_utilisateur=?");
@@ -144,6 +157,9 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError("Suppression impossible");
+			throw be;
 		}
 	}
 
@@ -175,7 +191,7 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 				be.addError("Pseudo ou Mot de passe inconnu");
 				throw be;
 			}
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			e.getMessage();
 			BusinessException be = new BusinessException();

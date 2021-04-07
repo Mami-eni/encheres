@@ -15,31 +15,11 @@ import fr.eni.ecole.exception.Errors;
 
 public class EnchereJDBC implements EnchereDAO {
 	
-	private final String SELECT_ALL_ENCOURS = "SELECT * FROM encheres"
-			     							  + " INNER JOIN articles on articles.no_article = encheres.no_article" 
-			     							  + " WHERE date_debut_encheres<= now() AND date_fin_encheres>now()";
-	private final String SELECT_ALL_ENCOURS_FILTRE_TEXTE = "SELECT * FROM encheres"
-			  + " INNER JOIN articles on articles.no_article = encheres.no_article" 
-			  + " INNER JOIN categories on articles.no_categorie = categories.no_categorie"
-			  + " where date_debut_encheres<= now() AND date_fin_encheres>now()  "
-			  + " AND articles.nom_article LIKE ?";
-	private final String SELECT_ALL_ENCOURS_FILTRE_CATEGORIE = "SELECT * FROM encheres"
-			  + " INNER JOIN articles on articles.no_article = encheres.no_article" 
-			  + " INNER JOIN categories on articles.no_categorie = categories.no_categorie"
-			  + " where date_debut_encheres<= now() AND date_fin_encheres>now()"
-			  + " AND categories.libelle = ?";
-	private final String SELECT_ALL_ENCOURS_FILTRE_CATEGORIE_TEXTE = "SELECT * FROM encheres"
-			  + " INNER JOIN articles on articles.no_article = encheres.no_article"
-			  + " INNER JOIN categories on articles.no_categorie = categories.no_categorie"
-			  + " where date_debut_encheres<= now() AND date_fin_encheres>now() "
-			  + " AND articles.nom_article LIKE ? AND categories.libelle = ?";
-			  
 
-	
 	private ArticleDAO art = DAOFactory.getArticleDAO();
 	private UtilisateurDAO util = DAOFactory.getUtilisateurDAO();
 	
-	public void insert(Enchere ench) {
+	public void insert(Enchere ench) throws BusinessException {
 		try(Connection cx = Connect.getConnection()){
 			PreparedStatement request = cx.prepareStatement("INSERT INTO encheres "
 					+ "(date_enchere, montant_enchere, no_article, no_utilisateur) VALUES(?,?,?,?)");
@@ -50,10 +30,13 @@ public class EnchereJDBC implements EnchereDAO {
 			request.executeUpdate();
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError("Insertion dans la base de données impossible");
+			throw be;
 		}
 	}
 	
-	public List<Enchere> selectByArticle(Article a) {
+	public List<Enchere> selectByArticle(Article a) throws BusinessException {
         List<Enchere> liste = new ArrayList<Enchere>();
        
         try(Connection cx = Connect.getConnection()){
@@ -67,11 +50,14 @@ public class EnchereJDBC implements EnchereDAO {
             }
         }catch(Exception e) {
             System.out.println(e.getMessage());
+            BusinessException be = new BusinessException();
+			be.addError("Sélection impossible");
+			throw be;
         }
         return liste;
     }
 	
-	public List<Enchere> selectByUser(Utilisateur util){
+	public List<Enchere> selectByUser(Utilisateur util) throws BusinessException{
 		List<Enchere> liste = new ArrayList<Enchere>();
 		try(Connection cx = Connect.getConnection()){
 			PreparedStatement request = cx.prepareStatement("SELECT no_enchere, date_enchere, montant_enchere, no_article, no_utilisateur "
@@ -84,6 +70,9 @@ public class EnchereJDBC implements EnchereDAO {
 			}
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError("Sélection impossible");
+			throw be;
 		}
 		return liste;
 	}
@@ -107,7 +96,8 @@ public class EnchereJDBC implements EnchereDAO {
 		Enchere ench = new Enchere();
 		List<Enchere> listeEnchere = new ArrayList<Enchere>();
 		try(Connection cx = Connect.getConnection()){
-			PreparedStatement request = cx.prepareStatement(SELECT_ALL_ENCOURS);
+			PreparedStatement request = cx.prepareStatement("SELECT no_enchere, date_enchere, montant_enchere, no_article, no_utilisateur "
+															+ "FROM encheres ");
 			
 			ResultSet rs = request.executeQuery();
 			while(rs.next())
@@ -128,94 +118,24 @@ public class EnchereJDBC implements EnchereDAO {
 		return listeEnchere;
 	}
 	
-	@Override
-	public List<Enchere> selectByFiltre(String filtreTexte, String filtreCategorie) throws BusinessException {
-		Enchere ench = new Enchere();
-		List<Enchere> listeEnchere = new ArrayList<Enchere>();
-		String requeteChoisie;
-		boolean isFiltreCategorie= false;
-		boolean isFiltreTexte= false;
-		boolean isFiltreTexteCategorie= false;
-		boolean isNoFiltre= false;
-		
-		
-		if(filtreTexte.isEmpty())
-		{
-			if(filtreCategorie.equalsIgnoreCase("toutes"))
-			{
-				requeteChoisie= SELECT_ALL_ENCOURS;
-				isNoFiltre=true;
-				
-				// selectAll encours
-			}
-			else
-			{
-				requeteChoisie= SELECT_ALL_ENCOURS_FILTRE_CATEGORIE;
-				isFiltreCategorie=true;
-				// select by categorie		
-			}
-		}
-		else
-		{
-			if(filtreCategorie.equalsIgnoreCase("toutes"))
-			{
-				requeteChoisie = SELECT_ALL_ENCOURS_FILTRE_TEXTE;
-				isFiltreTexte=true;
-				// select by name of article
-			}
-			else
-			{
-				requeteChoisie = SELECT_ALL_ENCOURS_FILTRE_CATEGORIE_TEXTE;
-				isFiltreTexteCategorie=true;
-				// select by categorie and name of article
-				
-			}
-			
-		}
-			
-		try(Connection cx = Connect.getConnection()){
-			PreparedStatement request = cx.prepareStatement(requeteChoisie);
-			
-			
-			
-			if(isFiltreCategorie)
-			{
-				request.setString(1, filtreCategorie);
-			}
-			
-			else if(isFiltreTexte)
-			{
-				request.setString(1, "%"+filtreTexte+"%");
-			}
-			
-			else if(isFiltreTexteCategorie)
-			{
-				request.setString(1, "%"+filtreTexte+"%");
-				request.setString(2, filtreCategorie);
-			}
-			
-			ResultSet rs = request.executeQuery();
-			while(rs.next())
-			{
-				ench = enchereBuilder(rs);
-				listeEnchere.add(ench);
-			}
-			
-			
-		}catch(Exception e) {
-			e.printStackTrace();
-			BusinessException be = new BusinessException();
-			be.addError(Errors.SELECT_ENCHERE_NULL);
-			throw be;
-			
-		}
-		
-		return listeEnchere;
-	}
+
 
 	@Override
-	public Enchere selectById(int id) {
-		throw new UnsupportedOperationException("Not supported yet.");
+	public Enchere selectById(int id) throws BusinessException {
+		Enchere enchere = new Enchere();
+		try(Connection cx = Connect.getConnection()){
+			PreparedStatement request = cx.prepareStatement("SELECT no_enchere, date_enchere, montant_enchere, no_article, no_utilisateur FROM encheres WHERE no_enchere = ?");
+			request.setInt(1, id);
+			ResultSet rs = request.executeQuery();
+			rs.next();
+			enchere = enchereBuilder(rs);
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError("Sélection impossible");
+			throw be;
+		}
+		return enchere;
 	}
 
 	@Override

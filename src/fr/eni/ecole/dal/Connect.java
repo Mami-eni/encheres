@@ -13,6 +13,7 @@ public class Connect {
 	public static boolean DEV_MODE = true;
 	
 	private static DataSource dataSource;
+
 	
 	/**
 	 * Au chargement de la classe, la DataSource est recherch�e dans le 
@@ -34,6 +35,7 @@ public class Connect {
 	 * Getter pour acc�der � la connexion
 	 * @throws ClassNotFoundException 
 	 */
+
 	public static Connection getConnection() throws SQLException, ClassNotFoundException{
 		if(DEV_MODE) {
 		return Connect.dataSource.getConnection();}
@@ -46,5 +48,7 @@ public class Connect {
 			
 			return DriverManager.getConnection("jdbc:mysql://"+urldb, userdb,passworddb);
 		}
+
 	}
 }
+
