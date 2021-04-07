@@ -135,7 +135,11 @@ public class BllArticle {
 		boolean selectVenteClose= false;
 		// si clique sur bouton 
 		
+<<<<<<< HEAD
+		if(!(null==filtreCheckboxAchat) && 1==filtreCheckboxAchat.length)
+=======
 		 if(!(null==filtreCheckboxAchat) && 1==filtreCheckboxAchat.length)
+>>>>>>> 41a0c3cee6f8f71a606cb4253da42cb1b2118aa8
 		{
 			for (String choixFiltreAchat : filtreCheckboxAchat)
 			{
