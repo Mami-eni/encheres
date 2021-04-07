@@ -1,9 +1,14 @@
 ﻿package fr.eni.ecole.view;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -21,6 +26,7 @@ import fr.eni.ecole.bo.Categorie;
 import fr.eni.ecole.bo.Enchere;
 import fr.eni.ecole.bo.Utilisateur;
 import fr.eni.ecole.exception.BusinessException;
+import fr.eni.ecole.exception.Errors;
 
 /**
  * Servlet traitant l'affichage des enchères selon différents filtres
@@ -53,6 +59,7 @@ public class ListeEncheresServlet extends HttpServlet {
 		Map<Integer, Integer> meilleuresEncheresArticles = new HashMap<Integer, Integer>();
 		List<Categorie> listeCategorie = new ArrayList<Categorie>();
 		List<Article> listeArticles = new ArrayList<Article>();
+		List<Article> listeArticles1 = new ArrayList<Article>();
 
 		try {
 			listeCategorie = managerCategorie.selectAll();
@@ -61,8 +68,8 @@ public class ListeEncheresServlet extends HttpServlet {
 			request.setAttribute("errors", e.getErrors());
 		}
 		try {
-			listeArticles = managerArticle.selectAll(); 
-
+			listeArticles1 = managerArticle.selectAll(); 
+			listeArticles= conversionDate(listeArticles1);
 			for (Article article : listeArticles)
 			{
 
@@ -92,8 +99,6 @@ public class ListeEncheresServlet extends HttpServlet {
 
 			}
 
-
-
 			request.setAttribute("meilleureEnchere", meilleuresEncheresArticles);
 			request.setAttribute("listeArticles", listeArticles);
 		} catch (BusinessException e) {
@@ -103,13 +108,11 @@ public class ListeEncheresServlet extends HttpServlet {
 
 
 
-		String id_article = request.getParameter("article");
-		String id_vendeur = request.getParameter("vendeur");
+//		String id_article = request.getParameter("article");
+//		String id_vendeur = request.getParameter("vendeur");
 
 
 		request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
-
-
 
 	}
 
@@ -119,6 +122,7 @@ public class ListeEncheresServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 
+		BusinessException error = new BusinessException();
 		Map<Integer, Integer> meilleuresEncheresArticles = new HashMap<Integer, Integer>();
 		HttpSession session = request.getSession(false);
 		Utilisateur user = (Utilisateur) session.getAttribute("user");
@@ -157,7 +161,7 @@ public class ListeEncheresServlet extends HttpServlet {
 		{
 			try {
 				listeArticles= managerArticle.selectByFiltre(filtreTexte, filtreCategorie, filtreRadio, filtreCheckboxVente, filtreCheckboxAchat, userId);
-
+				conversionDate(listeArticles);
 
 				for (Article article : listeArticles)
 				{
@@ -190,13 +194,16 @@ public class ListeEncheresServlet extends HttpServlet {
 				}
 
 
-
 			} catch (BusinessException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
+				for(String s : e.getErrors()) {
+					error.addError(s);
+				}
+				
 			}
 
-
+			request.setAttribute("errors", error.getErrors());
 			request.setAttribute("meilleureEnchere", meilleuresEncheresArticles);
 			request.setAttribute("listeArticles", listeArticles);
 
@@ -207,6 +214,28 @@ public class ListeEncheresServlet extends HttpServlet {
 
 
 
+	}
+	
+	private List<Article> conversionDate(List<Article> listeArticles)
+	{
+		List<Article> listeAConvertir = new ArrayList<Article>();
+		
+		DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.FRANCE);
+	
+		for (Article article : listeArticles) {
+			
+		String texte = article.getDateFinEncheres().format(formatter1);
+		LocalDate nouvelleDate  =  LocalDate.parse( texte, formatter1);
+		
+	
+		article.setDateFinEncheres(nouvelleDate);
+		
+		listeAConvertir.add(article);
+		
+		}
+		
+		return listeAConvertir;
+		
 	}
 
 }

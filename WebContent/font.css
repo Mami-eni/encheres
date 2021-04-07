@@ -4,24 +4,20 @@ html
 	font-size:20px;
 }
 
-.conteneur-image, .conteneur-bouton
+h1
 {
-	align-self:center;
-	text-align:end;
-}
-
-
-.conteneur-image img{
-	width:50px;
+	font-size:1.4em;
 }
 
 .card
 {
 	font-size:0.8em;
-	padding-top: 2px;
+	margin-top: 1em;
+	margin-bottom: 1em;
 }
 .title{
 	font-size: 50px;
+	text-align:center;
 }
 .erreur{
 	font-size: 20px;
@@ -33,4 +29,22 @@ html
 .displayArticle{
 	font-size: 30px;
 }
+
+
+.conteneur-image img{
+	width:4em;
+}
+
+.conteneur-bouton .btn
+{
+	width:10em;
+	height: 4em;
+}
+
+.conteneur-image, .conteneur-bouton
+{
+	align-self:center;
+	text-align: center;
+}
+
 
