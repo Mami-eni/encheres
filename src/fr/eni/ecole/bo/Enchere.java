@@ -1,7 +1,7 @@
 package fr.eni.ecole.bo;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
+
 /**
  * 
  * Classe repr�sente les ench�res

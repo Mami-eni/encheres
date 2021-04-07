@@ -22,7 +22,7 @@ import fr.eni.ecole.bo.Utilisateur;
 import fr.eni.ecole.exception.BusinessException;
 
 /**
- * Servlet implementation class AutreRemporteVenteServlet
+ * Cette classe gère l'envoi de données d'affichage 
  */
 @WebServlet("/AutreRemporteVenteServlet")
 public class AutreRemporteVenteServlet extends HttpServlet {
@@ -32,6 +32,7 @@ public class AutreRemporteVenteServlet extends HttpServlet {
     private BllEnchere enchere = BllEnchere.getBllEnchere();
     private BllUtilisateur utilisateur = BllUtilisateur.getBllUtilisateur();
    
+    /* passage en attributs de requête des éléments nécessaires à l'affichage des données de la page */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		BusinessException error = new BusinessException();

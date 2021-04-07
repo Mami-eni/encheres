@@ -7,7 +7,9 @@ import fr.eni.ecole.bo.Categorie;
 import fr.eni.ecole.dal.CategorieDAO;
 import fr.eni.ecole.dal.DAOFactory;
 import fr.eni.ecole.exception.BusinessException;
-
+/**
+ * Cette classe contient la logique métier avant l'appel aux méthodes de la couche DAL qui accèdent à la table categories de la base de données
+ */
 public class BllCategorie {
 	
 	private static BllCategorie instance;

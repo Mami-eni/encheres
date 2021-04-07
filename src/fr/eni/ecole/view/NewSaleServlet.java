@@ -7,16 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import fr.eni.ecole.bll.BllArticle;
 import fr.eni.ecole.bll.BllCategorie;
 import fr.eni.ecole.bll.BllRetrait;
-import fr.eni.ecole.bll.BllUtilisateur;
 import fr.eni.ecole.bo.Article;
 import fr.eni.ecole.bo.Categorie;
 
@@ -25,19 +26,20 @@ import fr.eni.ecole.bo.Utilisateur;
 import fr.eni.ecole.exception.BusinessException;
 
 /**
- * Servlet implementation class NewSaleServlet
+ * Cette classe gère l'envoi de données d'affichage et l'insertion d'articles et de retraits dans la base de donnée
  */
 @WebServlet("/NewSaleServlet")
+@MultipartConfig
 public class NewSaleServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private BllCategorie cat = BllCategorie.getBllCategorie();
-	private BllUtilisateur util = BllUtilisateur.getBllUtilisateur();
 	private BllArticle article = BllArticle.getBllArticle();
 	private BllRetrait retrait = BllRetrait.getBllRetrait();
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		/* récupération de la liste des catégories */
 		List<Categorie> listeCat = new ArrayList<Categorie>();
 		try {
 			listeCat = cat.selectAll();
@@ -54,6 +56,9 @@ public class NewSaleServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		BusinessException error = new BusinessException();
 		HttpSession session = request.getSession();
+		Part filePart = request.getPart("upload");
+		//to do: récupération de l'image et envoi vers un dossier.
+		/* récupération des attributs de classe de l'article */
 		Utilisateur util = (Utilisateur) session.getAttribute("user");
 		String nom = request.getParameter("article");
 		String description = request.getParameter("description");
@@ -70,6 +75,7 @@ public class NewSaleServlet extends HttpServlet {
 		String miseAPrix = request.getParameter("map");
 		LocalDate debutEnchere = LocalDate.parse(request.getParameter("debutEnchere"));
 		LocalDate finEnchere = LocalDate.parse(request.getParameter("finEnchere"));
+		/* Construction de l'article à insérer dans la bdd */
 		int articleId = 0;
 		Article art = new Article();
 		art.setNom(nom);
@@ -81,11 +87,13 @@ public class NewSaleServlet extends HttpServlet {
 		art.setCategorie(cate);
 		try {
 			article.insert(art);
+			/* récupération du numéro d'article généré lors de l'insertion dans la bdd */
 			List<Article> listeArticles = article.selectByUser(util);
 			for (Article a : listeArticles) {
 				articleId = a.getNumero();
 			}
 			art.setNumero(articleId);
+			/* récupération et construction du retrait à insérer dans la bdd */
 			Retrait ret = new Retrait();
 			ret.setArticle(art);
 			ret.setRue(request.getParameter("rue"));
@@ -96,6 +104,7 @@ public class NewSaleServlet extends HttpServlet {
 			for(String s: e.getErrors()) {
 				error.addError(s);
 			}
+			/* passage en attributs de requête de tous les éléments nécessaires au pré-remplissage des champs saisis précédemment en cas d'erreur */
 			List<Categorie> listeCat = new ArrayList<Categorie>();
 			try {
 				listeCat = cat.selectAll();
@@ -113,6 +122,7 @@ public class NewSaleServlet extends HttpServlet {
 			request.setAttribute("rue", request.getParameter("rue"));
 			request.setAttribute("cp", request.getParameter("cp"));
 			request.setAttribute("ville", request.getParameter("ville"));
+			/* Suppression de l'article inséré dans la bdd en cas d'erreur */
 			try {
 				article.delete(art);
 			} catch (BusinessException e1) {

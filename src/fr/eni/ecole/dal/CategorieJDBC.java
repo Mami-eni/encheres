@@ -7,9 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.ecole.bo.Categorie;
-import fr.eni.ecole.bo.Enchere;
-import fr.eni.ecole.exception.BusinessException;
 
+import fr.eni.ecole.exception.BusinessException;
+import fr.eni.ecole.exception.Errors;
+/**
+ * cette classe implémente toutes les méthodes d'accès à la table categories de la base de données
+ */
 public class CategorieJDBC implements CategorieDAO {
 	
 	public List<Categorie> selectAll() throws BusinessException{
@@ -26,7 +29,7 @@ public class CategorieJDBC implements CategorieDAO {
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 			BusinessException be = new BusinessException();
-			be.addError("Sélection impossible");
+			be.addError(Errors.ERREUR_SELECT);
 			throw be;
 		}
 		return liste;
@@ -44,7 +47,7 @@ public class CategorieJDBC implements CategorieDAO {
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 			BusinessException be = new BusinessException();
-			be.addError("Sélection impossible");
+			be.addError(Errors.ERREUR_SELECT);
 			throw be;
 		}
 		return cat;
@@ -62,7 +65,7 @@ public class CategorieJDBC implements CategorieDAO {
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 			BusinessException be = new BusinessException();
-			be.addError("Sélection impossible");
+			be.addError(Errors.ERREUR_SELECT);
 			throw be;
 		}
 		return cat;

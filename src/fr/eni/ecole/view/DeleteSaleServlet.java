@@ -19,7 +19,7 @@ import fr.eni.ecole.bo.Retrait;
 import fr.eni.ecole.exception.BusinessException;
 
 /**
- * Servlet implementation class DeleteServlet
+ * Cette classe gère l'envoi de données d'affichage et la suppression d'articles et de retraits dans la base de donnée
  */
 @WebServlet("/DeleteSaleServlet")
 public class DeleteSaleServlet extends HttpServlet {
@@ -28,6 +28,7 @@ public class DeleteSaleServlet extends HttpServlet {
     private BllRetrait retrait = BllRetrait.getBllRetrait();
     private BllCategorie cat = BllCategorie.getBllCategorie();
    
+    /* suppression du retrait puis de l'article dans la bdd */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		BusinessException error = new BusinessException();
@@ -67,6 +68,7 @@ public class DeleteSaleServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		if(error.getErrors() != null) {
+			/* passage en attributs de requête des éléments nécessaires au pré-remplissage des champs en cas d'erreur */
 			List<Categorie> listeCat = new ArrayList<Categorie>();
 			try {
 				listeCat = cat.selectAll();

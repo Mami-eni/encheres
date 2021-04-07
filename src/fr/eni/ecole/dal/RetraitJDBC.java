@@ -10,7 +10,10 @@ import java.util.List;
 import fr.eni.ecole.bo.Article;
 import fr.eni.ecole.bo.Retrait;
 import fr.eni.ecole.exception.BusinessException;
-
+import fr.eni.ecole.exception.Errors;
+/**
+ * cette classe implémente toutes les méthodes d'accès à la table retraits de la base de données
+ */
 
 public class RetraitJDBC implements RetraitDAO {
 
@@ -26,7 +29,7 @@ public class RetraitJDBC implements RetraitDAO {
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 			BusinessException be = new BusinessException();
-			be.addError("Insertion dans la base de données impossible");
+			be.addError(Errors.ERREUR_INSERT);
 			throw be;
 		}
 	}
@@ -45,7 +48,7 @@ public class RetraitJDBC implements RetraitDAO {
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 			BusinessException be = new BusinessException();
-			be.addError("Sélection impossible");
+			be.addError(Errors.ERREUR_SELECT);
 			throw be;
 		}
 		return ret;
@@ -73,7 +76,7 @@ public class RetraitJDBC implements RetraitDAO {
         }catch(Exception e) {
             System.out.println(e.getMessage());
             BusinessException be = new BusinessException();
-			be.addError("Mise à jour impossible");
+			be.addError(Errors.ERREUR_UPDATE);
 			throw be;
         }
     }
@@ -87,7 +90,7 @@ public class RetraitJDBC implements RetraitDAO {
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 			BusinessException be = new BusinessException();
-			be.addError("Suppression impossible");
+			be.addError(Errors.ERREUR_DELETE);
 			throw be;
 		}
 	}

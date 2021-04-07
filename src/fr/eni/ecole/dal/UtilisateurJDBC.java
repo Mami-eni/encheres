@@ -1,19 +1,22 @@
 package fr.eni.ecole.dal;
 
 import java.sql.Connection;
-import java.sql.Date;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.org.apache.xml.internal.utils.UnImplNode;
+
 
 import fr.eni.ecole.exception.BusinessException;
+import fr.eni.ecole.exception.Errors;
 import fr.eni.ecole.bo.Utilisateur;
-
+/**
+ * cette classe implémente toutes les méthodes d'accès à la table utilisateurs de la base de données
+ */
 public class UtilisateurJDBC implements UtilisateurDAO {
 
 	private final int CREDIT_OFFERT = 100;
@@ -64,7 +67,7 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			BusinessException be = new BusinessException();
-			be.addError("Insertion dans la base de données impossible");
+			be.addError(Errors.ERREUR_INSERT);
 			throw be;
 		}
 	}
@@ -85,7 +88,7 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			BusinessException be = new BusinessException();
-			be.addError("Sélection impossible");
+			be.addError(Errors.ERREUR_SELECT);
 			throw be;
 		}
 		return users;
@@ -105,7 +108,7 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			BusinessException be = new BusinessException();
-			be.addError("Sélection impossible");
+			be.addError(Errors.ERREUR_SELECT);
 			throw be;
 		}
 		return util;
@@ -138,7 +141,7 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			BusinessException be = new BusinessException();
-			be.addError("Mise à jour impossible");
+			be.addError(Errors.ERREUR_UPDATE);
 			throw be;
 		}
 	}
@@ -158,7 +161,7 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			BusinessException be = new BusinessException();
-			be.addError("Suppression impossible");
+			be.addError(Errors.ERREUR_DELETE);
 			throw be;
 		}
 	}
