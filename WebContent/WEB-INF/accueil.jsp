@@ -163,22 +163,12 @@
 																			<c:when test="${article.etatVente == 'encours'}">
 																				<a class="card-text"
 																					href="${pageContext.request.contextPath}/DetailVenteServlet?article=${article.numero}">${article.nom}
-<<<<<<< HEAD
+
 																					${article.etatVente} </a>
 
 																			</c:when>
 
-																			<c:when test=" ${article.etatVente == 'encours'} ">
-																				<a class="card-text"
-																					href="${pageContext.request.contextPath}/DetailVenteServlet?article=${article.numero}">${article.nom}
-=======
->>>>>>> 41a0c3cee6f8f71a606cb4253da42cb1b2118aa8
-																					${article.etatVente} </a>
-
-																			</c:when>
-
-
-
+																		
 																			<c:when test="${article.etatVente == 'non_debuté'}">
 																				<a class="card-text"
 																					href="${pageContext.request.contextPath}/UpdateSaleServlet?article=${article.numero}">${article.nom}
