@@ -13,6 +13,7 @@ public interface EnchereDAO extends CRUD<Enchere> {
 	List<Enchere> selectByUser(Utilisateur util) throws BusinessException;
 	List<Enchere> selectAll() throws BusinessException;
 	Enchere selectById(int id) throws BusinessException;
+
 	
 
 }

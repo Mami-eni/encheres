@@ -127,13 +127,11 @@ public class ListeEncheresServlet extends HttpServlet {
 
 
 		List<Article> listeArticles = new ArrayList<Article>();
+
 		String filtreTexte = request.getParameter("search");
 
 
 		String filtreCategorie= request.getParameter("categories");
-
-
-
 
 
 		String [] filtreCheckboxVente = request.getParameterValues("flitreCheckboxVente");
@@ -144,10 +142,10 @@ public class ListeEncheresServlet extends HttpServlet {
 
 
 		/**
-		 * Retour sur la page d'accueil si aucun filtrage n'est réalisé 
+		 * Retour sur la page d'accueil si aucune recherche n'est effectuée
 		 */
 
-		if(filtreTexte.isEmpty() && filtreCategorie.equalsIgnoreCase("toutes") && filtreCheckboxVente==null && filtreCheckboxAchat==null)
+		if(filtreTexte.isEmpty() && "toutes".equalsIgnoreCase(filtreCategorie) && null==filtreCheckboxVente && null==filtreCheckboxAchat)
 		{
 			doGet(request, response);
 		}
@@ -176,23 +174,24 @@ public class ListeEncheresServlet extends HttpServlet {
 
 						}
 
-
-
 					}
 
 					meilleuresEncheresArticles.put(article.getNumero(), ench.getMontant());
 
 				}
 
-				request.setAttribute("meilleureEnchere", meilleuresEncheresArticles);
-				request.setAttribute("listeArticles", listeArticles);
 
 
 			} catch (BusinessException e) {
-
+				// TODO Auto-generated catch block
 				e.printStackTrace();
-				request.setAttribute("errors", e.getErrors());
 			}
+
+
+			request.setAttribute("meilleureEnchere", meilleuresEncheresArticles);
+			request.setAttribute("listeArticles", listeArticles);
+
+
 
 			request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
 		}

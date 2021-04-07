@@ -15,9 +15,7 @@ import fr.eni.ecole.exception.Errors;
 
 public class EnchereJDBC implements EnchereDAO {
 	
-	private final String SELECT_ALL_ENCOURS = "SELECT * FROM encheres"
-			     							  + " INNER JOIN articles on articles.no_article = encheres.no_article" 
-			     							  + " WHERE date_debut_encheres<= now() AND date_fin_encheres>now()";
+
 	private ArticleDAO art = DAOFactory.getArticleDAO();
 	private UtilisateurDAO util = DAOFactory.getUtilisateurDAO();
 	
@@ -98,7 +96,8 @@ public class EnchereJDBC implements EnchereDAO {
 		Enchere ench = new Enchere();
 		List<Enchere> listeEnchere = new ArrayList<Enchere>();
 		try(Connection cx = Connect.getConnection()){
-			PreparedStatement request = cx.prepareStatement(SELECT_ALL_ENCOURS);
+			PreparedStatement request = cx.prepareStatement("SELECT no_enchere, date_enchere, montant_enchere, no_article, no_utilisateur "
+															+ "FROM encheres ");
 			
 			ResultSet rs = request.executeQuery();
 			while(rs.next())
@@ -119,6 +118,7 @@ public class EnchereJDBC implements EnchereDAO {
 		return listeEnchere;
 	}
 	
+
 
 	@Override
 	public Enchere selectById(int id) throws BusinessException {
