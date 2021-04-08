@@ -59,7 +59,7 @@ public class ListeEncheresServlet extends HttpServlet {
 		Map<Integer, Integer> meilleuresEncheresArticles = new HashMap<Integer, Integer>();
 		List<Categorie> listeCategorie = new ArrayList<Categorie>();
 		List<Article> listeArticles = new ArrayList<Article>();
-		List<Article> listeArticles1 = new ArrayList<Article>();
+
 
 		try {
 			listeCategorie = managerCategorie.selectAll();
@@ -68,8 +68,12 @@ public class ListeEncheresServlet extends HttpServlet {
 			request.setAttribute("errors", e.getErrors());
 		}
 		try {
-			listeArticles1 = managerArticle.selectAll(); 
-			listeArticles= conversionDate(listeArticles1);
+			listeArticles = managerArticle.selectAll(); 
+
+			/* Pour chaque liste d'articles issue du resultat de recherche, selection de toutes les enchères qui y sont liées et detection l'enchère la plus haute 
+			 * Si un utilisateur a réalisé au moins une première surenchère sur cet article, le montant maximal de l'enchère est récupéré, sinon cette est affectée de la valeur initiale de l'article
+			*/
+			
 			for (Article article : listeArticles)
 			{
 
@@ -89,7 +93,7 @@ public class ListeEncheresServlet extends HttpServlet {
 					}
 
 				}
-				
+
 				else
 				{
 					montantMax = article.getPrixInitial();
@@ -105,11 +109,6 @@ public class ListeEncheresServlet extends HttpServlet {
 
 			request.setAttribute("errors", e.getErrors());
 		}
-
-
-
-//		String id_article = request.getParameter("article");
-//		String id_vendeur = request.getParameter("vendeur");
 
 
 		request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
@@ -148,9 +147,9 @@ public class ListeEncheresServlet extends HttpServlet {
 
 
 
-		/**
-		 * Retour sur la page d'accueil si aucune recherche n'est effectuée
-		 */
+		
+		 // Retour sur la page d'accueil si aucune recherche n'est effectuée
+		
 
 		if(filtreTexte.isEmpty() && "toutes".equalsIgnoreCase(filtreCategorie) && null==filtreCheckboxVente && null==filtreCheckboxAchat)
 		{
@@ -161,8 +160,9 @@ public class ListeEncheresServlet extends HttpServlet {
 		{
 			try {
 				listeArticles= managerArticle.selectByFiltre(filtreTexte, filtreCategorie, filtreRadio, filtreCheckboxVente, filtreCheckboxAchat, userId);
-				conversionDate(listeArticles);
 
+		
+				
 				for (Article article : listeArticles)
 				{
 
@@ -182,7 +182,7 @@ public class ListeEncheresServlet extends HttpServlet {
 						}
 
 					}
-					
+
 					else
 					{
 						montantMax = article.getPrixInitial();
@@ -190,24 +190,21 @@ public class ListeEncheresServlet extends HttpServlet {
 
 					meilleuresEncheresArticles.put(article.getNumero(), montantMax);
 
-
 				}
 
 
 			} catch (BusinessException e) {
-				
+
 				e.printStackTrace();
 				for(String s : e.getErrors()) {
 					error.addError(s);
 				}
-				
+
 			}
 
 			request.setAttribute("errors", error.getErrors());
 			request.setAttribute("meilleureEnchere", meilleuresEncheresArticles);
 			request.setAttribute("listeArticles", listeArticles);
-
-
 
 			request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
 		}
@@ -215,27 +212,7 @@ public class ListeEncheresServlet extends HttpServlet {
 
 
 	}
-	
-	private List<Article> conversionDate(List<Article> listeArticles)
-	{
-		List<Article> listeAConvertir = new ArrayList<Article>();
-		
-		DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.FRANCE);
-	
-		for (Article article : listeArticles) {
-			
-		String texte = article.getDateFinEncheres().format(formatter1);
-		LocalDate nouvelleDate  =  LocalDate.parse( texte, formatter1);
-		
-	
-		article.setDateFinEncheres(nouvelleDate);
-		
-		listeAConvertir.add(article);
-		
-		}
-		
-		return listeAConvertir;
-		
-	}
+
+
 
 }
