@@ -97,7 +97,7 @@ public class NewSaleServlet extends HttpServlet {
 			/* récupération de l'image */
 			Part filePart = request.getPart("upload");
 			InputStream fileContent = filePart.getInputStream();
-			File folder = new File("C:/Users/fraud et med/git/encheres/WebContent/imagesArticles");
+			File folder = new File("./imagesArticles");
 			String image = "img_article_"+String.valueOf(art.getNumero())+".jpg";
 			File file = new File(folder, image);
 			Files.copy(fileContent, file.toPath());

@@ -73,7 +73,8 @@ public class VenteRemporteServlet extends HttpServlet {
 		}
 		request.setAttribute("errors", error.getErrors());
 		request.setAttribute("enchere", ench);
-		File folder = new File("C:/Users/fraud et med/git/encheres/WebContent/imagesArticles");
+		File folder = new File("./imagesArticles");
+//		File folder = new File("C:/Users/fraud et med/git/encheres/WebContent/imagesArticles");
 		File[] listeDesFichiers = folder.listFiles();
 		String compare = "img_article_"+String.valueOf(art.getNumero())+".jpg";
 		for(File f : listeDesFichiers) {
