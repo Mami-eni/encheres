@@ -1,6 +1,23 @@
 @charset "UTF-8";
+html
+{
+	font-size:20px;
+}
+
+h1
+{
+	font-size:1.4em;
+}
+
+.card
+{
+	font-size:0.8em;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
 .title{
 	font-size: 50px;
+	text-align:center;
 }
 .erreur{
 	font-size: 20px;
@@ -12,3 +29,22 @@
 .displayArticle{
 	font-size: 30px;
 }
+
+
+.conteneur-image img{
+	width:4em;
+}
+
+.conteneur-bouton .btn
+{
+	width:10em;
+	height: 4em;
+}
+
+.conteneur-image, .conteneur-bouton
+{
+	align-self:center;
+	text-align: center;
+}
+
+
