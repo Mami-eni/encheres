@@ -1,5 +1,6 @@
 package fr.eni.ecole.view;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import fr.eni.ecole.bo.Utilisateur;
 import fr.eni.ecole.exception.BusinessException;
 
 /**
- * Cette classe gère l'envoi de données d'affichage 
+ * Cette classe gère l'envoi de données d'affichage et l'insertion du prix de vente de l'article dans la base de données
  */
 @WebServlet("/AutreRemporteVenteServlet")
 public class AutreRemporteVenteServlet extends HttpServlet {
@@ -87,8 +88,26 @@ public class AutreRemporteVenteServlet extends HttpServlet {
 			}
 			e1.printStackTrace();
 		}
-		request.setAttribute("errors", error.getErrors());
 		request.setAttribute("utilisateur", util);
+		/* insertion du prix de vente de l'article dans la base de données */
+		art.setPrixVente(ench.getMontant());
+		try {
+			article.setPrixVente(art);
+		} catch (BusinessException e1) {
+			for(String s : e1.getErrors()) {
+				error.addError(s);
+			}
+			e1.printStackTrace();
+		}
+		File folder = new File("C:/Users/fraud et med/git/encheres/WebContent/imagesArticles");
+		File[] listeDesFichiers = folder.listFiles();
+		String compare = "img_article_"+String.valueOf(art.getNumero())+".jpg";
+		for(File f : listeDesFichiers) {
+			if(f.getName().equals(compare)) {
+				request.setAttribute("image", f.getName());
+			}
+		}
+		request.setAttribute("errors", error.getErrors());
 		request.getRequestDispatcher("/WEB-INF/autreRemporteVente.jsp").forward(request, response);
 	}
 

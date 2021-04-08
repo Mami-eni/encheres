@@ -1,7 +1,10 @@
 package fr.eni.ecole.view;
 
+import java.io.File;
 import java.io.IOException;
-
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +59,6 @@ public class NewSaleServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		BusinessException error = new BusinessException();
 		HttpSession session = request.getSession();
-		Part filePart = request.getPart("upload");
-		//to do: récupération de l'image et envoi vers un dossier.
 		/* récupération des attributs de classe de l'article */
 		Utilisateur util = (Utilisateur) session.getAttribute("user");
 		String nom = request.getParameter("article");
@@ -93,6 +94,14 @@ public class NewSaleServlet extends HttpServlet {
 				articleId = a.getNumero();
 			}
 			art.setNumero(articleId);
+			/* récupération de l'image */
+			Part filePart = request.getPart("upload");
+			InputStream fileContent = filePart.getInputStream();
+			File folder = new File("C:/Users/fraud et med/git/encheres/WebContent/imagesArticles");
+			String image = "img_article_"+String.valueOf(art.getNumero())+".jpg";
+			File file = new File(folder, image);
+			Files.copy(fileContent, file.toPath());
+			fileContent.close();
 			/* récupération et construction du retrait à insérer dans la bdd */
 			Retrait ret = new Retrait();
 			ret.setArticle(art);
@@ -128,6 +137,14 @@ public class NewSaleServlet extends HttpServlet {
 			} catch (BusinessException e1) {
 				for(String s : e1.getErrors()) {
 					error.addError(s);
+				}
+			}
+			File folder = new File("C:/Users/fraud et med/git/encheres/WebContent/imagesArticles");
+			File[] listeDesFichiers = folder.listFiles();
+			String compare = "img_article_"+String.valueOf(art.getNumero())+".jpg";
+			for(File f : listeDesFichiers) {
+				if(f.getName().equals(compare)) {
+					request.setAttribute("image", f.getName());
 				}
 			}
 			request.setAttribute("errors", error.getErrors());
