@@ -113,6 +113,10 @@ public class BllArticle {
 		}
 	}
 	
+	public void setPrixVente(Article a) throws BusinessException {
+		article.setPrixVente(a);
+	}
+	
 	public void delete(Article a) throws BusinessException {
 		article.delete(a);
 	}

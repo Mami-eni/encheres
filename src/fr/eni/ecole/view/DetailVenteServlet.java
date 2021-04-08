@@ -1,5 +1,6 @@
 package fr.eni.ecole.view;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -41,6 +42,9 @@ public class DetailVenteServlet extends HttpServlet {
 		if(request.getAttribute("errors") != null) {
 			error = (BusinessException)request.getAttribute("errors");
 		}
+		HttpSession session = request.getSession();
+		Utilisateur util = (Utilisateur)session.getAttribute("user");
+		request.setAttribute("user", util);
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		int idArticle = 0;
 		if(request.getAttribute("article") == null) {
@@ -69,6 +73,14 @@ public class DetailVenteServlet extends HttpServlet {
 		request.setAttribute("dateFin", dateFin);
 		int enchereMin = 1;
 		request.setAttribute("enchMin", enchereMin);
+		File folder = new File("C:/Users/fraud et med/git/encheres/WebContent/imagesArticles");
+		File[] listeDesFichiers = folder.listFiles();
+		String compare = "img_article_"+String.valueOf(art.getNumero())+".jpg";
+		for(File f : listeDesFichiers) {
+			if(f.getName().equals(compare)) {
+				request.setAttribute("image", f.getName());
+			}
+		}
 		request.getRequestDispatcher("/WEB-INF/detailVente.jsp").forward(request, response);
 		}catch(BusinessException e) {
 			for(String s : e.getErrors()) {

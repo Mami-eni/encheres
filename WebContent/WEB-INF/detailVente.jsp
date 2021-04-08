@@ -21,8 +21,16 @@
        <div class="col-sm-2">
         </div>
       <div class="col-sm-2">
+      	<c:choose>
+      	<c:when test="${empty image}">
         <img class="img" src="./img/interrogation.png" alt="point interrogation"
 				width="50px">
+		</c:when>
+		<c:otherwise>
+		<img class="img" src="./imagesArticles/${image }" alt="article"
+				width="200px">
+		</c:otherwise>
+		</c:choose>
         </div>
         <div class="col-sm-6">
         
@@ -105,6 +113,7 @@
         </div>
         </div>
         
+        <c:if test="${article.utilisateur.numero != user.numero }">
         <div class="row">
         <div class="col-sm-6">
         <label for="proposition">Ma proposition</label>
@@ -124,6 +133,7 @@
         </form>
         </div>
         </div>
+        </c:if>
         
         </div>
     <div class = "col-sm-2">

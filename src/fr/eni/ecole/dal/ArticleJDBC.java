@@ -5,10 +5,12 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.ecole.bo.Article;
+
 import fr.eni.ecole.bo.Utilisateur;
 import fr.eni.ecole.exception.BusinessException;
 import fr.eni.ecole.exception.Errors;
@@ -86,24 +88,23 @@ public class ArticleJDBC implements ArticleDAO {
 			art.setUtilisateur(util.selectById((rs.getInt("no_utilisateur"))));
 			art.setCategorie(cat.selectById(rs.getInt("no_categorie")));
 
-					
-			if((rs.getDate("date_debut_encheres").toLocalDate().isBefore(LocalDate.now()) || rs.getDate("date_debut_encheres").toLocalDate().isEqual(LocalDate.now()) )  && rs.getDate("date_fin_encheres").toLocalDate().isAfter(LocalDate.now()))
 
-            {
-                art.setEtatVente("encours");
-            }
-           
-           
-           
+			if((rs.getDate("date_debut_encheres").toLocalDate().isBefore(LocalDate.now()) || rs.getDate("date_debut_encheres").toLocalDate().isEqual(LocalDate.now()) )  && rs.getDate("date_fin_encheres").toLocalDate().isAfter(LocalDate.now()))
+			{
+				art.setEtatVente("encours");
+			}
+			
+						
 			else if( rs.getDate("date_fin_encheres").toLocalDate().isBefore(LocalDate.now()) || rs.getDate("date_fin_encheres").toLocalDate().isEqual(LocalDate.now()))
-            {
-                art.setEtatVente("fini");
-            }
-           
+			{
+				art.setEtatVente("fini");
+			}
+			
 			else if( rs.getDate("date_debut_encheres").toLocalDate().isAfter(LocalDate.now()))
-            {
-                art.setEtatVente("non_debuté");
-            }
+			{
+				art.setEtatVente("non_debuté");
+			}
+
 			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
@@ -181,8 +182,21 @@ public class ArticleJDBC implements ArticleDAO {
 			BusinessException be = new BusinessException();
 			be.addError(Errors.ERREUR_UPDATE);
 			throw be;
-		}
-		
+		}	
+	}
+	
+	public void setPrixVente(Article item) throws BusinessException {
+		try(Connection cx = Connect.getConnection()){
+			PreparedStatement request = cx.prepareStatement("UPDATE articles SET prix_vente = ? WHERE no_article = ?");
+			request.setInt(1, item.getPrixVente());
+			request.setInt(2, item.getNumero());
+			request.executeUpdate();
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError(Errors.ERREUR_UPDATE);
+			throw be;
+		}	
 	}
 
 	@Override
