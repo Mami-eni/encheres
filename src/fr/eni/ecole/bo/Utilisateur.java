@@ -17,8 +17,11 @@ public class Utilisateur {
 	private String motDePasse;
 	private int credit;
 	private boolean administrateur;
+	private boolean desactive;
 	
-	public Utilisateur() {}
+	public Utilisateur() {
+		this.desactive = false;
+	}
 
 	public int getNumero() {
 		return numero;
@@ -114,6 +117,20 @@ public class Utilisateur {
 
 	public void setAdministrateur(boolean administrateur) {
 		this.administrateur = administrateur;
+	}
+
+	/**
+	 * @return the desactive
+	 */
+	public boolean isDesactive() {
+		return desactive;
+	}
+
+	/**
+	 * @param desactive the desactive to set
+	 */
+	public void setDesactive(boolean desactive) {
+		this.desactive = desactive;
 	}
 
 	@Override

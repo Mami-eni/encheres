@@ -5,12 +5,10 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.ecole.bo.Article;
-import fr.eni.ecole.bo.Enchere;
 import fr.eni.ecole.bo.Utilisateur;
 import fr.eni.ecole.exception.BusinessException;
 import fr.eni.ecole.exception.Errors;
@@ -76,7 +74,6 @@ public class ArticleJDBC implements ArticleDAO {
 	}
 	
 	public Article articleBuilder(ResultSet rs) {
-		
 		Article art = new Article();
 		try {
 			art.setNumero(rs.getInt("no_article"));
@@ -88,15 +85,14 @@ public class ArticleJDBC implements ArticleDAO {
 			art.setPrixVente(rs.getInt("prix_vente"));
 			art.setUtilisateur(util.selectById((rs.getInt("no_utilisateur"))));
 			art.setCategorie(cat.selectById(rs.getInt("no_categorie")));
-			
-			
-			if((rs.getDate("date_debut_encheres").toLocalDate().isBefore(LocalDate.now()) || rs.getDate("date_debut_encheres").toLocalDate().isEqual(LocalDate.now()) )
-					&& rs.getDate("date_fin_encheres").toLocalDate().isAfter(LocalDate.now()))
 
+					
+			if((rs.getDate("date_debut_encheres").toLocalDate().isBefore(LocalDate.now()) || rs.getDate("date_debut_encheres").toLocalDate().isEqual(LocalDate.now()) )  && rs.getDate("date_fin_encheres").toLocalDate().isAfter(LocalDate.now()))
 
             {
                 art.setEtatVente("encours");
             }
+           
            
            
 			else if( rs.getDate("date_fin_encheres").toLocalDate().isBefore(LocalDate.now()) || rs.getDate("date_fin_encheres").toLocalDate().isEqual(LocalDate.now()))
@@ -108,17 +104,12 @@ public class ArticleJDBC implements ArticleDAO {
             {
                 art.setEtatVente("non_debuté");
             }
-
 			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
 		return art;
 	}
-	
-	/**
-	 * Cette méthode permet de recuperer tous les articles dont la vente est en cours 
-	 */
 
 	@Override
 	public List<Article> selectAll() throws BusinessException {
@@ -233,12 +224,10 @@ public class ArticleJDBC implements ArticleDAO {
         return liste;
     }
 	
-	/**
-	 * selection de la requête à executer selon la valeur des attributs issus des jsp
-	 */
-	
 	public List<Article> selectByFiltre(String filtreTexte, String filtreCategorie, String filtreRadio, String[] filtreCheckboxVente,String[] filtreCheckboxAchat, int userId) throws BusinessException {
-		
+		/**
+		 * selection de la requête à executer selon la valeur des attributs issus des jsp
+		 */
 
 		Article art = new Article();
 		List<Article> listeArticle = new ArrayList<Article>();
@@ -272,7 +261,7 @@ public class ArticleJDBC implements ArticleDAO {
 			appendRequeteFiltreTexte( requeteFinale, filtreTexte);
 			
 		}
-		 
+		// affichage requetes 
 		System.out.println(requeteFinale.toString());
 		
 		try(Connection cx = Connect.getConnection()){
@@ -299,48 +288,27 @@ public class ArticleJDBC implements ArticleDAO {
 		return listeArticle;
 	}
 	
-	/**
-	 * Cette méthode regroupe l'ensemble des méthodes qui permettront de construire la requete SQL de recherche liée aux ventes
-	 * @param requete
-	 * @param filtreTexte
-	 * @param filtreCategorie
-	 * @param filtreRadio
-	 * @param filtreCheckboxVente
-	 * @param userId
-	 */
-	
 	private void requeteBuilderVente(StringBuilder requete, String filtreTexte, String filtreCategorie, String filtreRadio, String[] filtreCheckboxVente, int userId) {
 		
+		
 		appendRequeteFiltreCheckboxVente(requete, filtreCheckboxVente, userId);
+			
 		appendRequetefiltreCategorie(requete, filtreCategorie);
 		appendRequeteFiltreTexte(requete, filtreTexte);
 	}
 	
-	/**
-	 *  Cette méthode regroupe l'ensemble des méthodes qui permettront de construire la requete SQL de recherche liée aux achats
-	 * @param requete
-	 * @param filtreTexte
-	 * @param filtreCategorie
-	 * @param filtreRadio
-	 * @param filtreCheckboxAchat
-	 * @param userId
-	 * @param SELECT_FILTRE_CHECKBOX_ACHAT_CUMUL
-	 */
-	
 	private void requeteBuilderAchat(StringBuilder requete, String filtreTexte, String filtreCategorie, String filtreRadio, String[] filtreCheckboxAchat, int userId, String SELECT_FILTRE_CHECKBOX_ACHAT_CUMUL) {
+		
 		
 		appendRequeteFiltreCheckboxAchat(requete, filtreCheckboxAchat, userId, SELECT_FILTRE_CHECKBOX_ACHAT_CUMUL);
 		appendRequetefiltreCategorie(requete, filtreCategorie);
 		appendRequeteFiltreTexte(requete, filtreTexte);
+
 		
 	}
 	
 	
-	/**
-	 *  Cette méthode permet de construire la partie de la requête SQL qui permet de faire des recherches selon la categorie selectionnée
-	 * @param requete
-	 * @param filtreCategorie
-	 */
+	
 	private void appendRequetefiltreCategorie(StringBuilder requete, String filtreCategorie)
 	{
 		if(!("toutes").equalsIgnoreCase(filtreCategorie)) 
@@ -349,12 +317,6 @@ public class ArticleJDBC implements ArticleDAO {
 		}
 	}
 	
-	/**
-	 * Cette méthode permet de construire la partie de la requête SQL qui permet de faire des recherches selon le texte recherché dans le nom de l'article
-	 * @param requete
-	 * @param filtreTexte
-	 */
-	
 	private void appendRequeteFiltreTexte(StringBuilder requete, String filtreTexte)
 	{
 		if(!filtreTexte.isEmpty()) 
@@ -362,13 +324,6 @@ public class ArticleJDBC implements ArticleDAO {
 			requete.append(SELECT_FILTRE_TEXTE +"'"+ "%"+filtreTexte+"%"+"'");
 		}
 	}
-	/**
-	 * Cette méthode permet de construire la partie de la requête SQL qui permet de faire des recherches selon les checkboxs selectionnés pour les ventes
-	 * elle prend en compte les choix d'une checkbox seule ou d'une combinaison de checkboxs
-	 * @param requete
-	 * @param filtreCheckboxVente
-	 * @param userId
-	 */
 	
 	private void appendRequeteFiltreCheckboxVente(StringBuilder requete,  String[] filtreCheckboxVente, int userId)
 	{
@@ -422,14 +377,7 @@ public class ArticleJDBC implements ArticleDAO {
 		requete.append(")");
 	}
 	
-	/**
-	 * Cette méthode permet de construire la partie de la requête SQL qui permet de faire des recherches selon les checkboxs selectionnés pour les achats
-	 * elle prend en compte les choix d'une checkbox seule ou d'une combinaison de checkboxs
-	 * @param requete
-	 * @param filtreCheckboxAchat
-	 * @param userId
-	 * @param SELECT_FILTRE_CHECKBOX_ACHAT_CUMUL
-	 */
+	
 	
 	private void appendRequeteFiltreCheckboxAchat(StringBuilder requete,  String[] filtreCheckboxAchat, int userId,String SELECT_FILTRE_CHECKBOX_ACHAT_CUMUL)
 	{
