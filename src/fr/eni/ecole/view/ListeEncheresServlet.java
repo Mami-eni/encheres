@@ -2,14 +2,12 @@
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -27,7 +25,7 @@ import fr.eni.ecole.bo.Categorie;
 import fr.eni.ecole.bo.Enchere;
 import fr.eni.ecole.bo.Utilisateur;
 import fr.eni.ecole.exception.BusinessException;
-import fr.eni.ecole.exception.Errors;
+
 
 /**
  * Servlet traitant l'affichage des enchères selon différents filtres

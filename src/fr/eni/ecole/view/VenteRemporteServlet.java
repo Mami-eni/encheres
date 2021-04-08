@@ -76,11 +76,16 @@ public class VenteRemporteServlet extends HttpServlet implements ViewConstants {
 		File folder = new File(IMAGE_PATH);
 		File[] listeDesFichiers = folder.listFiles();
 		String compare = "img_article_"+String.valueOf(art.getNumero())+".jpg";
-		for(File f : listeDesFichiers) {
-			if(f.getName().equals(compare)) {
-				request.setAttribute("image", f.getName());
+		if(null != listeDesFichiers)
+		{
+			for(File f : listeDesFichiers) {
+				if(f.getName().equals(compare)) {
+					request.setAttribute("image", f.getName());
+				}
 			}
 		}
+		
+		
 		request.getRequestDispatcher("/WEB-INF/venteRemporte.jsp").forward(request, response);
 	}
 
