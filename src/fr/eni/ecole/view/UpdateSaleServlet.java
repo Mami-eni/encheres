@@ -74,7 +74,7 @@ public class UpdateSaleServlet extends HttpServlet {
 			}
 			e.printStackTrace();
 		}
-		File folder = new File("C:/Users/fraud et med/git/encheres/WebContent/imagesArticles");
+		File folder = new File("C:/Users/mamib/Documents/cours_ENI/Modules/projet-troc-version-commune/encheres/WebContent/imagesArticles");
 		File[] listeDesFichiers = folder.listFiles();
 		String compare = "img_article_"+String.valueOf(art.getNumero())+".jpg";
 		for(File f : listeDesFichiers) {

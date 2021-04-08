@@ -277,8 +277,7 @@ public class ArticleJDBC implements ArticleDAO {
 			appendRequeteFiltreTexte( requeteFinale, filtreTexte);
 			
 		}
-		// affichage requetes 
-		System.out.println(requeteFinale.toString());
+		
 		
 		try(Connection cx = Connect.getConnection()){
 			PreparedStatement request = cx.prepareStatement(requeteFinale.toString());

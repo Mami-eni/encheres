@@ -40,11 +40,15 @@ public class RetraitJDBC implements RetraitDAO {
 			PreparedStatement request = cx.prepareStatement("SELECT rue, code_postal, ville FROM retraits WHERE no_article = ?");
 			request.setInt(1, a.getNumero());
 			ResultSet rs = request.executeQuery();
-			rs.next();
-			ret.setArticle(a);
-			ret.setRue(rs.getString("rue"));
-			ret.setCodePostal(rs.getString("code_postal"));
-			ret.setVille(rs.getString("ville"));
+			if(rs.next())
+			{
+				ret.setArticle(a);
+				ret.setRue(rs.getString("rue"));
+				ret.setCodePostal(rs.getString("code_postal"));
+				ret.setVille(rs.getString("ville"));
+			}
+			
+			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 			BusinessException be = new BusinessException();

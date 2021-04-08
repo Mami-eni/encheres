@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ page errorPage="error.jsp" isErrorPage="false"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
@@ -134,8 +135,8 @@
 	
 																<p class="card-text">Prix: ${meilleureEnchere.get(article.getNumero())} points </p>
 	
-																<p class="card-text">Fin de l'enchère:${article.dateFinEncheres}</p>
-																<p class="card-text">Vendeur:${article.getUtilisateur().pseudo}</p>
+																<p class="card-text">Fin de l'enchère: ${article.dateFinEncheres}</p>
+																<p class="card-text">Vendeur: ${article.getUtilisateur().pseudo}</p>
 	
 															</c:when>
 	
@@ -149,24 +150,20 @@
 																		<c:choose>
 																				<c:when test="${article.etatVente == 'encours'}">
 																					<a class="card-text"
-																						href="${pageContext.request.contextPath}/DetailVenteServlet?article=${article.numero}">${article.nom}
-	
-																						${article.etatVente} </a>
+																						href="${pageContext.request.contextPath}/DetailVenteServlet?article=${article.numero}">${article.nom} </a>
 	
 																				</c:when>
 	
 																			
 																				<c:when test="${article.etatVente == 'non_debuté'}">
 																					<a class="card-text"
-																						href="${pageContext.request.contextPath}/UpdateSaleServlet?article=${article.numero}">${article.nom}
-																						${article.etatVente} </a>
+																						href="${pageContext.request.contextPath}/UpdateSaleServlet?article=${article.numero}">${article.nom} </a>
 	
 																				</c:when>
 	
 																				<c:when test="${article.etatVente== 'fini'}">
 																					<a class="card-text"
-																						href="${pageContext.request.contextPath}/AutreRemporteVenteServlet?article=${article.numero}">${article.nom}
-																						${article.etatVente} </a>
+																						href="${pageContext.request.contextPath}/AutreRemporteVenteServlet?article=${article.numero}">${article.nom} </a>
 	
 																				</c:when>
 	
@@ -180,15 +177,13 @@
 																		<c:choose>
 																			<c:when test="${article.etatVente== 'encours'}">
 																				<a class="card-text"
-																					href="${pageContext.request.contextPath}/DetailVenteServlet?article=${article.numero}">${article.nom}
-																					${article.etatVente} </a>
+																					href="${pageContext.request.contextPath}/DetailVenteServlet?article=${article.numero}">${article.nom} </a>
 	
 																			</c:when>
 	
 																			<c:when test="${article.etatVente== 'fini'}">
 																				<a class="card-text"
-																					href="${pageContext.request.contextPath}/VenteRemporteServlet?article=${article.numero}">${article.nom}
-																					${article.etatVente} </a>
+																					href="${pageContext.request.contextPath}/VenteRemporteServlet?article=${article.numero}">${article.nom} </a>
 	
 																			</c:when>
 																	</c:choose>
@@ -199,10 +194,8 @@
 																</c:choose>
 	
 																<p class="card-text">Prix: ${meilleureEnchere.get(article.getNumero())} points </p>
-																<p class="card-text">Fin de l'enchère:
-																	${article.dateFinEncheres}</p>
-																<a class="card-text"
-																	href="${pageContext.request.contextPath}/afficherProfil?vendeur=${article.getUtilisateur().numero}">Vendeur:
+																<p class="card-text">Fin de l'enchère: ${article.dateFinEncheres}</p>
+																<a class="card-text"href="${pageContext.request.contextPath}/afficherProfil?vendeur=${article.getUtilisateur().numero}">Vendeur:
 																	${article.getUtilisateur().pseudo}</a>
 	
 															</c:otherwise>
