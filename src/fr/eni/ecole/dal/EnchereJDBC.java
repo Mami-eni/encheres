@@ -148,9 +148,18 @@ public class EnchereJDBC implements EnchereDAO {
 	}
 
 	@Override
-	public void delete(Enchere item) {
-		throw new UnsupportedOperationException("Not supported yet.");
-	}
+	public void delete(Enchere item) throws BusinessException {
+		try (Connection cx = Connect.getConnection()) {
+			PreparedStatement request = cx.prepareStatement("DELETE FROM encheres WHERE no_enchere=?");
+			request.setInt(1, item.getNumero());
+			request.executeUpdate();
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			BusinessException be = new BusinessException();
+			be.addError(Errors.ERREUR_DELETE);
+			throw be;
+		}	}
 
 	
 	

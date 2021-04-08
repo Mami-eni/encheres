@@ -5,12 +5,10 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.ecole.bo.Article;
-import fr.eni.ecole.bo.Enchere;
 import fr.eni.ecole.bo.Utilisateur;
 import fr.eni.ecole.exception.BusinessException;
 import fr.eni.ecole.exception.Errors;
@@ -76,7 +74,6 @@ public class ArticleJDBC implements ArticleDAO {
 	}
 	
 	public Article articleBuilder(ResultSet rs) {
-		EnchereDAO enchere = DAOFactory.getEnchereDAO();
 		Article art = new Article();
 		try {
 			art.setNumero(rs.getInt("no_article"));
@@ -88,40 +85,10 @@ public class ArticleJDBC implements ArticleDAO {
 			art.setPrixVente(rs.getInt("prix_vente"));
 			art.setUtilisateur(util.selectById((rs.getInt("no_utilisateur"))));
 			art.setCategorie(cat.selectById(rs.getInt("no_categorie")));
-			
-//            List<Enchere> ListeEncheres= new ArrayList<Enchere>();
-//          
-//            ListeEncheres = enchere.selectByArticle(art);
-			
-        
-			
-			if((rs.getDate("date_debut_encheres").toLocalDate().isBefore(LocalDate.now()) || rs.getDate("date_debut_encheres").toLocalDate().isEqual(LocalDate.now()) )  && rs.getDate("date_fin_encheres").toLocalDate().isAfter(LocalDate.now()))
-<<<<<<< HEAD
-			{
-				art.setEtatVente("encours");
-			}
-			
-//			else if((rs.getDate("date_debut_encheres").toLocalDate().isBefore(LocalDate.now()) || rs.getDate("date_debut_encheres").toLocalDate().isEqual(LocalDate.now()) )  
-//					&& rs.getDate("date_fin_encheres").toLocalDate().isAfter(LocalDate.now()) && ListeEncheres.isEmpty() )
-//			{
-//				art.setEtatVente("encoursSansEnchere");
-//			}
-			
-						
-			else if( rs.getDate("date_fin_encheres").toLocalDate().isBefore(LocalDate.now()) || rs.getDate("date_fin_encheres").toLocalDate().isEqual(LocalDate.now()))
-			{
-				art.setEtatVente("fini");
 
-				
-				// setter le prix de vente
-				// update base de donnée
-			}
-			
-			else if( rs.getDate("date_debut_encheres").toLocalDate().isAfter(LocalDate.now()))
-			{
-				art.setEtatVente("non_debuté");
-			}
-=======
+					
+			if((rs.getDate("date_debut_encheres").toLocalDate().isBefore(LocalDate.now()) || rs.getDate("date_debut_encheres").toLocalDate().isEqual(LocalDate.now()) )  && rs.getDate("date_fin_encheres").toLocalDate().isAfter(LocalDate.now()))
+
             {
                 art.setEtatVente("encours");
             }
@@ -137,7 +104,6 @@ public class ArticleJDBC implements ArticleDAO {
             {
                 art.setEtatVente("non_debuté");
             }
->>>>>>> 41a0c3cee6f8f71a606cb4253da42cb1b2118aa8
 			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());

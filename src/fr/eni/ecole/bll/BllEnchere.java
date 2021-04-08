@@ -43,6 +43,14 @@ public class BllEnchere {
         return enchere.selectAll();
     }
    
-    
+	public void delete(Enchere item) throws BusinessException {
+		enchere.delete(item);
+	}
+    public void deleteByUser(Utilisateur user) throws BusinessException{
+    	List<Enchere> encheresOfUserToDelete = selectByUser(user);
+		for (Enchere ench : encheresOfUserToDelete) {
+			delete(ench);
+		}
+    }
 	
 }
