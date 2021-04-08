@@ -167,6 +167,7 @@
 
 																			</c:when>
 
+
 																			<c:when test="${article.etatVente == 'non_debuté'}">
 																				<a class="card-text"
 																					href="${pageContext.request.contextPath}/UpdateSaleServlet?article=${article.numero}">${article.nom}

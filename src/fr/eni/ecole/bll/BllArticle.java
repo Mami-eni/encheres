@@ -211,4 +211,11 @@ public class BllArticle {
 		return listeArticlesRemporte;
 		
 	}
+
+	public void deleteByUser(Utilisateur utilisateur) throws BusinessException{
+		List<Article> articleOfUserToDelete = selectByUser(utilisateur);
+		for (Article article : articleOfUserToDelete) {
+			delete(article);
+		}
+	}
 }

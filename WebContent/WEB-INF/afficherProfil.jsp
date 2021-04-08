@@ -32,6 +32,11 @@
 				<button class="btn btn-primary btn-lg">Supprimer ce compte</button>
 			</a>
 			</c:if>
+			<c:if test="${sessionScope.user.administrateur}">
+				<a href="./adDesactive?vendeur=${vendeur.numero}">
+				<button class="btn btn-primary btn-lg">Désactiver ce compte</button>
+			</a>
+			</c:if>
 
 		</div>
 
