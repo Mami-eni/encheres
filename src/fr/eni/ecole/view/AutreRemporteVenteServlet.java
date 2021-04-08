@@ -99,14 +99,20 @@ public class AutreRemporteVenteServlet extends HttpServlet {
 			}
 			e1.printStackTrace();
 		}
-		File folder = new File("./imagesArticles");
-//		File folder = new File("C:/Users/fraud et med/git/encheres/WebContent/imagesArticles");
+		
+		File folder = new File("C:/Users/mamib/Documents/cours_ENI/Modules/projet-troc-version-commune/encheres/WebContent/imagesArticles");
 		File[] listeDesFichiers = folder.listFiles();
 		String compare = "img_article_"+String.valueOf(art.getNumero())+".jpg";
-		for(File f : listeDesFichiers) {
-			if(f.getName().equals(compare)) {
-				request.setAttribute("image", f.getName());
+		
+		if(null !=listeDesFichiers)
+		{
+			for(File f : listeDesFichiers) {
+				if(compare.equals(f.getName())) {
+					request.setAttribute("image", f.getName());
+				}
 			}
+		
+		
 		}
 		request.setAttribute("errors", error.getErrors());
 		request.getRequestDispatcher("/WEB-INF/autreRemporteVente.jsp").forward(request, response);
