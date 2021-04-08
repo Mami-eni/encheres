@@ -25,10 +25,7 @@ public class Connect {
 			context = new InitialContext();
 			Connect.dataSource = (DataSource) context.lookup("java:comp/env/jdbc/pool_cnx");
 		} catch (NamingException e) {
-<<<<<<< HEAD
 			e.printStackTrace();
-=======
->>>>>>> 41a0c3cee6f8f71a606cb4253da42cb1b2118aa8
 			throw new RuntimeException("Cannot Access The Database");
 		}
 	}

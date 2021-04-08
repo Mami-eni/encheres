@@ -24,8 +24,16 @@
         <div class = "col-sm-2">
         </div>
         <div class="col-sm-2">
+        <c:choose>
+      	<c:when test="${empty image}">
         <img class="img" src="./img/interrogation.png" alt="point interrogation"
 				width="50px">
+				</c:when>
+		<c:otherwise>
+		<img class="img" src="./imagesArticles/${image }" alt="article"
+				width="200px">
+		</c:otherwise>
+		</c:choose>
         </div>
         <div class="col-sm-6">
     

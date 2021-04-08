@@ -12,7 +12,7 @@ public interface ArticleDAO extends CRUD<Article>{
 
 	List<Article> selectByUser(Utilisateur utilisateur) throws BusinessException;
 	public List<Article> selectByFiltre (String filtreTexte, String filtreCategorie, String filtreRadio, String[] filtreCheckboxVente,String[] filtreCheckboxAchat, int userId) throws BusinessException;
-	
+	void setPrixVente(Article art) throws BusinessException;
 	
 	
 }

@@ -1,5 +1,6 @@
 package fr.eni.ecole.view;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -72,6 +73,14 @@ public class UpdateSaleServlet extends HttpServlet {
 				error.addError(s);
 			}
 			e.printStackTrace();
+		}
+		File folder = new File("C:/Users/fraud et med/git/encheres/WebContent/imagesArticles");
+		File[] listeDesFichiers = folder.listFiles();
+		String compare = "img_article_"+String.valueOf(art.getNumero())+".jpg";
+		for(File f : listeDesFichiers) {
+			if(f.getName().equals(compare)) {
+				request.setAttribute("image", f.getName());
+			}
 		}
 		request.setAttribute("errors", error.getErrors());
 		request.setAttribute("categories", listeCat);
@@ -155,6 +164,14 @@ public class UpdateSaleServlet extends HttpServlet {
 			request.setAttribute("retrait", ret);
 			request.setAttribute("dateDebut", debutEnchere.toString());
 			request.setAttribute("dateFin", finEnchere.toString());
+			File folder = new File("C:/Users/fraud et med/git/encheres/WebContent/imagesArticles");
+			File[] listeDesFichiers = folder.listFiles();
+			String compare = "img_article_"+String.valueOf(art.getNumero())+".jpg";
+			for(File f : listeDesFichiers) {
+				if(f.getName().equals(compare)) {
+					request.setAttribute("image", f.getName());
+				}
+			}
 			request.setAttribute("errors", error.getErrors());
 			request.getRequestDispatcher("WEB-INF/updateVente.jsp").forward(request, response);
 		}else {
