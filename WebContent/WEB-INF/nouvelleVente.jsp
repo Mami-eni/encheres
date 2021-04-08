@@ -77,6 +77,16 @@
 				</select>  
 				</div>
 			</div>
+			
+			<div class="form-group row">
+			<div class="col-sm-6">
+			<label for="map">Photo de l'article</label>
+			</div>
+			<div class="col-sm-6">
+			<input class="btn btn-primary me-2" type="file" name="upload" id="upload">
+			</div>
+			</div>
+			
 			<div class="form-group row">
 			<div class="col-sm-6">
 			<label for="map">Mise à Prix</label>

@@ -1,5 +1,6 @@
 ﻿package fr.eni.ecole.view;
 
+import java.io.File;
 import java.io.IOException;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ import fr.eni.ecole.exception.BusinessException;
  * Servlet traitant l'affichage des enchères selon différents filtres
  */
 @WebServlet("/encheres")
-public class ListeEncheresServlet extends HttpServlet {
+public class ListeEncheresServlet extends HttpServlet implements ViewConstants {
 	private static final long serialVersionUID = 1L;
 	private BllCategorie managerCategorie;
 	private BllEnchere managerEnchere;
@@ -100,14 +101,16 @@ public class ListeEncheresServlet extends HttpServlet {
 				meilleuresEncheresArticles.put(article.getNumero(), montantMax);
 
 			}
-
 			request.setAttribute("meilleureEnchere", meilleuresEncheresArticles);
 			request.setAttribute("listeArticles", listeArticles);
 		} catch (BusinessException e) {
 
 			request.setAttribute("errors", e.getErrors());
 		}
-
+		
+		File folder = new File("C:/Users/fraud et med/git/encheres/WebContent/imagesArticles");
+		File[] listeDesFichiers = folder.listFiles();
+		request.setAttribute("listeImages", listeDesFichiers);
 
 		request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
 
@@ -199,7 +202,10 @@ public class ListeEncheresServlet extends HttpServlet {
 				}
 
 			}
-
+			
+			File folder = new File(IMAGE_PATH);
+			File[] listeDesFichiers = folder.listFiles();
+			request.setAttribute("listeImages", listeDesFichiers);
 			request.setAttribute("errors", error.getErrors());
 			request.setAttribute("meilleureEnchere", meilleuresEncheresArticles);
 			request.setAttribute("listeArticles", listeArticles);

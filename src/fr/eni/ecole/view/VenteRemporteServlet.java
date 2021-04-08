@@ -23,7 +23,7 @@ import fr.eni.ecole.exception.BusinessException;
  * Cette classe gère l'envoi de données d'affichage
  */
 @WebServlet("/VenteRemporteServlet")
-public class VenteRemporteServlet extends HttpServlet {
+public class VenteRemporteServlet extends HttpServlet implements ViewConstants {
 	private static final long serialVersionUID = 1L;
 	private BllArticle article = BllArticle.getBllArticle();
 	private BllRetrait retrait = BllRetrait.getBllRetrait();
@@ -73,8 +73,7 @@ public class VenteRemporteServlet extends HttpServlet {
 		}
 		request.setAttribute("errors", error.getErrors());
 		request.setAttribute("enchere", ench);
-		
-		File folder = new File("C:/Users/mamib/Documents/cours_ENI/Modules/projet-troc-version-commune/encheres/WebContent/imagesArticles");
+		File folder = new File(IMAGE_PATH);
 		File[] listeDesFichiers = folder.listFiles();
 		String compare = "img_article_"+String.valueOf(art.getNumero())+".jpg";
 		if(null != listeDesFichiers)

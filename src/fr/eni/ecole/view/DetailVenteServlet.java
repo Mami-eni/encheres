@@ -28,7 +28,7 @@ import fr.eni.ecole.exception.BusinessException;
  * Cette classe gère l'envoi de données d'affichage et l'insertion d'enchères dans la base de donnée
  */
 @WebServlet("/DetailVenteServlet")
-public class DetailVenteServlet extends HttpServlet {
+public class DetailVenteServlet extends HttpServlet implements ViewConstants {
 	private static final long serialVersionUID = 1L;
 	private BllArticle article = BllArticle.getBllArticle();
 	private BllEnchere enchere = BllEnchere.getBllEnchere();
@@ -73,8 +73,7 @@ public class DetailVenteServlet extends HttpServlet {
 		request.setAttribute("dateFin", dateFin);
 		int enchereMin = 1;
 		request.setAttribute("enchMin", enchereMin);
-		
-		File folder = new File("C:/Users/mamib/Documents/cours_ENI/Modules/projet-troc-version-commune/encheres/WebContent/imagesArticles");
+		File folder = new File(IMAGE_PATH);
 		File[] listeDesFichiers = folder.listFiles();
 		String compare = "img_article_"+String.valueOf(art.getNumero())+".jpg";
 		

@@ -33,7 +33,7 @@ import fr.eni.ecole.exception.BusinessException;
  */
 @WebServlet("/NewSaleServlet")
 @MultipartConfig
-public class NewSaleServlet extends HttpServlet {
+public class NewSaleServlet extends HttpServlet implements ViewConstants {
 	private static final long serialVersionUID = 1L;
 	private BllCategorie cat = BllCategorie.getBllCategorie();
 	private BllArticle article = BllArticle.getBllArticle();
@@ -96,12 +96,14 @@ public class NewSaleServlet extends HttpServlet {
 			art.setNumero(articleId);
 			/* récupération de l'image */
 			Part filePart = request.getPart("upload");
+			if(filePart.getSize() != 0) {
 			InputStream fileContent = filePart.getInputStream();
-			File folder = new File("C:/Users/mamib/Documents/cours_ENI/Modules/projet-troc-version-commune/encheres/WebContent/imagesArticles");
+			File folder = new File(IMAGE_PATH);
 			String image = "img_article_"+String.valueOf(art.getNumero())+".jpg";
 			File file = new File(folder, image);
 			Files.copy(fileContent, file.toPath());
 			fileContent.close();
+			}
 			/* récupération et construction du retrait à insérer dans la bdd */
 			Retrait ret = new Retrait();
 			ret.setArticle(art);
@@ -139,7 +141,7 @@ public class NewSaleServlet extends HttpServlet {
 					error.addError(s);
 				}
 			}
-			File folder = new File("C:/Users/fraud et med/git/encheres/WebContent/imagesArticles");
+			File folder = new File(IMAGE_PATH);
 			File[] listeDesFichiers = folder.listFiles();
 			String compare = "img_article_"+String.valueOf(art.getNumero())+".jpg";
 			
