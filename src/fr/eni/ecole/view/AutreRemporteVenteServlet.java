@@ -26,7 +26,7 @@ import fr.eni.ecole.exception.BusinessException;
  * Cette classe gère l'envoi de données d'affichage et l'insertion du prix de vente de l'article dans la base de données
  */
 @WebServlet("/AutreRemporteVenteServlet")
-public class AutreRemporteVenteServlet extends HttpServlet {
+public class AutreRemporteVenteServlet extends HttpServlet implements ViewConstants {
 	private static final long serialVersionUID = 1L;
 	private BllArticle article = BllArticle.getBllArticle();
 	private BllRetrait retrait = BllRetrait.getBllRetrait();
@@ -99,7 +99,7 @@ public class AutreRemporteVenteServlet extends HttpServlet {
 			}
 			e1.printStackTrace();
 		}
-		File folder = new File("C:/Users/fraud et med/git/encheres/WebContent/imagesArticles");
+		File folder = new File(IMAGE_PATH);
 		File[] listeDesFichiers = folder.listFiles();
 		String compare = "img_article_"+String.valueOf(art.getNumero())+".jpg";
 		for(File f : listeDesFichiers) {

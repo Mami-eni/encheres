@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html>
 <html>
 
@@ -123,7 +124,23 @@
 									<div class="card">
 
 											<div class="row g-0">
-												<div class="col-md-4 conteneur-image"><img src="./img/interrogation.png" alt="test-image"></div>
+												<div class="col-md-4 conteneur-image">
+												<c:set var="booleanImage" value="false"/>
+												<c:set var="compare" value="img_article_${article.numero }.jpg"/>
+												<c:forEach var="image" items="${listeImages }">
+												<c:if test="${fn:contains(image.getName(), compare) }">
+												<c:set var="booleanImage" value="true"/>
+												</c:if>
+												</c:forEach>
+												<c:choose>
+												<c:when test="${booleanImage == false }">
+												<img src="./img/interrogation.png" alt="test-image">
+												</c:when>
+												<c:otherwise>
+												<img src="./imagesArticles/${compare }" alt="article">
+												</c:otherwise>
+												</c:choose>
+												</div>
 												<div class="col-md-8">
 													<div class="card-body">
 

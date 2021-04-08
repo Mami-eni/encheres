@@ -2,6 +2,8 @@ package fr.eni.ecole.view;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import fr.eni.ecole.bll.BllArticle;
 import fr.eni.ecole.bll.BllCategorie;
@@ -27,7 +30,7 @@ import fr.eni.ecole.exception.BusinessException;
  * Cette classe gère l'envoi de données d'affichage et l'update d'articles et de retraits dans la base de donnée
  */
 @WebServlet("/UpdateSaleServlet")
-public class UpdateSaleServlet extends HttpServlet {
+public class UpdateSaleServlet extends HttpServlet implements ViewConstants {
 	private static final long serialVersionUID = 1L;
 
 	private BllCategorie cat = BllCategorie.getBllCategorie();
@@ -74,7 +77,7 @@ public class UpdateSaleServlet extends HttpServlet {
 			}
 			e.printStackTrace();
 		}
-		File folder = new File("C:/Users/fraud et med/git/encheres/WebContent/imagesArticles");
+		File folder = new File(IMAGE_PATH);
 		File[] listeDesFichiers = folder.listFiles();
 		String compare = "img_article_"+String.valueOf(art.getNumero())+".jpg";
 		for(File f : listeDesFichiers) {
@@ -148,6 +151,16 @@ public class UpdateSaleServlet extends HttpServlet {
 			}
 			e.printStackTrace();
 		}
+		/* récupération de l'image */
+		Part filePart = request.getPart("upload");
+		if(filePart.getSize() != 0) {
+		InputStream fileContent = filePart.getInputStream();
+		File folder = new File(IMAGE_PATH);
+		String image = "img_article_"+String.valueOf(art.getNumero())+".jpg";
+		File file = new File(folder, image);
+		Files.copy(fileContent, file.toPath());
+		fileContent.close();
+		}
 		if(error.getErrors() != null) {
 			/* passage en attributs de requêtes des éléments nécessaires au pré-remplissage des champs en cas d'erreur */
 			List<Categorie> listeCat = new ArrayList<Categorie>();
@@ -164,7 +177,7 @@ public class UpdateSaleServlet extends HttpServlet {
 			request.setAttribute("retrait", ret);
 			request.setAttribute("dateDebut", debutEnchere.toString());
 			request.setAttribute("dateFin", finEnchere.toString());
-			File folder = new File("C:/Users/fraud et med/git/encheres/WebContent/imagesArticles");
+			File folder = new File(IMAGE_PATH);
 			File[] listeDesFichiers = folder.listFiles();
 			String compare = "img_article_"+String.valueOf(art.getNumero())+".jpg";
 			for(File f : listeDesFichiers) {
