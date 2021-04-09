@@ -68,6 +68,11 @@
 						class="form-control" id="confirmation" type="password"
 						name="confirmation" value="${sessionScope.user.motDePasse}">
 				</div>
+				
+				<div class="form-group">
+					<p>Crédit: ${sessionScope.user.credit}</p>
+				</div>
+				
 
 
 				<div class="form-group">
