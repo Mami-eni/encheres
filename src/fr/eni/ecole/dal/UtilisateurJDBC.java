@@ -148,7 +148,7 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 
 			PreparedStatement request = cx.prepareStatement(
 					"UPDATE utilisateurs SET " + "pseudo=?, nom=?, " + "prenom=?, email=?, telephone=?, rue=?,"
-							+ "code_postal=?, ville=?, mot_de_passe=?" + "WHERE no_utilisateur=?");
+							+ "code_postal=?, ville=?, mot_de_passe=?, credit=?" + " WHERE no_utilisateur=?");
 
 			request.setString(1, item.getPseudo());
 			request.setString(2, item.getNom());
@@ -161,8 +161,9 @@ public class UtilisateurJDBC implements UtilisateurDAO {
 			request.setString(7, item.getCodePostal());
 			request.setString(8, item.getVille());
 			request.setString(9, item.getMotDePasse());
+			request.setInt(10, item.getCredit());
 
-			request.setInt(10, item.getNumero());
+			request.setInt(11, item.getNumero());
 
 			request.executeUpdate();
 

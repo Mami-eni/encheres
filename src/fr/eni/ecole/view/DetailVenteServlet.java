@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -17,7 +18,7 @@ import javax.servlet.http.HttpSession;
 import fr.eni.ecole.bll.BllArticle;
 import fr.eni.ecole.bll.BllEnchere;
 import fr.eni.ecole.bll.BllRetrait;
-
+import fr.eni.ecole.bll.BllUtilisateur;
 import fr.eni.ecole.bo.Article;
 import fr.eni.ecole.bo.Enchere;
 import fr.eni.ecole.bo.Retrait;
@@ -33,6 +34,7 @@ public class DetailVenteServlet extends HttpServlet implements ViewConstants {
 	private BllArticle article = BllArticle.getBllArticle();
 	private BllEnchere enchere = BllEnchere.getBllEnchere();
 	private BllRetrait retrait = BllRetrait.getBllRetrait();
+	private BllUtilisateur utilisateur = BllUtilisateur.getBllUtilisateur();
 
        
     /* passage en attributs de requête des éléments nécessaires à l'affichage des données de la page */
@@ -105,6 +107,13 @@ public class DetailVenteServlet extends HttpServlet implements ViewConstants {
 		/* récupération des attributs de classe de l'enchère */
 		Utilisateur util = new Utilisateur();
 		util = (Utilisateur)session.getAttribute("user");
+		Utilisateur user = new Utilisateur();
+		try {
+			user = utilisateur.selectById(util.getNumero());
+		} catch (BusinessException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		Article art = new Article();
 		try {
 			art = article.selectById(Integer.parseInt(request.getParameter("article")));
@@ -116,17 +125,57 @@ public class DetailVenteServlet extends HttpServlet implements ViewConstants {
 			}
 			e.printStackTrace();
 		}
+		if(Integer.parseInt(request.getParameter("proposition")) <= user.getCredit()) {
+		user.setCredit(user.getCredit() - Integer.parseInt(request.getParameter("proposition")));
+		try {
+			utilisateur.update(user);
+		} catch (BusinessException e1) {
+			for(String s : e1.getErrors()) {
+				error.addError(s);
+			}
+			e1.printStackTrace();
+		}
+		List<Enchere> listeEncheres = new ArrayList<Enchere>();
+		try {
+			listeEncheres = enchere.selectByArticle(art);
+		} catch (BusinessException e2) {
+			for(String s : e2.getErrors()) {
+				error.addError(s);
+			}
+			e2.printStackTrace();
+		}
+		int montantMax = 0;
+		Enchere ench = new Enchere();
+		if(!listeEncheres.isEmpty()) {
+		for(Enchere e : listeEncheres) {
+			if(e.getMontant() > montantMax) {
+				montantMax = e.getMontant();
+				ench = e;
+			}
+		}
+		}
+		Utilisateur bestEncherisseur = ench.getUtilisateur();
+		bestEncherisseur.setCredit(bestEncherisseur.getCredit() + ench.getMontant());
+		try {
+			utilisateur.update(bestEncherisseur);
+		} catch (BusinessException e1) {
+			for(String s : e1.getErrors()) {
+				error.addError(s);
+			}
+			e1.printStackTrace();
+		}
 		Instant now = Instant.now();
 		Timestamp dateEnchere = Timestamp.from(now);
 		int montant = Integer.parseInt(request.getParameter("proposition"));
 		/* construction de l'enchère à insérer dans la bdd */
-		Enchere ench = new Enchere();
-		ench.setDate(dateEnchere);
-		ench.setMontant(montant);
-		ench.setArticle(art);
-		ench.setUtilisateur(util);
+		Enchere enche = new Enchere();
+		enche.setDate(dateEnchere);
+		enche.setMontant(montant);
+		enche.setArticle(art);
+		enche.setUtilisateur(user);
+		
 		try {
-			enchere.insert(ench);
+			enchere.insert(enche);
 		} catch (BusinessException e) {
 			for(String s : e.getErrors()) {
 				error.addError(s);
@@ -137,7 +186,11 @@ public class DetailVenteServlet extends HttpServlet implements ViewConstants {
 			e.printStackTrace();
 		}
 		response.sendRedirect("/encheres");
-		
+		}else {
+			//error.addError("Vous n'avez pas assez de points sur votre compte");
+			//request.setAttribute("errors", error);
+			doGet(request, response);
+		}
 	}
 
 }
