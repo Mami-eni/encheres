@@ -9,11 +9,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@include file="template/navLogo.jsp"%>
       
+      
       <div class="row">
       <div class="col-sm-4"></div>
-      <div class="col-sm-6"><p class="title">${utilisateur.pseudo} a remporté la vente</p></div>
+      <div class="col-sm-6">
+      <c:choose>
+      <c:when test="${!empty enchere.date }">
+      <p class="title">${utilisateur.pseudo} a remporté la vente</p>
+      </c:when>
+      <c:otherwise>
+      <p class="title">Aucune enchère sur cette vente</p>
+      </c:otherwise>
+      </c:choose>
+      </div>
       <div class="col-sm-2"></div>
       </div>
+      
       
       <%@include file="template/messageErreur.jsp"%>
       
@@ -49,6 +60,7 @@
         </div>
         </div>
         
+        <c:if test="${!empty enchere.date }">
         <div class="row">
         <div class="col-sm-6">
         <p>Meilleure Offre</p>
@@ -57,6 +69,7 @@
         <p>${enchere.montant } pts par <a href="afficherProfil?vendeur=${utilisateur.numero}">${utilisateur.pseudo }</a></p>
         </div>
         </div>
+        </c:if>
         
         <div class="row">
         <div class="col-sm-6">
@@ -105,7 +118,14 @@
          <div class="row">
         <div class="col-sm-6">
         <form action="AutreRemporteVenteServlet" method="post">
+        <c:choose>
+        <c:when test="${!empty enchere.date }">
         <input class="btn btn-primary me-2" type="submit" value="Retrait effectué">
+        </c:when>
+        <c:otherwise>
+        <input class="btn btn-primary me-2" type="submit" value="Back">
+        </c:otherwise>
+        </c:choose>
         </form>
         </div>
         </div>

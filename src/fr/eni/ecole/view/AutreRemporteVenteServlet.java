@@ -72,13 +72,13 @@ public class AutreRemporteVenteServlet extends HttpServlet implements ViewConsta
 		}
 		int montantMax = 0;
 		Enchere ench = new Enchere();
+		if(listeEncheres.size() != 0) {
 		for(Enchere e : listeEncheres) {
 			if(e.getMontant() > montantMax) {
 				montantMax = e.getMontant();
 				ench = e;
 			}
 		}
-		request.setAttribute("enchere", ench);
 		Utilisateur util = new Utilisateur();
 		try {
 			util = utilisateur.selectById(ench.getUtilisateur().getNumero());
@@ -99,6 +99,8 @@ public class AutreRemporteVenteServlet extends HttpServlet implements ViewConsta
 			}
 			e1.printStackTrace();
 		}
+		}
+		request.setAttribute("enchere", ench);
 		File folder = new File(IMAGE_PATH);
 		File[] listeDesFichiers = folder.listFiles();
 		String compare = "img_article_"+String.valueOf(art.getNumero())+".jpg";
