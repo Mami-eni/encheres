@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,7 @@ import fr.eni.ecole.exception.BusinessException;
  * Cette classe gère l'envoi de données d'affichage et l'update d'articles et de retraits dans la base de donnée
  */
 @WebServlet("/UpdateSaleServlet")
+@MultipartConfig
 public class UpdateSaleServlet extends HttpServlet implements ViewConstants {
 	private static final long serialVersionUID = 1L;
 
