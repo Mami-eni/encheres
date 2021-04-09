@@ -45,7 +45,7 @@
         <div class="col-sm-6">
     
           
-          <form class="form" action="NewSaleServlet" method="post">
+          <form class="form" action="NewSaleServlet" method="post" enctype="multipart/form-data">
           <div class="form-group row">
           <div class="col-sm-6">
           <label for="article">Article</label>
