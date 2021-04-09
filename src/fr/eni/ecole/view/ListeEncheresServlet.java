@@ -108,7 +108,7 @@ public class ListeEncheresServlet extends HttpServlet implements ViewConstants {
 			request.setAttribute("errors", e.getErrors());
 		}
 		
-		File folder = new File("C:/Users/fraud et med/git/encheres/WebContent/imagesArticles");
+		File folder = new File(IMAGE_PATH);
 		File[] listeDesFichiers = folder.listFiles();
 		request.setAttribute("listeImages", listeDesFichiers);
 
