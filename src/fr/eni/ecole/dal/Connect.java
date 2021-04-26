@@ -10,7 +10,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 public class Connect {
-	public static boolean DEV_MODE = true;
+	public static boolean DEV_MODE = false; // a mettre à true pour tester junit
 	
 	private static DataSource dataSource;
 

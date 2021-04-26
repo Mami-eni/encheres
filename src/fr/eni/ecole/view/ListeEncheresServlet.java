@@ -127,7 +127,7 @@ public class ListeEncheresServlet extends HttpServlet implements ViewConstants {
 		HttpSession session = request.getSession(false);
 		Utilisateur user = (Utilisateur) session.getAttribute("user");
 		int userId=0;
-		if(!(user==null))
+		if(!(null==user))
 		{
 			userId = user.getNumero();
 		}

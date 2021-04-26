@@ -38,6 +38,10 @@ public class AutreRemporteVenteServlet extends HttpServlet implements ViewConsta
 		request.setCharacterEncoding("UTF-8");
 		BusinessException error = new BusinessException();
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		// defaut parseint
+		
+//		String recuperationIdArticle= request.getParameter("article");
+		
 		int idArticle = Integer.parseInt(request.getParameter("article"));
 		Article art = new Article();
 		try {

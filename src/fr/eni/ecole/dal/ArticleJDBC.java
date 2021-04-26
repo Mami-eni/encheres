@@ -119,6 +119,8 @@ public class ArticleJDBC implements ArticleDAO {
 		try(Connection cx = Connect.getConnection()){
 			PreparedStatement request = cx.prepareStatement(SELECT_ALL_ENCOURS);
 			
+//			System.out.println(SELECT_ALL_ENCOURS);
+			
 			ResultSet rs = request.executeQuery();
 			
 			

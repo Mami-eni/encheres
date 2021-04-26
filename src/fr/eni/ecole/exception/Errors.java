@@ -21,9 +21,9 @@ public class Errors {
 	 * Echec li� au changement de l'utilisateur
 	 */
 	public static final String CODE_POSTAL_INVALIDE = "Code postal invalide";
-	public static final String NOMBRE_TELEPHONE_INVALIDE = "Nombre de t�l�phone invalide";
+	public static final String NOMBRE_TELEPHONE_INVALIDE = "Nombre de telephone invalide";
 	public static final String PSEUDO_INSUFFISANT = "Pseudo doit contenir au moins 6 caract�res";
-	public static final String MOT_DE_PASSE_INVALIDE = "Mot de passe doit contenir entre 8 et 12 caract�res (1 chiffre, 1 majuscule, 1 caract�re sp�cial)";
+	public static final String MOT_DE_PASSE_INVALIDE = "Mot de passe doit contenir entre 8 et 12 caract�res (1 chiffre, 1 majuscule, 1 caractere special)";
 	public static final String CONFIRMATION_CORRESPONDE_PAS = "Votre mot de passe ne corresponde pas avec la confirmation";
 
 	/**
@@ -33,14 +33,14 @@ public class Errors {
 	   
     public static final String REGLE_ARTICLE = "Article contient 30 caract�res maximum";
     public static final String REGLE_DESCRIPTION = "Description contient 300 caract�res maximum";
-    public static final String REGLE_DATE = "la date ne peut �tre ant�rieure � la date du jour";
-    public static final String REGLE_DATE_MAX = "la date doit �tre comprise entre 2021 et 2029";
+    public static final String REGLE_DATE = "la date ne peut etre anterieure � la date du jour";
+    public static final String REGLE_DATE_MAX = "la date doit etre comprise entre 2021 et 2029";
     public static final String MONTANT_ENTIER = "Le montant doit �tre un entier";
     
     /** Echec d'accès à la base de données */
     
     public static final String ERREUR_INSERT = "Ajout dans la base de données impossible";
-    public static final String ERREUR_SELECT = "Sélection impossible";
+    public static final String ERREUR_SELECT = "Problème de connection à la base de donnée";
     public static final String ERREUR_DELETE = "Suppression impossible";
     public static final String ERREUR_UPDATE = "Mise à jour impossible";
 	
