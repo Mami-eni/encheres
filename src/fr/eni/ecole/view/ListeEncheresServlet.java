@@ -124,13 +124,36 @@ public class ListeEncheresServlet extends HttpServlet implements ViewConstants {
 
 		BusinessException error = new BusinessException();
 		Map<Integer, Integer> meilleuresEncheresArticles = new HashMap<Integer, Integer>();
+		
 		HttpSession session = request.getSession(false);
+		
+	
+		
+		
+//		Utilisateur user = new Utilisateur();
+		
 		Utilisateur user = (Utilisateur) session.getAttribute("user");
 		int userId=0;
-		if(!(null==user))
+		
+		if(null!=user)
 		{
+			
+			
 			userId = user.getNumero();
+			
 		}
+		
+//		if(null!=session.getAttribute("user"))
+//		{
+//			
+//			user = (Utilisateur) session.getAttribute("user");
+//			userId = user.getNumero();
+//			
+//		}
+		
+		
+		
+		
 
 
 		List<Article> listeArticles = new ArrayList<Article>();

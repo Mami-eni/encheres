@@ -105,7 +105,7 @@
 					</div>
 					<div class="col-lg-offset-0 col-lg-6 col-xs-12 col-sm-6">
 
-						<a href="./"><button class="btn btn-primary btn-block">Annuler</button></a>
+						<a href="./"  class="btn btn-primary btn-block">Annuler</a>
 					</div>
 				</div>
 
