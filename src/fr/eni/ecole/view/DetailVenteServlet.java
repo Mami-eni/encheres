@@ -125,16 +125,8 @@ public class DetailVenteServlet extends HttpServlet implements ViewConstants {
 			}
 			e.printStackTrace();
 		}
-		if(Integer.parseInt(request.getParameter("proposition")) <= user.getCredit()) {
-		user.setCredit(user.getCredit() - Integer.parseInt(request.getParameter("proposition")));
-		try {
-			utilisateur.update(user);
-		} catch (BusinessException e1) {
-			for(String s : e1.getErrors()) {
-				error.addError(s);
-			}
-			e1.printStackTrace();
-		}
+		
+		// recherche meilleure enchère
 		List<Enchere> listeEncheres = new ArrayList<Enchere>();
 		try {
 			listeEncheres = enchere.selectByArticle(art);
@@ -154,39 +146,67 @@ public class DetailVenteServlet extends HttpServlet implements ViewConstants {
 			}
 		}
 		}
+
+				
+		// recherche meilleur encherisseur
 		Utilisateur bestEncherisseur = ench.getUtilisateur();
-		bestEncherisseur.setCredit(bestEncherisseur.getCredit() + ench.getMontant());
-		try {
-			utilisateur.update(bestEncherisseur);
-		} catch (BusinessException e1) {
-			for(String s : e1.getErrors()) {
-				error.addError(s);
-			}
-			e1.printStackTrace();
-		}
-		Instant now = Instant.now();
-		Timestamp dateEnchere = Timestamp.from(now);
-		int montant = Integer.parseInt(request.getParameter("proposition"));
-		/* construction de l'enchère à insérer dans la bdd */
-		Enchere enche = new Enchere();
-		enche.setDate(dateEnchere);
-		enche.setMontant(montant);
-		enche.setArticle(art);
-		enche.setUtilisateur(user);
 		
-		try {
-			enchere.insert(enche);
-		} catch (BusinessException e) {
-			for(String s : e.getErrors()) {
-				error.addError(s);
+		// si best encherisseur different de user 
+		// et si il a assez d'argent
+		
+		if(user.getNumero()!=bestEncherisseur.getNumero() && Integer.parseInt(request.getParameter("proposition")) <= user.getCredit())
+		{
+			// retirer l'argent de l'acheteur
+			user.setCredit(user.getCredit() - Integer.parseInt(request.getParameter("proposition")));
+			try {
+				utilisateur.update(user);
+			} catch (BusinessException e1) {
+				for(String s : e1.getErrors()) {
+					error.addError(s);
+				}
+				e1.printStackTrace();
 			}
-			request.setAttribute("errors", error);
-			request.setAttribute("article", art.getNumero());
-			doGet(request, response);
-			e.printStackTrace();
+			
+			
+			// crediter le best encherisseur 
+			bestEncherisseur.setCredit(bestEncherisseur.getCredit() + ench.getMontant());
+			try {
+				utilisateur.update(bestEncherisseur);
+			} catch (BusinessException e1) {
+				for(String s : e1.getErrors()) {
+					error.addError(s);
+				}
+				e1.printStackTrace();
+			}
+			
+			// creation enchère 
+			Instant now = Instant.now();
+			Timestamp dateEnchere = Timestamp.from(now);
+			int montant = Integer.parseInt(request.getParameter("proposition"));
+			/* construction de l'enchère à insérer dans la bdd */
+			Enchere enche = new Enchere();
+			enche.setDate(dateEnchere);
+			enche.setMontant(montant);
+			enche.setArticle(art);
+			enche.setUtilisateur(user);
+			
+			try {
+				enchere.insert(enche);
+			} catch (BusinessException e) {
+				for(String s : e.getErrors()) {
+					error.addError(s);
+				}
+				request.setAttribute("errors", error);
+				request.setAttribute("article", art.getNumero());
+				doGet(request, response);
+				e.printStackTrace();
+			}
+			
+			response.sendRedirect("/encheres");	
+			
 		}
-		response.sendRedirect("/encheres");
-		}else {
+		
+		else {
 			//error.addError("Vous n'avez pas assez de points sur votre compte");
 			//request.setAttribute("errors", error);
 			doGet(request, response);
