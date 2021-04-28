@@ -3,10 +3,8 @@
  */
 
 function radioDisable() {
-	var checkboxesAchat = document
-		.getElementsByName('flitreCheckboxAchat');
-	var checkboxesVente = document
-		.getElementsByName('flitreCheckboxVente');
+	var checkboxesAchat = document.getElementsByName('flitreCheckboxAchat');
+	var checkboxesVente = document.getElementsByName('flitreCheckboxVente');
 
 	if (document.getElementById('radioAchat').checked) {
 		for (var i = 0; i < checkboxesAchat.length; i++) {

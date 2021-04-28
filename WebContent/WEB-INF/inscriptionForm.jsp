@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page errorPage="error.jsp" isErrorPage="false"%>
 
@@ -19,6 +19,7 @@
 			<br>
 			
 			<%@include file="template/messageErreur.jsp"%>
+			
 			<form action="./inscription" method="post">
 				<div class="row">
 					<div class="col-lg-6 col-xs-12 col-sm-6">
@@ -37,14 +38,14 @@
 
 					<div class="col-lg-offset-0 col-lg-6 col-xs-12 col-sm-6">
 						<div class="form-group">
-							<label for="prenom">Prénom : </label> <input class="form-control"
+							<label for="prenom">PrÃ©nom : </label> <input class="form-control"
 								id="prenom" name="prenom">
 						</div>
 					</div>
 
 					<div class="col-lg-offset-0 col-lg-6 col-xs-12 col-sm-6">
 						<div class="form-group">
-							<label for="telephone">Téléphone: </label> <input
+							<label for="telephone">TÃ©lÃ©phone: </label> <input
 								class="form-control" id="telephone" type="tel" name="telephone">
 						</div>
 					</div>
@@ -80,7 +81,7 @@
 						</div>
 					</div>
 
-	<div class="col-lg-offset-0 col-lg-6 col-xs-12 col-sm-6">
+					<div class="col-lg-offset-0 col-lg-6 col-xs-12 col-sm-6">
 						<div class="form-group">
 							<label for="mdp">Mot de passe : </label> <input
 								class="form-control" id="mdp" type="password" name="mdp">
@@ -90,7 +91,7 @@
 					<div class="col-lg-offset-0 col-lg-6 col-xs-12 col-sm-6">
 
 						<div class="form-group">
-							<label for="confirmation">Confirmation : </label> <input
+							<label for="confirmation">Confirmation mot de passe : </label> <input
 								class="form-control" id="confirmation" type="password"
 								name="confirmation">
 						</div>
@@ -100,7 +101,7 @@
 					<div class="col-lg-offset-0 col-lg-6 col-xs-12 col-sm-6">
 
 						<div class="form-group">
-							<input type="submit" value="Créer" class="btn btn-primary btn-block">
+							<input type="submit" value="CrÃ©er" class="btn btn-primary btn-block">
 						</div>
 					</div>
 					<div class="col-lg-offset-0 col-lg-6 col-xs-12 col-sm-6">

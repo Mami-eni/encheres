@@ -46,7 +46,7 @@ public class LoginFilter implements Filter {
 //		HttpServletResponse httpResp = (HttpServletResponse) response;
 		
 		String servletPath = httpR.getServletPath();
-		System.out.println("servletPath : " + servletPath);
+//		System.out.println("servletPath : " + servletPath);
 		
 		//tester si un utilisateur est en session
 		

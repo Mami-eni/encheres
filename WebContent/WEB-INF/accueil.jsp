@@ -62,17 +62,17 @@
 	
 								<fieldset class = "col-sm-6">
 									<input type="radio" id="radioAchat" name="filtreRadio"
-									value="achats" onClick="radioDisable()" checked>Achats<br>
+									value="achats" onClick="radioDisable()" checked> Achats <br>
 	
 									 <input type="checkbox" name="flitreCheckboxAchat"value="ouvertes"> enchères ouvertes<br>
-									 <input type="checkbox" name="flitreCheckboxAchat" value="mesEncheres">mes enchères <br> 
+									 <input type="checkbox" name="flitreCheckboxAchat" value="mesEncheres"> mes enchères <br> 
 									 <input type="checkbox" name="flitreCheckboxAchat" value="enchereObtenues"> mes enchères remportées<br> <br>
 									 
 								</fieldset>
 								
 								<fieldset class = "col-sm-6">
 									<input type="radio" id="radioVente" name="filtreRadio"
-									value="ventes" onClick="radioDisable()">Mes ventes<br>
+									value="ventes" onClick="radioDisable()"> Mes ventes <br>
 	
 									<input type="checkbox" name="flitreCheckboxVente"value="encours" disabled=true> mes ventes en cours<br>
 									<input type="checkbox" name="flitreCheckboxVente"value="attente" disabled=true> ventes non débutées<br>

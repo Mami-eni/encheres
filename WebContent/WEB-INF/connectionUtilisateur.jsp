@@ -27,7 +27,7 @@
 							id="login" required name="login" value="${login}">
 					</div>
 					<div class="form-group">
-						<label for="password">Password : </label> <input
+						<label for="password">Mot de passe : </label> <input
 							class="form-control" id="password" required name="password"
 							type="password">
 					</div>
@@ -38,13 +38,12 @@
 
 					<div class="form-group">
 						<input type="checkbox" name="remember-me"><label
-							for="remember-me">Se souvient de moi </label>
+							for="remember-me"> Se souvenir de moi </label>
 					</div>
 				</form>
 
 				<a href="./inscription">
-					<button class="btn btn-lg btn-primary btn-block" value="">Créer
-						un compte</button>
+					<button class="btn btn-lg btn-primary btn-block" value="">Créer un compte</button>
 				</a>
 			</c:if>
 
