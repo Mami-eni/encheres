@@ -96,9 +96,6 @@
 				</div>
 			
 			
-			
-			
-				
 				
 			</div>
 				
@@ -167,37 +164,49 @@
 							name="confirmation" value="${sessionScope.user.motDePasse}">
 					</div>
 				</div>
+			</div>
 		</div>
-	</div>
+		
+			<c:if test="${!empty sessionScope.user }">
 				
 			<div class="col-lg-6 col-xs-12 col-sm-6">
 				<div class="form-group">
 					<p>Crédit: ${sessionScope.user.credit}</p>
 				</div>
 			</div>
-
+			</c:if>	
 				
 			<div class="col-lg-6 col-xs-12 col-sm-6">
 				<div class="form-group">
-					<input type="submit" value="Enregistrer" name = "enregistrer" class="btn btn-primary">
+				
+				
+					<c:choose>
+					<c:when test="${empty sessionScope.user }">
+						
+				 	 <input type="submit" value="Créer" name = "creer" class="btn btn-primary">
+				 	 <a href="./" class="btn btn-primary">Annuler</a>
+					</c:when>
+					<c:otherwise>
+						<input type="submit" value="Enregistrer" name = "enregistrer" class="btn btn-primary">
 					
 					<input
 						onclick="return confirm('Etes-vous sûr de vouloir supprimer votre compte?');"
 						class="btn btn-primary" type="submit" value="Supprimer mon compte" name = "supprimer">
-					
+						
+						<a href="./" class="btn btn-primary">Annuler</a>
+					</c:otherwise>
+					</c:choose>				
+				
+				 
 				</div>
+				
+				
 			</div>
 				
 			</form>
 
-			<a href="./"><button class="btn btn-primary">Annuler</button></a>
-			<!--   <form action="./supprimerUser" method="post">
-				<div class="form-group">
-					<input
-						onclick="return confirm('Etes-vous sûr de vouloir supprimer votre compte?');"
-						class="btn btn-primary" type="submit" value="Supprimer mon compte">
-				</div>
-			</form> -->
+			
+			
 		</div>
 	</div>
 	<div class="col-sm-3"></div>

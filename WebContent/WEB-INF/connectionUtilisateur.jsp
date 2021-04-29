@@ -42,7 +42,7 @@
 					</div>
 				</form>
 
-				<a href="./inscription">
+				<a href="./modifierUser">
 					<button class="btn btn-lg btn-primary btn-block" value="">Créer un compte</button>
 				</a>
 			</c:if>

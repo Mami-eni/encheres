@@ -18,7 +18,7 @@ import fr.eni.ecole.exception.Errors;
 /**
  * Servlet implementation class InscriptionServlet
  */
-@WebServlet("/inscription")
+@WebServlet("/inscriptio")
 public class InscriptionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

@@ -45,18 +45,54 @@ public class ModifierUtilisateurServlet extends HttpServlet {
 		
 		// Récupération de l'utilisateur de la session
 		HttpSession session = request.getSession();
-		Utilisateur user = (Utilisateur) (session.getAttribute("user"));
+		
+		Utilisateur user = new Utilisateur();
+		
+		if(null != session.getAttribute("user"))
+		{
+			user = (Utilisateur) (session.getAttribute("user"));
+		}
+		
+		// recuperation choix bouton
+		String choixSupprimerProfil = request.getParameter("supprimer");
+		String choixEnregistrerModifications= request.getParameter("enregistrer");
+		String choixCreerProfil = request.getParameter("creer");
+		
+		
+		// construction user
+		
+		String pseudo = request.getParameter("pseudo");
+		String mdp = request.getParameter("mdp");
+		String confirmation = request.getParameter("confirmation");
+		if (mdp.equals(confirmation)) {
+			user.setMotDePasse(request.getParameter("mdp"));
+			user.setPseudo(request.getParameter("pseudo"));
+			user.setNom(request.getParameter("nom"));
+			user.setPrenom(request.getParameter("prenom"));
+			user.setTelephone(request.getParameter("telephone"));
+			user.setCodePostal(request.getParameter("codePostal"));
+			user.setEmail(request.getParameter("email"));
+			user.setRue(request.getParameter("rue"));
+			user.setVille(request.getParameter("ville"));
+		}
+		
+		else {
+			BusinessException be = new BusinessException();
+			be.addError(Errors.CONFIRMATION_CORRESPONDE_PAS);
+			request.setAttribute("errors", be.getErrors());
+			request.getRequestDispatcher("/WEB-INF/modifierProfil.jsp").forward(request, response);
+		}
 		
 
-		String choixSuppressionProfil = request.getParameter("supprimer");
-		String choixEnregistrerModifications= request.getParameter("enregistrer");
+		
+		
 		// Faire les modifications
 		
-		if(null!=choixSuppressionProfil)
+		if(null!=choixSupprimerProfil)
 		{
 			
 			try {
-				BllUtilisateur.getBllUtilisateur().delete(user);
+				BllUtilisateur.getBllUtilisateur().delete(user = (Utilisateur) (session.getAttribute("user")));
 				response.sendRedirect("/encheres");
 			} catch (BusinessException e) {
 				System.out.println(e.getMessage());
@@ -66,18 +102,8 @@ public class ModifierUtilisateurServlet extends HttpServlet {
 		
 		else if(null != choixEnregistrerModifications)
 		{
-			String mdp = request.getParameter("mdp");
-			String confirmation = request.getParameter("confirmation");
-			if (mdp.equals(confirmation)) {
-				user.setMotDePasse(request.getParameter("mdp"));
-				user.setPseudo(request.getParameter("pseudo"));
-				user.setNom(request.getParameter("nom"));
-				user.setPrenom(request.getParameter("prenom"));
-				user.setTelephone(request.getParameter("telephone"));
-				user.setCodePostal(request.getParameter("codePostal"));
-				user.setEmail(request.getParameter("email"));
-				user.setRue(request.getParameter("rue"));
-				user.setVille(request.getParameter("ville"));
+			
+				
 				try {
 					BllUtilisateur.getBllUtilisateur().update(user);
 					RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/monProfil.jsp");
@@ -87,17 +113,36 @@ public class ModifierUtilisateurServlet extends HttpServlet {
 					request.setAttribute("errors", e.getErrors());
 					request.getRequestDispatcher("/WEB-INF/modifierProfil.jsp").forward(request, response);
 				}
-			} else {
-				BusinessException be = new BusinessException();
-				be.addError(Errors.CONFIRMATION_CORRESPONDE_PAS);
-				request.setAttribute("errors", be.getErrors());
+			
+			
+		}
+		
+		else if(null != choixCreerProfil)
+		{
+			
+			try {
+				BllUtilisateur.getBllUtilisateur().insert(user);
+				
+				user = BllUtilisateur.getBllUtilisateur().validateConnection(pseudo, mdp);
+				session.setAttribute("user", user);
+				request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
+				
+			} catch (BusinessException e) {
+				e.printStackTrace();
+				request.setAttribute("errors", e.getErrors());
 				request.getRequestDispatcher("/WEB-INF/modifierProfil.jsp").forward(request, response);
+			}catch (ClassNotFoundException e) {
+				e.printStackTrace();
 			}
+			
 			
 		}
 		
 
 		
 	}
+	
+	
+	
 
 }
