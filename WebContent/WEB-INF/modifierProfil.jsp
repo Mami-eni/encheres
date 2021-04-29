@@ -179,20 +179,25 @@
 				
 			<div class="col-lg-6 col-xs-12 col-sm-6">
 				<div class="form-group">
-					<input type="submit" value="Enregistrer" class="btn btn-primary">
+					<input type="submit" value="Enregistrer" name = "enregistrer" class="btn btn-primary">
+					
+					<input
+						onclick="return confirm('Etes-vous sûr de vouloir supprimer votre compte?');"
+						class="btn btn-primary" type="submit" value="Supprimer mon compte" name = "supprimer">
+					
 				</div>
 			</div>
 				
 			</form>
 
 			<a href="./"><button class="btn btn-primary">Annuler</button></a>
-			<form action="./supprimerUser" method="post">
+			<!--   <form action="./supprimerUser" method="post">
 				<div class="form-group">
 					<input
 						onclick="return confirm('Etes-vous sûr de vouloir supprimer votre compte?');"
 						class="btn btn-primary" type="submit" value="Supprimer mon compte">
 				</div>
-			</form>
+			</form> -->
 		</div>
 	</div>
 	<div class="col-sm-3"></div>

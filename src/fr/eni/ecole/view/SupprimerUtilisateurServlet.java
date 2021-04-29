@@ -18,7 +18,7 @@ import fr.eni.ecole.exception.BusinessException;
 /**
  * Servlet implementation class SupprimerUtilisateurServlet
  */
-@WebServlet("/supprimerUser")
+@WebServlet("/supprimerUse")
 public class SupprimerUtilisateurServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -36,6 +36,9 @@ public class SupprimerUtilisateurServlet extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		Utilisateur user = (Utilisateur)(session.getAttribute("user"));
+		
+		
+		
 		try {
 			BllUtilisateur.getBllUtilisateur().delete(user);
 			response.sendRedirect("/encheres");
