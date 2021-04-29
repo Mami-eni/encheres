@@ -11,13 +11,22 @@
 </head>
 <body>
 	<%@include file="template/nav.jsp"%>
+	
+	 <div class="row">
+	      <div class="col-sm-3"></div>
+	      <div class="col-sm-6"><p class="title">Mon profil</p></div>
+	      <div class="col-sm-3"></div>
+      </div>
 
 	<div class="row">
 		<div class="col-sm-3"></div>
 		<div class="col-sm-6">
 			<%@include file="template/messageErreur.jsp"%>
+			
+		
 
 			<form action="./modifierUser" method="post">
+			
 			<div class = "row">
 			<div class=" col-sm-6 col-lg-6 col-xs-12 ">
 			
@@ -32,9 +41,7 @@
 					
 				</div>
 		
-				
-			
-			
+									
 					<div class="row">
 						<div class="  col-sm-4 "> 
 							<label for="nom">Nom : </label> 

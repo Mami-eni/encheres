@@ -38,7 +38,9 @@ public class ModifierUtilisateurServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// R�cup�ration de l'utilisateur de la session
+		request.setCharacterEncoding("UTF-8");
+		
+		// Récupération de l'utilisateur de la session
 		HttpSession session = request.getSession();
 		Utilisateur user = (Utilisateur) (session.getAttribute("user"));
 		// Faire les modifications
