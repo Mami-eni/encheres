@@ -94,6 +94,16 @@
 							value="${sessionScope.user.email}">
 					</div>
 				</div>
+				
+				
+				<c:if test="${!empty sessionScope.user }">
+				
+					<div class="col-lg-6 col-xs-12 col-sm-6 credit">
+						<div class="form-group">
+							Crédit: ${sessionScope.user.credit}
+						</div>
+					</div>
+				</c:if>	
 			
 			
 				
@@ -167,29 +177,29 @@
 			</div>
 		</div>
 		
-			<c:if test="${!empty sessionScope.user }">
+			
 				
-			<div class="col-lg-6 col-xs-12 col-sm-6">
-				<div class="form-group">
-					<p>Crédit: ${sessionScope.user.credit}</p>
-				</div>
-			</div>
-			</c:if>	
-				
-			<div class="col-lg-6 col-xs-12 col-sm-6">
-				<div class="form-group">
+			<div class="col-lg-12 col-xs-12 col-sm-12 boutons-profil">
+			
 				
 				
 					<c:choose>
 					<c:when test="${empty sessionScope.user }">
 						
+				
 				 	 <input type="submit" value="Créer" name = "creer" class="btn btn-primary">
+				 
+				 	 
+				 
+				 	 
 				 	 <a href="./" class="btn btn-primary">Annuler</a>
+				 	
 					</c:when>
 					<c:otherwise>
+					
 						<input type="submit" value="Enregistrer" name = "enregistrer" class="btn btn-primary">
 					
-					<input
+						<input
 						onclick="return confirm('Etes-vous sûr de vouloir supprimer votre compte?');"
 						class="btn btn-primary" type="submit" value="Supprimer mon compte" name = "supprimer">
 						
@@ -198,7 +208,7 @@
 					</c:choose>				
 				
 				 
-				</div>
+			
 				
 				
 			</div>

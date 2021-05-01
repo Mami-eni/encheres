@@ -47,7 +47,19 @@ h1
 	font-size: 1.3em;
 }
 
+.credit
+{
+	padding:0;
+}
 
+.boutons-profil
+{
+	display: flex;
+	justify-content:space-around;
+	margin-top: 4em;
+	
+}
+ 
 .conteneur-image img
 {
 	width: 4em;

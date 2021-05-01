@@ -39,7 +39,6 @@ public class ListeEncheresServlet extends HttpServlet implements ViewConstants {
 
 
 
-
 	@Override
 	public void init() throws ServletException {
 
@@ -69,8 +68,8 @@ public class ListeEncheresServlet extends HttpServlet implements ViewConstants {
 		try {
 			listeArticles = managerArticle.selectAll(); 
 
-			/* Pour chaque liste d'articles issue du resultat de recherche, selection de toutes les enchères qui y sont liées et detection l'enchère la plus haute 
-			 * Si un utilisateur a réalisé au moins une première surenchère sur cet article, le montant maximal de l'enchère est récupéré, sinon cette est affectée de la valeur initiale de l'article
+			/* Pour chaque liste d'articles issue du resultat de recherche, selection de toutes les enchères qui y sont liées et detection de l'enchère la plus haute 
+			 * Si un utilisateur a réalisé au moins une première surenchère sur cet article, le montant maximal de l'enchère est récupéré, sinon cette vente est affectée de la valeur initiale de l'article
 			*/
 			
 			for (Article article : listeArticles)
@@ -127,10 +126,6 @@ public class ListeEncheresServlet extends HttpServlet implements ViewConstants {
 		
 		HttpSession session = request.getSession(false);
 		
-	
-		
-		
-//		Utilisateur user = new Utilisateur();
 		
 		Utilisateur user = (Utilisateur) session.getAttribute("user");
 		int userId=0;
@@ -142,18 +137,6 @@ public class ListeEncheresServlet extends HttpServlet implements ViewConstants {
 			userId = user.getNumero();
 			
 		}
-		
-//		if(null!=session.getAttribute("user"))
-//		{
-//			
-//			user = (Utilisateur) session.getAttribute("user");
-//			userId = user.getNumero();
-//			
-//		}
-		
-		
-		
-		
 
 
 		List<Article> listeArticles = new ArrayList<Article>();
@@ -168,7 +151,6 @@ public class ListeEncheresServlet extends HttpServlet implements ViewConstants {
 		String [] filtreCheckboxAchat = request.getParameterValues("flitreCheckboxAchat");
 
 		String filtreRadio = request.getParameter("filtreRadio");
-
 
 
 		

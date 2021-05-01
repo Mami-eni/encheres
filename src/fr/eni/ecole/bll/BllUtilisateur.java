@@ -5,7 +5,6 @@ package fr.eni.ecole.bll;
 import fr.eni.ecole.bo.Utilisateur;
 import fr.eni.ecole.exception.*;
 import fr.eni.ecole.util.Constants;
-import fr.eni.ecole.bo.Utilisateur;
 import fr.eni.ecole.dal.DAOFactory;
 import fr.eni.ecole.dal.UtilisateurDAO;
 /**
@@ -60,7 +59,7 @@ public class BllUtilisateur {
 			result = false;
 		}
 		if (!item.getTelephone().matches(Constants.REGEX_TELEPHONE)) {
-			be.addError(Errors.NOMBRE_TELEPHONE_INVALIDE);
+			be.addError(Errors.NUMERO_TELEPHONE_INVALIDE);
 			result = false;
 		}
 		if (item.getPseudo().isEmpty() || item.getPseudo().length() < 6) {

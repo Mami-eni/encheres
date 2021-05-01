@@ -1,9 +1,7 @@
 package fr.eni.ecole.view;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.UUID;
+
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import fr.eni.ecole.bo.Utilisateur;
-import fr.eni.ecole.dal.Connect;
+
 import fr.eni.ecole.exception.BusinessException;
 import fr.eni.ecole.bll.*;
 
@@ -32,7 +30,7 @@ public class ConnectionServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// V�rifier s'il y a un id et mdp dans les cookies
+		// Vérifier s'il y a un id et mdp dans les cookies
 		Cookie[] cookies = request.getCookies();
 		String login;
 		String password;
@@ -60,7 +58,7 @@ public class ConnectionServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		String login = request.getParameter("login");
 		String password = request.getParameter("password");
-		// cr�ation de session pour l'utilisateur actuel
+		// creation de session pour l'utilisateur actuel
 		HttpSession session = request.getSession();
 		String rememberMe = request.getParameter("remember-me");
 		try {
