@@ -46,7 +46,6 @@ public class LoginFilter implements Filter {
 				
 		 if(servletPath.contains("encheres")
 				|| servletPath.contains("accueil.jsp")
-				|| servletPath.contains("inscription")
 				|| servletPath.contains("modifierProfil")
 				|| servletPath.contains("modifierUser")
 				|| servletPath.contains("connection")

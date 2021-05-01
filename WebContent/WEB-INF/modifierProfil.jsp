@@ -190,8 +190,6 @@
 				 	 <input type="submit" value="Créer" name = "creer" class="btn btn-primary">
 				 
 				 	 
-				 
-				 	 
 				 	 <a href="./" class="btn btn-primary">Annuler</a>
 				 	
 					</c:when>
@@ -207,14 +205,10 @@
 					</c:otherwise>
 					</c:choose>				
 				
-				 
-			
-				
 				
 			</div>
 				
 			</form>
-
 			
 			
 		</div>
