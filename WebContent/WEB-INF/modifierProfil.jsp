@@ -13,14 +13,14 @@
 	<%@include file="template/nav.jsp"%>
 	
 	 <div class="row">
-	      <div class="col-sm-3"></div>
-	      <div class="col-sm-6"><p class="title">Mon profil</p></div>
-	      <div class="col-sm-3"></div>
+	      <div class="col-xs-2 col-sm-3 col-md-2"></div>
+	      <div class="col-xs-8 col-sm-6 col-md-8"><p class="title">Mon profil</p></div>
+	      <div class="col-xs-2 col-sm-3 col-md-2"></div>
       </div>
 
 	<div class="row">
-		<div class="col-sm-3"></div>
-		<div class="col-sm-6">
+		<div class="col-xs-2 col-sm-3 col-md-2"></div>
+		<div class="col-xs-8 col-sm-6 col-md-8">
 			<%@include file="template/messageErreur.jsp"%>
 			
 		
@@ -28,13 +28,13 @@
 			<form action="./modifierUser" method="post">
 			
 			<div class = "row">
-			<div class=" col-sm-6 col-lg-6 col-xs-12 ">
+			<div class=" col-xs-12  col-md-6  ">
 			
 				<div class="row">
-					<div class="  col-sm-4 "> 
+					<div class=" col-xs-6  col-sm-5  "> 
 						<label for="pseudo">Pseudo : </label>
 					</div>
-					<div class="col-sm-8 ">
+					<div class=" col-xs-6 col-sm-7">
 						 <input class="form-control"
 							id="pseudo" name="pseudo" value="${sessionScope.user.pseudo}">
 					</div>
@@ -43,11 +43,11 @@
 		
 									
 					<div class="row">
-						<div class="  col-sm-4 "> 
+						<div class="  col-sm-5 "> 
 							<label for="nom">Nom : </label> 
 						</div>	
 						
-						<div class="  col-sm-8 "> 
+						<div class="  col-sm-7 "> 
 							<input class="form-control"
 								id="nom" name="nom" value="${sessionScope.user.nom}">
 						</div>	
@@ -58,10 +58,10 @@
 			
 			
 				<div class="row">
-					<div class="  col-sm-4 "> 
+					<div class="  col-sm-5 "> 
 						<label for="prenom">Prénom : </label> 
 					</div>
-					<div class="  col-sm-8 "> 
+					<div class="  col-sm-7 "> 
 						<input class="form-control"
 							id="prenom" name="prenom" value="${sessionScope.user.prenom}">
 					</div>
@@ -72,10 +72,10 @@
 			
 			
 				<div class="row">
-					<div class="  col-sm-4 "> 
+					<div class="  col-sm-5 "> 
 						<label for="telephone">Téléphone: </label>
 					</div>
-					<div class="  col-sm-8"> 
+					<div class="  col-sm-7"> 
 					
 						 <input class="form-control" id="telephone" type="tel" name="telephone"
 							value="${sessionScope.user.telephone}">
@@ -85,10 +85,10 @@
 				
 				
 				<div class="row">
-					<div class=" col-sm-4 ">
+					<div class=" col-sm-5 ">
 						<label for="email">Email : </label> 
 					</div>
-					<div class=" col-sm-8 ">
+					<div class=" col-sm-7 ">
 						<input class="form-control"
 							id="email" type="email" name="email"
 							value="${sessionScope.user.email}">
@@ -96,28 +96,20 @@
 				</div>
 				
 				
-				<c:if test="${!empty sessionScope.user }">
 				
-					<div class="col-lg-6 col-xs-12 col-sm-6 credit">
-						<div class="form-group">
-							Crédit: ${sessionScope.user.credit}
-						</div>
-					</div>
-				</c:if>	
-			
 			
 				
 			</div>
 				
 				
-			<div class="col-lg-6 col-xs-12 col-sm-6"> 
+			<div class=" col-xs-12 col-md-6 "> 
 			
 		
 				<div class="row">
-					<div class=" col-sm-4 ">
+					<div class=" col-sm-5 ">
 						<label for="rue">Rue : </label> 
 					</div>
-					<div class=" col-sm-8 ">
+					<div class=" col-sm-7 ">
 						<input class="form-control"
 							id="rue" name="rue" value="${sessionScope.user.rue}">
 					</div>
@@ -127,10 +119,10 @@
 				
 			
 				<div class="row">
-					<div class=" col-sm-4 ">
+					<div class=" col-sm-5 ">
 						<label for="ville">Ville : </label>
 					</div>
-					<div class=" col-sm-8">
+					<div class=" col-sm-7">
 						 <input class="form-control"
 							id="ville" name="ville" value="${sessionScope.user.ville}">
 					</div>
@@ -138,11 +130,11 @@
 				
 				
 					<div class="row">
-					<div class="  col-sm-4 "> 
+					<div class="  col-sm-5 "> 
 				
 						<label for="codePostal">Code postal : </label>
 					</div>	
-					<div class="  col-sm-8 ">
+					<div class="  col-sm-7 ">
 						 <input class="form-control" id="codePostal" name="codePostal"
 							value="${sessionScope.user.codePostal}">
 					</div>
@@ -151,10 +143,10 @@
 				
 				
 				<div class="row">
-					<div class=" col-sm-4 "> 
+					<div class=" col-sm-5   col-xs-12 "> 
 						<label for="mdp">Mot de passe : </label> 
 					</div>
-					<div class=" col-sm-8 "> 
+					<div class=" col-sm-7   col-xs-12 "> 
 						<input class="form-control" id="mdp" type="password" name="mdp"
 							value="${sessionScope.user.motDePasse}">
 					</div>
@@ -164,19 +156,27 @@
 			
 			
 				<div class="row">
-					<div class=" col-sm-4">
+					<div class=" col-sm-5  col-xs-12">
 				
 						<label for="confirmation">Confirmation : </label> 
 					</div>
-					<div class=" col-sm-8">
+					<div class="col-sm-7  col-xs-12 ">
 					
 						<input class="form-control" id="confirmation" type="password"
 							name="confirmation" value="${sessionScope.user.motDePasse}">
 					</div>
+					</div>
 				</div>
 			</div>
-		</div>
 		
+				<c:if test="${!empty sessionScope.user }">
+				
+					<div class="col-lg-6 col-xs-12 col-sm-6 credit">
+						<div class="form-group">
+							Crédit: ${sessionScope.user.credit}
+						</div>
+					</div>
+				</c:if>	
 			
 				
 			<div class="col-lg-12 col-xs-12 col-sm-12 boutons-profil">
@@ -207,13 +207,15 @@
 				
 				
 			</div>
+			
+			
 				
 			</form>
 			
 			
 		</div>
 	</div>
-	<div class="col-sm-3"></div>
+	<div class="col-xs-2 col-sm-3 col-md-2"></div>
 	<%@include file="template/script.jsp"%>
 </body>
 

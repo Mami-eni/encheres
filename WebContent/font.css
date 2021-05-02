@@ -1,13 +1,14 @@
 @charset "UTF-8";
 html
 {
-	font-size:20px;
+	font-size:11px;
 }
 
 h1
 {
 	font-size:1.4em;
 }
+
 
 .row
 {
@@ -20,17 +21,19 @@ h1
 	margin-top: 1em;
 	margin-bottom: 1em;
 }
+
+
 .title
 {
 	font-size: 2em;
 	text-align:center;
+	margin-top: 1em;
 }
 
 .form-control
 {
 	margin-top: 1em;
 	margin-bottom: 1em;
-	
 }
 
 .erreur
@@ -55,9 +58,15 @@ h1
 .boutons-profil
 {
 	display: flex;
-	justify-content:space-around;
-	margin-top: 4em;
+	justify-content:space-between;
+	margin-top: 3em;
 	
+}
+
+.detail-profil
+{
+	margin-top: 2em;
+	text-align:justify;
 }
  
 .conteneur-image img
@@ -77,3 +86,32 @@ h1
 	text-align: center;
 }
 
+@media  (min-width: 768px) 
+{
+		html
+	{
+		font-size:13px;
+	}
+	
+}
+
+
+
+@media  (min-width: 1100px) 
+{
+		html
+	{
+		font-size:15px;
+	}
+	
+}
+
+
+@media  (min-width: 1300px) 
+{
+		html
+	{
+		font-size:20px;
+	}
+	
+}

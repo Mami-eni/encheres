@@ -9,6 +9,8 @@ import fr.eni.ecole.bo.Utilisateur;
 import fr.eni.ecole.dal.DAOFactory;
 import fr.eni.ecole.dal.EnchereDAO;
 import fr.eni.ecole.exception.BusinessException;
+import fr.eni.ecole.exception.Errors;
+import fr.eni.ecole.util.Constants;
 /**
  * Cette classe contient la logique métier avant l'appel aux méthodes de la couche DAL qui accèdent à la table encheres de la base de données
  */
@@ -29,7 +31,24 @@ public class BllEnchere {
 	}
 	
 	public void insert(Enchere item) throws BusinessException{
-		enchere.insert(item);
+		BusinessException be = new BusinessException();
+		
+//		List<Enchere> listeEncheres= selectByArticle(item.getArticle());
+//		
+//		if(listeEncheres.isEmpty())
+//		{
+			enchere.insert(item);
+//		}
+//		else
+//		{
+//			if(inputControl(listeEncheres, item, be))
+//			{
+//				enchere.insert(item);
+//			}
+//			
+//		}
+		
+		
 	}
 	
 	public List<Enchere> selectByArticle(Article a) throws BusinessException{
@@ -52,5 +71,34 @@ public class BllEnchere {
 			delete(ench);
 		}
     }
+    
+    
+	public boolean inputControl( List<Enchere> listeEncheres, Enchere nouvelleEnchere, BusinessException be) throws BusinessException {
+		boolean actualiserEnchere = true;
+		
+		
+		int montantMax = 0;
+		Enchere ench = new Enchere();
+		
+			for(Enchere e : listeEncheres) 
+			{
+				if(e.getMontant() > montantMax)
+				{
+					montantMax = e.getMontant();
+					ench = e;
+				}
+				
+
+			}
+			
+			if(ench.getMontant() <= nouvelleEnchere.getMontant())
+			{
+				actualiserEnchere= false;
+				be.addError(Errors.ENCHERE_INSUFFISANTE);
+			}
+
+
+		return actualiserEnchere;
+	}
 	
 }

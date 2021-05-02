@@ -36,6 +36,7 @@ public class Errors {
     public static final String REGLE_DATE = "la date ne peut etre anterieure a la date du jour";
     public static final String REGLE_DATE_MAX = "la date doit etre comprise entre 2021 et 2029";
     public static final String MONTANT_ENTIER = "Le montant doit etre un entier";
+    public static final String ENCHERE_INSUFFISANTE = "Le montant de l'enchère doit être supérieur";
     
     /** Echec d'accès à la base de données */
     

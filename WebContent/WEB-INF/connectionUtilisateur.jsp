@@ -22,16 +22,38 @@
 
 			<c:if test="${empty sessionScope.user}">
 				<form action="./connection" method="post">
-					<div class="form-group">
-						<label for="login">Login : </label> <input class="form-control"
+				
+					<div class="form-group row">
+						<div class = "col-sm-4">
+				
+							<label for="login">Login : </label>
+						</div>
+						
+						<div class = "col-sm-8">
+						 	<input class="form-control"
 							id="login" required name="login" value="${login}">
+						</div>
+						
 					</div>
-					<div class="form-group">
-						<label for="password">Mot de passe : </label> <input
-							class="form-control" id="password" required name="password"
-							type="password">
+					
+					<div class="form-group row">
+					
+						<div class = "col-sm-4">
+						
+							<label for="password">Mot de passe : </label> 
+						</div>
+						
+						<div class = "col-sm-8">
+							<input
+								class="form-control" id="password" required name="password"
+								type="password">
+						</div>
+						
 					</div>
+					
+					
 					<div class="form-group">
+					
 						<input type="submit" value="Connexion"
 							class="btn btn-lg btn-primary">
 					</div>
