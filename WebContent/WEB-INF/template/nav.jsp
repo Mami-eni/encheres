@@ -21,7 +21,7 @@
 					        <a class="nav-link  me-2" href="${pageContext.request.contextPath}/modifierUser">S'inscrire</a>
 					      </li>
 					      <li class="nav-item">
-					        <a class="nav-link  primary me-2" href="${pageContext.request.contextPath}/connection">Se connecter</a>
+					        <a class="nav-link  me-2" href="${pageContext.request.contextPath}/connection">Se connecter</a>
 					      </li>
 					    					     
 					    </ul>
@@ -44,19 +44,19 @@
 						  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 						    <ul class="navbar-nav mr-auto">
 						      <li class="nav-item active">
-						        <a class="nav-link btn btn-primary me-2" href= "${pageContext.request.contextPath}/encheres">Enchères</a>
+						        <a class="nav-link  me-2" href= "${pageContext.request.contextPath}/encheres">Enchères</a>
 						      </li>
 						      
 						       <li class="nav-item active">
-						        <a class="nav-link btn btn-primary me-2" href= "${pageContext.request.contextPath}/NewSaleServlet">Vendre un article</a>
+						        <a class="nav-link me-2" href= "${pageContext.request.contextPath}/NewSaleServlet">Vendre un article</a>
 						      </li>
 						      
 						       <li class="nav-item active">
-						        <a class="nav-link btn btn-primary me-2" href= "${pageContext.request.contextPath}/monprofil">Mon profil</a>
+						        <a class="nav-link  me-2" href= "${pageContext.request.contextPath}/monprofil">Mon profil</a>
 						      </li>
 						      
 						      <li class="nav-item active">
-						        <a class="nav-link btn btn-primary me-2" href= "${pageContext.request.contextPath}/deconnexion">Déconnexion</a>
+						        <a class="nav-link me-2" href= "${pageContext.request.contextPath}/deconnexion">Déconnexion</a>
 						      </li>
 						     
 						    					     
