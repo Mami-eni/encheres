@@ -15,6 +15,23 @@ h1
 	align-items: baseline;
 }
 
+.inside_navBar
+{
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+
+	
+
+}
+
+.inside_navBar img
+{
+	width: 15em;
+
+}
+
+
+
 .card
 {
 	font-size:0.8em;
@@ -93,6 +110,7 @@ h1
 		font-size:13px;
 	}
 	
+	
 }
 
 
@@ -102,6 +120,11 @@ h1
 		html
 	{
 		font-size:15px;
+	}
+		.inside_navBar img
+	{
+		width: 20em;
+	
 	}
 	
 }
