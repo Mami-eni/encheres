@@ -13,18 +13,18 @@
 
 	
 	  <div class="row">
-	      <div class="col-sm-2"></div>
-	      <div class="col-sm-8"><p class="title">Liste des enchères</p></div>
-	      <div class="col-sm-2"></div>
+	      <div class="col-2"></div>
+	      <div class="col-8"><p class="title">Liste des enchères</p></div>
+	      <div class="col-2"></div>
       </div>
       
       <%@ include file="template/messageErreur.jsp"%>
       
       
 	  <div class="row">
-	      <div class="col-sm-2"></div>
+	      <div class="col-2"></div>
 	      
-	      <div class="col-sm-8">
+	      <div class="col-8">
 	     
 	      		
       		<form method="post"action="${pageContext.request.contextPath}/encheres">
@@ -102,15 +102,15 @@
 	      
 	      
 	      
-	      <div class="col-sm-2"></div>
+	      <div class="col-2"></div>
 	      
 	      
       </div>
       
       
      <div class="row">
-      <div class="col-sm-2"></div>
-      <div class="col-sm-8">
+      <div class="col-2"></div>
+      <div class="col-8">
 	      
 	      
 	      	<c:choose>
@@ -233,9 +233,10 @@
 						</c:otherwise>
 					</c:choose>	
 				</div>		
-	      </div>
+	     
 
-	    <div class="col-sm-2"></div>
+	    <div class="col-2"></div>
+	  </div>
      
 	<%@ include file="template/script.jsp"%>
 

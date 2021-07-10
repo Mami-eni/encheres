@@ -11,9 +11,9 @@
 
       
       <div class="row">
-      <div class="col-sm-4"></div>
-      <div class="col-sm-4"><p class="title">Nouvelle Vente</p></div>
-      <div class="col-sm-4"></div>
+      <div class="col-2"></div>
+      <div class="col-8"><p class="title">Nouvelle Vente</p></div>
+      <div class="col-2"></div>
       </div>
       <c:choose>
       <c:when test="${!empty errors}">
@@ -28,9 +28,9 @@
 		</div>
 	</div>
       <div class = "row">
-        <div class = "col-sm-2">
+        <div class = "col-2">
         </div>
-        <div class="col-sm-2">
+        <div class="col-1">
         <c:choose>
       	<c:when test="${empty image}">
         <img class="img" src="./img/interrogation.png" alt="point interrogation"
@@ -42,7 +42,7 @@
 		</c:otherwise>
 		</c:choose>
         </div>
-        <div class="col-sm-6">
+        <div class="col-7">
     
           
           <form class="form" action="NewSaleServlet" method="post" enctype="multipart/form-data">
@@ -164,20 +164,20 @@
 			</div>
  
           </div>
-    <div class = "col-sm-2">
+    <div class = "col-2">
     </div>
     </div>
       </c:when>
       <c:otherwise>
 
       <div class = "row">
-        <div class = "col-sm-2">
+        <div class = "col-2">
         </div>
-        <div class="col-sm-2">
+        <div class="col-1">
         <img class="img" src="./img/interrogation.png" alt="point interrogation"
 				width="50px">
         </div>
-        <div class="col-sm-6">
+        <div class="col-7">
     
           
           <form class="form" action="NewSaleServlet" method="post" enctype="multipart/form-data">
@@ -300,7 +300,7 @@
        
     
    
-    <div class = "col-sm-2">
+    <div class = "col-2">
     </div>
     </div>
     </c:otherwise>
