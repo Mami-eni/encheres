@@ -14,7 +14,7 @@
 	<div class="row">
 		<div class="col-sm-4"></div>
 		<div class="col-sm-4 ">
-			<div class = "text-center">
+			<div class = "d-flex">
 			
 				<h1>${vendeur.pseudo}</h1>
 				<p>Nom: ${vendeur.nom}</p>

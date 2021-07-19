@@ -52,19 +52,23 @@
 					</div>
 					
 					
-					<div class="form-group">
+					<div class="form-group row">
 					
-						<input type="submit" value="Connexion"
-							class="btn btn-lg btn-primary">
+						<input type="submit" value="Connexion"class="btn btn-lg btn-primary col-sm-4 ">
+						<div  class="col-sm-4" >
+							<a href="./modifierUser">
+							<button class="btn btn-lg btn-primary btn-block" value="">Créer un compte</button>
+							</a>
+						</div>
 					</div>
 
 					<div class="form-group">
 						<input type="hidden" name="remember-me"><label
 							for="remember-me">  </label>
+						
+							
 					</div>
-						<a href="./modifierUser">
-							<button class="btn  btn-primary btn-block" value="">Créer un compte</button>
-						</a>
+						
 				</form>
 
 			
