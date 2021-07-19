@@ -13,14 +13,14 @@
 	<%@include file="template/nav.jsp"%>
 	
 	 <div class="row">
-	      <div class="col-xs-2 col-sm-3 col-md-2"></div>
-	      <div class="col-xs-8 col-sm-6 col-md-8"><p class="title">Mon profil</p></div>
-	      <div class="col-xs-2 col-sm-3 col-md-2"></div>
+	      <div class="col-2"></div>
+	      <div class="col-8"><p class="title">Mon profil</p></div>
+	      <div class="col-2"></div>
       </div>
 
 	<div class="row">
-		<div class="col-xs-2 col-sm-3 col-md-2"></div>
-		<div class="col-xs-8 col-sm-6 col-md-8">
+		<div class="col-2"></div>
+		<div class="col-8">
 			<%@include file="template/messageErreur.jsp"%>
 			
 		
@@ -215,7 +215,7 @@
 			
 		</div>
 	</div>
-	<div class="col-xs-2 col-sm-3 col-md-2"></div>
+	<div class="col-2"></div>
 	<%@include file="template/script.jsp"%>
 </body>
 

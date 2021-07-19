@@ -13,8 +13,8 @@
 	<%@include file="template/nav.jsp"%>
 
 	<div class="row">
-		<div class="col-sm-4"></div>
-		<div class="col-sm-4">
+		<div class="col-2"></div>
+		<div class="col-6">
 
 
 
@@ -29,7 +29,7 @@
 							<label for="login">Login : </label>
 						</div>
 						
-						<div class = "col-sm-8">
+						<div class = "col-sm-8 ">
 						 	<input class="form-control"
 							id="login" required name="login" value="${login}">
 						</div>
@@ -62,15 +62,16 @@
 						<input type="hidden" name="remember-me"><label
 							for="remember-me">  </label>
 					</div>
+						<a href="./modifierUser">
+							<button class="btn  btn-primary btn-block" value="">Créer un compte</button>
+						</a>
 				</form>
 
-				<a href="./modifierUser">
-					<button class="btn btn-lg btn-primary btn-block" value="">Créer un compte</button>
-				</a>
+			
 			</c:if>
 
 		</div>
-		<div class="col-sm-4"></div>
+		<div class="col-2"></div>
 	</div>
 	<%@include file="template/script.jsp"%>
 

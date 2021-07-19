@@ -12,12 +12,12 @@
 <body>
 	<%@include file="template/nav.jsp"%>
 	<div class="row">
-		<div class="col-sm-4"></div>
-		<div class="col-sm-4">
+		<div class="col-sm-2 "></div>
+		<div class="col-sm-8 ">
 		
 			
 			<h1 class='title'>${user.pseudo}</h1>
-			<div class = 'detail-profil'>
+			<div class = 'detail-profil text-center'>
 				
 				<p>Nom: ${user.nom}</p>
 				<p>Prenom: ${user.prenom}</p>
@@ -27,13 +27,16 @@
 				<p>Code postal: ${user.codePostal}</p>
 				<p>Ville: ${user.ville}</p>
 			</div>
-			<a href="./modifierUser">
-				<button class="btn btn-primary btn-lg boutons-profil">Modifier mon compte</button>
-			</a>
+			
+				<a href="./modifierUser">
+					<button class="btn btn-primary btn-lg boutons-profil">Modifier mon compte</button>
+				</a>
+			
+			
 			
 		</div>
 
-		<div class="col-sm-4"></div>
+		<div class="col-sm-2"></div>
 	</div>
 
 	<%@include file="template/script.jsp"%>
